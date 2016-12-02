@@ -1,0 +1,8 @@
+{
+"action": "nonsense",
+"target": {
+    "type":"cybox:hostname",
+    "specifiers":{"hostname_value":"cdn.badco.org"}
+    }
+}
+

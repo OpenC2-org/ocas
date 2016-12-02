@@ -1,0 +1,11 @@
+{
+"action": "scan",
+"actuator": {
+    "type": "network-scanner",
+    "specifiers": "scanner01"
+    },
+"modifiers": {
+    "response": "ack",
+    "where": "perimeter"
+    }
+}

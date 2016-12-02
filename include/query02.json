@@ -1,0 +1,11 @@
+{"action": “query",
+ "target": {
+    "type": “command"
+                },
+ "actuator": {
+    "type": “network-firewall",
+    "specifiers": {“id": “myfw1234"}},
+ "modifiers": {
+    "response": "ack"
+     }
+}
