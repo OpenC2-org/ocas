@@ -16,11 +16,11 @@
 %%%-------------------------------------------------------------------
 
 %%%-------------------------------------------------------------------
-%% @doc test delete action
+%% @doc test actuators
 %% @end
 %%%-------------------------------------------------------------------
 
--module(delete_SUITE).
+-module(act_demense_SUITE).
 -author("Duncan Sparrell").
 -copyright("2016, sFractal Consulting, LLC").
 -license(apache2).
@@ -31,13 +31,13 @@
 %% required for common_test to work
 -include_lib("common_test/include/ct.hrl").
 
-%% includes of common test json data
--include_lib("./include/delete01.hrl").
+%% test data
+-include_lib("./include/mitigate01.hrl").
 
 %% tests to run
 all() ->
-    [ test_delete
-    , test_delete_again
+    [ test_demense
+    , test_demense_again
     ].
 
 %% timeout if no reply in a minute
@@ -59,7 +59,7 @@ init_per_suite(Config) ->
 
     Config.
 
-test_delete(_Config) ->
+test_demense(_Config) ->
 
     ReqHeaders = [ {<<"content-type">>
                  , <<"application/json">>}
@@ -69,7 +69,7 @@ test_delete(_Config) ->
 
     Options = #{},
 
-    Json = ?DELETE01,
+    Json = ?MITIGATE01,
 
     %% validate the json
     true = jsx:is_json(Json),
@@ -85,11 +85,11 @@ test_delete(_Config) ->
     ExpectedJsonPairs = [ {<<"has_http_body">>, true}
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
-                        , {<<"action">>, <<"delete">>}
-                        , {<<"action_server">>, <<"delete_server">>}
+                        , {<<"action">>, <<"mitigate">>}
+                        , {<<"action_server">>, <<"mitigate_server">>}
                         , {<<"action_valid">>, true}
-                        , {<<"has_actuator">>, true}
-                        , {<<"has_modifiers">>, true}
+                        , {<<"has_actuator">>, false}
+                        , {<<"has_modifiers">>, false}
                         , {<<"has_target">>, true}
                         , {<<"action_keepalive">>, true}
                         ],
@@ -102,11 +102,13 @@ test_delete(_Config) ->
                 , ExpectedStatus  % test get this received
                 , ExpectedJsonPairs
                 ),
+
+    %% send request again to test server already running
 
     ok.
 
-%% run again to catch servers already existing
-test_delete_again(_Config) ->
+
+test_demense_again(_Config) ->
 
     ReqHeaders = [ {<<"content-type">>
                  , <<"application/json">>}
@@ -116,7 +118,7 @@ test_delete_again(_Config) ->
 
     Options = #{},
 
-    Json = ?DELETE01,
+    Json = ?MITIGATE01,
 
     %% validate the json
     true = jsx:is_json(Json),
@@ -132,11 +134,11 @@ test_delete_again(_Config) ->
     ExpectedJsonPairs = [ {<<"has_http_body">>, true}
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
-                        , {<<"action">>, <<"delete">>}
-                        , {<<"action_server">>, <<"delete_server">>}
+                        , {<<"action">>, <<"mitigate">>}
+                        , {<<"action_server">>, <<"mitigate_server">>}
                         , {<<"action_valid">>, true}
-                        , {<<"has_actuator">>, true}
-                        , {<<"has_modifiers">>, true}
+                        , {<<"has_actuator">>, false}
+                        , {<<"has_modifiers">>, false}
                         , {<<"has_target">>, true}
                         , {<<"action_keepalive">>, true}
                         ],
@@ -149,5 +151,7 @@ test_delete_again(_Config) ->
                 , ExpectedStatus  % test get this received
                 , ExpectedJsonPairs
                 ),
+
+    %% send request again to test server already running
 
     ok.

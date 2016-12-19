@@ -1,0 +1,16 @@
+{"1.1.0",
+[{<<"cowboy">>,{pkg,<<"cowboy">>,<<"1.0.4">>},0},
+ {<<"cowlib">>,{pkg,<<"cowlib">>,<<"1.0.2">>},1},
+ {<<"goldrush">>,{pkg,<<"goldrush">>,<<"0.1.8">>},1},
+ {<<"jsx">>,{pkg,<<"jsx">>,<<"2.8.0">>},0},
+ {<<"lager">>,{pkg,<<"lager">>,<<"3.2.1">>},0},
+ {<<"ranch">>,{pkg,<<"ranch">>,<<"1.2.1">>},1}]}.
+[
+{pkg_hash,[
+ {<<"cowboy">>, <<"A324A8DF9F2316C833A470D918AAF73AE894278B8AA6226CE7A9BF699388F878">>},
+ {<<"cowlib">>, <<"9D769A1D062C9C3AC753096F868CA121E2730B9A377DE23DEC0F7E08B1DF84EE">>},
+ {<<"goldrush">>, <<"2024BA375CEEA47E27EA70E14D2C483B2D8610101B4E852EF7F89163CDB6E649">>},
+ {<<"jsx">>, <<"749BEC6D205C694AE1786D62CEA6CC45A390437E24835FD16D12D74F07097727">>},
+ {<<"lager">>, <<"EEF4E18B39E4195D37606D9088EA05BF1B745986CF8EC84F01D332456FE88D17">>},
+ {<<"ranch">>, <<"A6FB992C10F2187B46FFD17CE398DDF8A54F691B81768F9EF5F461EA7E28C762">>}]}
+].

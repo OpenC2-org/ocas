@@ -92,9 +92,21 @@ handle_target_type(<<"cybox:hostname">>, TargetJson, Req, State ) ->
     HostName = maps:get(<<"hostname_value">>, Specifiers, hostname_undefined),
     lager:info("hostname: ~p", [HostName] ),
 
-    %% spinup a server for this hostname
-    %%   when get beyond one command, need to check first if already exists
-    spawn_target( {hostname, HostName}, Req, State2 );
+    %% see if server already started
+    Started = whereis(tgt_hostname),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet, and tail end recurse
+            spawn_target( {hostname, HostName}, Req, State2 );
+        Started when is_pid(Started) ->
+            %% already started
+            %% check with keep alive
+            TargetKeepAlive = tgt_hostname:keepalive(),
+            lager:debug("TargetKeepAlive: ~p ", [TargetKeepAlive]),
+            %% tail end recurse
+            target_valid({hostname, HostName}, TargetKeepAlive, Req, State2)
+    end;
 
 handle_target_type(<<"cybox:address">>, TargetJson, Req, State ) ->
     %% target is a address
@@ -117,8 +129,6 @@ handle_target_type(<<"cybox:address">>, TargetJson, Req, State ) ->
 handle_target_type(<<"cybox:device">>, TargetJson, Req, State ) ->
     %% target is a device
     State2 = maps:put(target_type, device, State),
-
-    %% later on put this in device module to be more generic
 
     %% get specifiers
     Specifiers = maps:get(<<"specifiers">>, TargetJson),
@@ -145,8 +155,27 @@ handle_target_type(TargetType, _TargetJson, Req, State ) ->
     {ok, Req2, State}.
 
 handle_device( <<"network_firewall">>, Req, State) ->
-    %%   when get beyond one command, need to check first if already exists
-    spawn_target( {network_firewall, nonspecific} , Req, State );
+    %% see if server already started
+    Started = whereis(tgt_network_firewall),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            spawn_target( {network_firewall, nonspecific} , Req, State );
+        Started when is_pid(Started) ->
+            %% already started 
+            %% check with keep alive
+            TargetKeepAlive = tgt_network_firewall:keepalive(),
+            lager:debug("TargetKeepAlive: ~p ", [TargetKeepAlive]),
+            %% tail recurse on
+            target_valid( {network_firewall, nonspecific}
+                        , TargetKeepAlive
+                        , Req
+                        , State
+                        )
+            %% need to handle actual fw instances (now just subbing with nonspecific)
+            %% need to handle multiple different firewall instances
+    end;
 
 handle_device( <<"network_scanner">>, Req, State) ->
     %%   when get beyond one command, need to check first if already exists
@@ -165,14 +194,31 @@ handle_device( UnknownDevice, Req, State) ->
     {ok, Req2, State}.
 
 handle_address(<<"ipv4-addr">>, Specifiers, Req, State ) ->
-    State2 = maps:put(target_address_type, ipv4, State),
     Ipv4Address = maps:get(<<"address-value">>, Specifiers, address_undefined),
     lager:debug("ipv4 ~p", [Ipv4Address] ),
-    State3 = maps:put(target_address_value, Ipv4Address, State2),
 
-    %% spinup a server for this address
-    %%   when get beyond one command, need to check first if already exists
-    spawn_target( {ipv4_address, Ipv4Address}, Req, State3 );
+    %% see if server already started
+    Started = whereis(tgt_ipv4_address),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            State2 = maps:put(target_address_type, ipv4, State),
+            State3 = maps:put(target_address_value, Ipv4Address, State2),
+            spawn_target( {ipv4_address, Ipv4Address}, Req, State3 );
+        Started when is_pid(Started) ->
+            %% already started 
+            %% check with keep alive
+            TargetKeepAlive = tgt_ipv4_address:keepalive(),
+            lager:debug("TargetKeepAlive: ~p ", [TargetKeepAlive]),
+            %% tail recurse on
+            target_valid( {ipv4_address, Ipv4Address}
+                        , TargetKeepAlive
+                        , Req
+                        , State
+                        )
+            %% need to handle multiple different ip instances
+    end;
 
 handle_address(<<"ipv6-addr">>, Specifiers, Req, State ) ->
     State2 = maps:put(target_address_type, ipv6, State),
@@ -286,11 +332,8 @@ spawn_target( {TargetType, Value},  Req, State ) ->
     {ok, Req2, State}.
 
 target_valid(_Target, TargetKeepAlive, Req, State) ->
-    %% target was valid so update State
-    State2 = maps:put(target_valid, true, State),
-
     %% tail end recurse to verifying keepalive
-    verify_keepalive( TargetKeepAlive, Req, State2).
+    verify_keepalive( TargetKeepAlive, Req, State ).
 
 verify_keepalive( {keepalive_received, Server}
                 , Req

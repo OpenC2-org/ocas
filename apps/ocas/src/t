@@ -1,0 +1,11 @@
+    %% see if server already started
+    Started = whereis(act_XXX),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_XXX:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
