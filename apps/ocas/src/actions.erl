@@ -137,8 +137,17 @@ spawn_action( <<"delay">>,  Req, State ) ->
     action_valid(delay, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"delete">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_delete:start(State),
+    %% see if server already started
+    Started = whereis(act_delete),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_delete:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_delete:keepalive(),
@@ -148,8 +157,17 @@ spawn_action( <<"delete">>,  Req, State ) ->
     action_valid(delete, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"deny">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_deny:start(State),
+    %% see if server already started
+    Started = whereis(act_deny),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_deny:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_deny:keepalive(),
@@ -214,8 +232,17 @@ spawn_action( <<"locate">>,  Req, State ) ->
     action_valid(locate, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"mitigate">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_mitigate:start(State),
+    %% see if server already started
+    Started = whereis(act_mitigate),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_mitigate:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_mitigate:keepalive(),
