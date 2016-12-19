@@ -88,95 +88,125 @@ handle_modifiers( _Keys, _ModifiersJson, Req, State ) ->
     %% don't continue on, return because of unexpected response
     {ok, Req2, State}.
 
-process_modifier( <<"response">>, Value, _Req, State) ->
-    State2 = maps:put(response, Value, State),
-    %% start gen_server for modifier
-    {ok, Pid} = mod_ack:start(State),
-    State3 = tools:add_pid(mod_response_pid, Pid, State2),
+process_modifier( <<"response">>, _Value, _Req, State) ->
+    %% see if server already started
+    Started = whereis(mod_ack),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, _Pid} = mod_ack:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            _Pid = Started
+    end,
 
     %% check with keep alive
     { keepalive_received, Server } = mod_ack:keepalive(),
     lager:debug("ModifierKeepAlive: ~p ", [Server]),
 
-    State4 = maps:put(response_keepalive, Server, State3),
-
     %% return state and go try another modifier
-    State4;
+    State;
 
-process_modifier( <<"where">>, Value, _Req, State) ->
-    State2 = maps:put(where, Value, State),
-    %% start gen_server for modifier
-    {ok, Pid} = mod_where:start(State),
-    State3 = tools:add_pid(mod_where_pid, Pid, State2),
+process_modifier( <<"where">>, _Value, _Req, State) ->
+    %% see if server already started
+    Started = whereis(mod_where),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, _Pid} = mod_where:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            _Pid = Started
+    end,
 
     %% check with keep alive
     { keepalive_received, Server } = mod_where:keepalive(),
     lager:debug("ModifierKeepAlive: ~p ", [Server]),
 
-    State4 = maps:put(where_keepalive, Server, State3),
-
     %% return state and go try another modifier
-    State4;
+    State;
 
-process_modifier( <<"id">>, Value, _Req, State) ->
-    State2 = maps:put(id, Value, State),
-    %% start gen_server for modifier
-    {ok, Pid} = mod_id:start(State),
-    State3 = tools:add_pid(mod_id_pid, Pid, State2),
+process_modifier( <<"id">>, _Value, _Req, State) ->
+    %% see if server already started
+    Started = whereis(mod_id),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, _Pid} = mod_id:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            _Pid = Started
+    end,
 
     %% check with keep alive
     { keepalive_received, Server } = mod_id:keepalive(),
     lager:debug("ModifierKeepAlive: ~p ", [Server]),
 
-    State4 = maps:put(id_keepalive, Server, State3),
-
     %% return state and go try another modifier
-    State4;
+    State;
 
-process_modifier( <<"delay">>, Value, _Req, State) ->
-    State2 = maps:put(delay, Value, State),
-    %% start gen_server for modifier
-    {ok, Pid} = mod_delay:start(State),
-    State3 = tools:add_pid(mod_delay_pid, Pid, State2),
+process_modifier( <<"delay">>, _Value, _Req, State) ->
+    %% see if server already started
+    Started = whereis(mod_delay),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, _Pid} = mod_delay:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            _Pid = Started
+    end,
 
     %% check with keep alive
     { keepalive_received, Server } = mod_delay:keepalive(),
     lager:debug("ModifierKeepAlive: ~p ", [Server]),
 
-    State4 = maps:put(delay_keepalive, Server, State3),
-
     %% return state and go try another modifier
-    State4;
+    State;
 
-process_modifier( <<"duration">>, Value, _Req, State) ->
-    State2 = maps:put(duration, Value, State),
-    %% start gen_server for modifier
-    {ok, Pid} = mod_duration:start(State),
-    State3 = tools:add_pid(mod_duration_pid, Pid, State2),
+process_modifier( <<"duration">>, _Value, _Req, State) ->
+    %% see if server already started
+    Started = whereis(mod_duration),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, _Pid} = mod_duration:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            _Pid = Started
+    end,
 
     %% check with keep alive
     { keepalive_received, Server } = mod_duration:keepalive(),
     lager:debug("ModifierKeepAlive: ~p ", [Server]),
 
-    State4 = maps:put(duration_keepalive, Server, State3),
-
     %% return state and go try another modifier
-    State4;
+    State;
 
-process_modifier( <<"date_time">>, Value, _Req, State) ->
-    State2 = maps:put(date_time, Value, State),
-    %% start gen_server for modifier
-    {ok, Pid} = mod_date_time:start(State),
-    State3 = tools:add_pid(mod_date_time_pid, Pid, State2),
+process_modifier( <<"date_time">>, _Value, _Req, State) ->
+    %% see if server already started
+    Started = whereis(mod_date_time),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, _Pid} = mod_date_time:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            _Pid = Started
+    end,
 
     %% check with keep alive
     { keepalive_received, Server } = mod_date_time:keepalive(),
     lager:debug("ModifierKeepAlive: ~p ", [Server]),
 
-    State4 = maps:put(date_time_keepalive, Server, State3),
-
     %% return state and go try another modifier
-    State4;
+    State;
 
 process_modifier( Modifier, Value, Req, State) ->
     %% oops, don't recognize

@@ -145,8 +145,27 @@ handle_target_type(TargetType, _TargetJson, Req, State ) ->
     {ok, Req2, State}.
 
 handle_device( <<"network_firewall">>, Req, State) ->
-    %%   when get beyond one command, need to check first if already exists
-    spawn_target( {network_firewall, nonspecific} , Req, State );
+    %% see if server already started
+    Started = whereis(tgt_network_firewall),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            spawn_target( {network_firewall, nonspecific} , Req, State );
+        Started when is_pid(Started) ->
+            %% already started 
+            %% check with keep alive
+            TargetKeepAlive = tgt_network_firewall:keepalive(),
+            lager:debug("TargetKeepAlive: ~p ", [TargetKeepAlive]),
+            %% tail recurse on
+            target_valid( {network_firewall, nonspecific}
+                        , TargetKeepAlive
+                        , Req
+                        , State
+                        )
+            %% need to handle actual fw instances (now just subbing with nonspecific)
+            %% need to handle multiple different firewall instances
+    end;
 
 handle_device( <<"network_scanner">>, Req, State) ->
     %%   when get beyond one command, need to check first if already exists
@@ -286,11 +305,8 @@ spawn_target( {TargetType, Value},  Req, State ) ->
     {ok, Req2, State}.
 
 target_valid(_Target, TargetKeepAlive, Req, State) ->
-    %% target was valid so update State
-    State2 = maps:put(target_valid, true, State),
-
     %% tail end recurse to verifying keepalive
-    verify_keepalive( TargetKeepAlive, Req, State2).
+    verify_keepalive( TargetKeepAlive, Req, State ).
 
 verify_keepalive( {keepalive_received, Server}
                 , Req
