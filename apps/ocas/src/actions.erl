@@ -104,8 +104,18 @@ spawn_action( <<"cancel">>,  Req, State ) ->
     action_valid(cancel, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"contain">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_contain:start(State),
+
+    %% see if server already started
+    Started = whereis(act_contain),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_contain:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_contain:keepalive(),
@@ -115,8 +125,18 @@ spawn_action( <<"contain">>,  Req, State ) ->
     action_valid(contain, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"copy">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_copy:start(State),
+
+    %% see if server already started
+    Started = whereis(act_copy),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_copy:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_copy:keepalive(),
@@ -126,8 +146,18 @@ spawn_action( <<"copy">>,  Req, State ) ->
     action_valid(copy, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"delay">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_delay:start(State),
+
+    %% see if server already started
+    Started = whereis(act_delay),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_delay:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_delay:keepalive(),
@@ -177,8 +207,18 @@ spawn_action( <<"deny">>,  Req, State ) ->
     action_valid(deny, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"detonate">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_detonate:start(State),
+
+    %% see if server already started
+    Started = whereis(act_detonate),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_detonate:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_detonate:keepalive(),
@@ -188,8 +228,18 @@ spawn_action( <<"detonate">>,  Req, State ) ->
     action_valid(detonate, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"distill">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_distill:start(State),
+
+    %% see if server already started
+    Started = whereis(act_distill),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_distill:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_distill:keepalive(),
@@ -199,8 +249,18 @@ spawn_action( <<"distill">>,  Req, State ) ->
     action_valid(distill, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"get">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_get:start(State),
+
+    %% see if server already started
+    Started = whereis(act_get),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_get:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_get:keepalive(),
@@ -210,8 +270,18 @@ spawn_action( <<"get">>,  Req, State ) ->
     action_valid(get, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"investigate">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_investigate:start(State),
+
+    %% see if server already started
+    Started = whereis(act_investigate),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_investigate:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_investigate:keepalive(),
@@ -221,8 +291,18 @@ spawn_action( <<"investigate">>,  Req, State ) ->
     action_valid(investigate, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"locate">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_locate:start(State),
+
+    %% see if server already started
+    Started = whereis(act_locate),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_locate:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_locate:keepalive(),
@@ -252,8 +332,18 @@ spawn_action( <<"mitigate">>,  Req, State ) ->
     action_valid(mitigate, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"modify">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_modify:start(State),
+
+    %% see if server already started
+    Started = whereis(act_modify),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_modify:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_modify:keepalive(),
@@ -263,8 +353,18 @@ spawn_action( <<"modify">>,  Req, State ) ->
     action_valid(modify, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"move">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_move:start(State),
+
+    %% see if server already started
+    Started = whereis(act_move),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_move:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_move:keepalive(),
@@ -274,8 +374,18 @@ spawn_action( <<"move">>,  Req, State ) ->
     action_valid(move, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"notify">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_notify:start(State),
+
+    %% see if server already started
+    Started = whereis(act_notify),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_notify:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_notify:keepalive(),
@@ -285,8 +395,18 @@ spawn_action( <<"notify">>,  Req, State ) ->
     action_valid(notify, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"pause">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_pause:start(State),
+
+    %% see if server already started
+    Started = whereis(act_pause),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_pause:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_pause:keepalive(),
@@ -296,8 +416,18 @@ spawn_action( <<"pause">>,  Req, State ) ->
     action_valid(pause, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"query">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_query:start(State),
+
+    %% see if server already started
+    Started = whereis(act_query),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_query:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_query:keepalive(),
@@ -307,8 +437,18 @@ spawn_action( <<"query">>,  Req, State ) ->
     action_valid(query, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"redirect">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_redirect:start(State),
+
+    %% see if server already started
+    Started = whereis(act_redirect),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_redirect:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_redirect:keepalive(),
@@ -318,8 +458,18 @@ spawn_action( <<"redirect">>,  Req, State ) ->
     action_valid(redirect, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"remediate">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_remediate:start(State),
+
+    %% see if server already started
+    Started = whereis(act_remediate),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_remediate:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_remediate:keepalive(),
@@ -329,8 +479,18 @@ spawn_action( <<"remediate">>,  Req, State ) ->
     action_valid(remediate, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"report">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_report:start(State),
+
+    %% see if server already started
+    Started = whereis(act_report),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_report:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_report:keepalive(),
@@ -340,8 +500,18 @@ spawn_action( <<"report">>,  Req, State ) ->
     action_valid(report, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"restart">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_restart:start(State),
+
+    %% see if server already started
+    Started = whereis(act_restart),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_restart:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_restart:keepalive(),
@@ -351,8 +521,18 @@ spawn_action( <<"restart">>,  Req, State ) ->
     action_valid(restart, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"restore">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_restore:start(State),
+
+    %% see if server already started
+    Started = whereis(act_restore),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_restore:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_restore:keepalive(),
@@ -362,8 +542,18 @@ spawn_action( <<"restore">>,  Req, State ) ->
     action_valid(restore, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"resume">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_resume:start(State),
+
+    %% see if server already started
+    Started = whereis(act_resume),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_resume:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_resume:keepalive(),
@@ -373,8 +563,18 @@ spawn_action( <<"resume">>,  Req, State ) ->
     action_valid(resume, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"save">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_save:start(State),
+
+    %% see if server already started
+    Started = whereis(act_save),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_save:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_save:keepalive(),
@@ -384,8 +584,18 @@ spawn_action( <<"save">>,  Req, State ) ->
     action_valid(save, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"scan">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_scan:start(State),
+
+    %% see if server already started
+    Started = whereis(act_scan),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_scan:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_scan:keepalive(),
@@ -395,8 +605,18 @@ spawn_action( <<"scan">>,  Req, State ) ->
     action_valid(scan, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"set">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_set:start(State),
+
+    %% see if server already started
+    Started = whereis(act_set),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_set:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_set:keepalive(),
@@ -406,8 +626,18 @@ spawn_action( <<"set">>,  Req, State ) ->
     action_valid(set, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"snapshot">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_snapshot:start(State),
+
+    %% see if server already started
+    Started = whereis(act_snapshot),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_snapshot:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_snapshot:keepalive(),
@@ -417,8 +647,18 @@ spawn_action( <<"snapshot">>,  Req, State ) ->
     action_valid(snapshot, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"start">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_start:start(State),
+
+    %% see if server already started
+    Started = whereis(act_start),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_start:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_start:keepalive(),
@@ -428,8 +668,18 @@ spawn_action( <<"start">>,  Req, State ) ->
     action_valid(start, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"stop">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_stop:start(State),
+
+    %% see if server already started
+    Started = whereis(act_stop),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_stop:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_stop:keepalive(),
@@ -439,8 +689,18 @@ spawn_action( <<"stop">>,  Req, State ) ->
     action_valid(stop, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"substitute">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_substitute:start(State),
+
+    %% see if server already started
+    Started = whereis(act_substitute),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_substitute:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_substitute:keepalive(),
@@ -450,8 +710,18 @@ spawn_action( <<"substitute">>,  Req, State ) ->
     action_valid(substitute, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"sync">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_sync:start(State),
+
+    %% see if server already started
+    Started = whereis(act_sync),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_sync:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_sync:keepalive(),
@@ -461,8 +731,18 @@ spawn_action( <<"sync">>,  Req, State ) ->
     action_valid(sync, Pid, ActionKeepAlive, Req, State);
 
 spawn_action( <<"throttle">>,  Req, State ) ->
-    %% start gen_server for that action
-    {ok, Pid} = act_throttle:start(State),
+
+    %% see if server already started
+    Started = whereis(act_throttle),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = act_throttle:start(State);
+        Started when is_pid(Started) ->
+            %% already started
+            Pid = Started
+    end,
 
     %% check with keep alive
     ActionKeepAlive = act_throttle:keepalive(),

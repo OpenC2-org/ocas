@@ -37,6 +37,7 @@
 %% tests to run
 all() ->
     [ test_cancel
+    , test_cancel_again
     ].
 
 %% timeout if no reply in a minute
@@ -59,6 +60,54 @@ init_per_suite(Config) ->
     Config.
 
 test_cancel(_Config) ->
+
+    ReqHeaders = [ {<<"content-type">>
+                 , <<"application/json">>}
+                 ],
+
+    Url = "/openc2",
+
+    Options = #{},
+
+    Json = ?CANCEL01,
+
+    %% validate the json
+    true = jsx:is_json(Json),
+
+    %% send the json in the body of the request
+    ReqBody = Json,
+
+    %% expect to get 200 status code
+    ExpectedStatus = 200,
+
+    %% for now command to reply with dummy response (json of State)
+    %% decode the json and check for key/values of interest
+    ExpectedJsonPairs = [ {<<"has_http_body">>, true}
+                        , {<<"good_json">>, true}
+                        , {<<"has_action">>, true}
+                        , {<<"action">>, <<"cancel">>}
+                        , {<<"action_server">>, <<"cancel_server">>}
+                        , {<<"action_valid">>, true}
+                        , {<<"has_actuator">>, true}
+                        , {<<"has_modifiers">>, true}
+                        , {<<"has_target">>, true}
+                        , {<<"action_keepalive">>, true}
+                        ],
+
+    %% send request, test response
+    helper:send_recieve( ReqHeaders       % to send
+                , Options          % to send
+                , ReqBody          % to send
+                , Url              % to send
+                , ExpectedStatus  % test get this received
+                , ExpectedJsonPairs
+                ),
+
+    ok.
+
+
+test_cancel_again(_Config) ->
+    %% run tests again to catch the 'already spun up' legs of code
 
     ReqHeaders = [ {<<"content-type">>
                  , <<"application/json">>}
