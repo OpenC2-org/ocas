@@ -290,3 +290,5 @@ put stuff here
 
 ##9. Want to help? <a id="9"></a>
 Find a bug? or something missing? or something dumb? Want to complete more features? If yes to any of these then create an issue. Or ideally send a pull request with the changes you'd like.
+
+##10. Bill can finally contribute.
