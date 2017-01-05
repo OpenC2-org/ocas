@@ -37,6 +37,7 @@
 %% tests to run
 all() ->
     [ test_redirect
+    , test_redirect_again
     ].
 
 %% timeout if no reply in a minute
@@ -103,3 +104,51 @@ test_redirect(_Config) ->
                 ),
 
     ok.
+
+%% run test again to catch code for server already running
+test_redirect_again(_Config) ->
+
+    ReqHeaders = [ {<<"content-type">>
+                 , <<"application/json">>}
+                 ],
+
+    Url = "/openc2",
+
+    Options = #{},
+
+    Json = ?REDIRECT01,
+
+    %% validate the json
+    true = jsx:is_json(Json),
+
+    %% send the json in the body of the request
+    ReqBody = Json,
+
+    %% expect to get 200 status code
+    ExpectedStatus = 200,
+
+    %% for now command to reply with dummy response (json of State)
+    %% decode the json and check for key/values of interest
+    ExpectedJsonPairs = [ {<<"has_http_body">>, true}
+                        , {<<"good_json">>, true}
+                        , {<<"has_action">>, true}
+                        , {<<"action">>, <<"redirect">>}
+                        , {<<"action_server">>, <<"redirect_server">>}
+                        , {<<"action_valid">>, true}
+                        , {<<"has_actuator">>, true}
+                        , {<<"has_modifiers">>, true}
+                        , {<<"has_target">>, true}
+                        , {<<"action_keepalive">>, true}
+                        ],
+
+    %% send request, test response
+    helper:send_recieve( ReqHeaders       % to send
+                , Options          % to send
+                , ReqBody          % to send
+                , Url              % to send
+                , ExpectedStatus  % test get this received
+                , ExpectedJsonPairs
+                ),
+
+    ok.
+
