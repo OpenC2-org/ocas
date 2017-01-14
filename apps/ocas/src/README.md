@@ -1,7 +1,12 @@
 To understand the code, here are some scenarios showing what modules/functions are used.
 In (link to fig), green shows the cowboy request process and blue shows the act_deny process
 
-## Cowboy
+# 1. Sunny Day "Language" Example
+In this example, the api for the "language" simulator is called. 
+I.e. there is no preconfigured state in the simulator and the simulator just assesses whether this command
+might work for some orchestrator/actuator.
+
+## 1.2 Cowboy
 ocas_app starts a cowboy webserver with ranch listeners.
 
 routes are established within cowboy so that when 
@@ -11,14 +16,14 @@ then the following handlers are invoked:
 - ok        status_ok_handler.erl
 - openc2    openc2_handler.erl
 
-## status_ok_handler.erl
+## 1.3 status_ok_handler.erl
 status_ok_handler.erl is a simple routing that only excepts GET, 
 ignores any parameters,
 and returns "ok".
 This is used as a keepalive so you know the simulator is accepting requests.
 
 
-## openc2_handler.erl
+## 1.4 openc2_handler.erl
 
 The sunny day path thru openc2_handler is documented in the following example.
 For this example, it is assumed a POST to /openc2 was sent with valid JSON containg a valid "deny" action eg:
@@ -58,7 +63,7 @@ since the json header was sent
 7. openc2_handler:is_body_json(true,...) decodes the JSON into erlang terms (and stores them in State) and then checks if action is in the JSON (it is) and tail recurses to has_action/3 with first parameter true
 8. openc2_handler:has_action(true,...) gets some info to put in State and calls actions:spawn_action/3
 
-## actions.erl
+## 1.5 actions.erl
 continuing the deny example above
 
 ![image1](../../../images/Slide04c.png)
@@ -75,12 +80,12 @@ In (link to fig), green shows the cowboy request process and blue shows the act_
 11. verify_keepalive( {keepalive_received, deny_server} matches (because in this sunny day example the keepalive worked). verify_keepalive records keepalive true in State 
 12. verify_keepalive tail recurses to targets:get_target
 
-## targets.erl
+## 1.6 targets.erl
 
 ![image1](../../../images/Slide05c.png)
 
-13. targets:get_target
-
+1.6.13. targets:get_target
+1.6.14. more
 
 ## actuators.erl
 
