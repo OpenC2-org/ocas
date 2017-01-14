@@ -44,26 +44,27 @@ For this example, it is assumed a POST to /openc2 was sent with valid JSON conta
 }
 ```
 
+![image1](../../../images/Slide03c.png)
 
 The flow is as follows:
 
-1. cowboy calls init/3 initializing the handler to use REST (and therefore rest_init/2 is called
-2. cowboy calls rest_init/2 just logs some info and sets the State variable to empty
-3. cowboy calls allowed_methods/2 which passes since since a POST was sent
-4. cowboy calls content_types_accepted/2 which passes control to handle_json 
+1. cowboy calls openc2_handler:init/3 initializing the handler to use REST (and therefore rest_init/2 is called
+2. cowboy calls openc2_handler:rest_init/2 just logs some info and sets the State variable to empty
+3. cowboy calls openc2_handler:allowed_methods/2 which passes since since a POST was sent
+4. cowboy calls openc2_handler:content_types_accepted/2 which passes control to openc2_handler:handle_json 
 since the json header was sent
-5. handle_json/2 checks if the request contains a body (it does) and tail recurses to body_check/3 with the first parameter true
-6. body_check(true,...) checks if body is json (it is) and tail recurses to is_body_json/3 with the first parameter true
-7. is_body_json(true,...) decodes the JSON into erlang terms (and stores them in State) and then checks if action is in the JSON (it is) and tail recurses to has_action/3 with first parameter true
-8. has_action(true,...) gets some info to put in State and calls actions:spawn_action/3
-
-![image1](../../../images/Slide03c.png)
+5. openc2_handler:handle_json/2 checks if the request contains a body (it does) and tail recurses to body_check/3 with the first parameter true
+6. openc2_handler:body_check(true,...) checks if body is json (it is) and tail recurses to is_body_json/3 with the first parameter true
+7. openc2_handler:is_body_json(true,...) decodes the JSON into erlang terms (and stores them in State) and then checks if action is in the JSON (it is) and tail recurses to has_action/3 with first parameter true
+8. openc2_handler:has_action(true,...) gets some info to put in State and calls actions:spawn_action/3
 
 ## actions.erl
 continuing the deny example above
 
-9. spawn_action( <<"deny">>,  Req, State ) matches. 
-In this example, the deny_server was not already running 
+![image1](../../../images/Slide04c.png)
+
+9. actions:spawn_action( <<"deny">>,  Req, State ) matches. 
+In this "language" example (ie checking format, not a pre-initialized simulation of a particular configuration), the deny_server was not already running 
 so it calls act_deny:start(State) to spawn the deny_server. 
 Note act_deny.erl is in the action_servers directory. 
 Spawn_action  then sends the newly spawned server a keepalive. It tail recurses to action_valid with Action=deny, the Pid returned from starting the allow server, the response from the keepalive (in this case {keepalive_received, deny_server}), and Req(for http housekeeping)
@@ -75,12 +76,21 @@ In (link to fig), green shows the cowboy request process and blue shows the act_
 12. verify_keepalive tail recurses to targets:get_target
 
 ## targets.erl
+
+![image1](../../../images/Slide05c.png)
+
 13. targets:get_target
 
 
 ## actuators.erl
 
+![image1](../../../images/Slide06c.png)
+
+
 ## modifiers.erl
+
+![image1](../../../images/Slide07.png)
+
 
 ## check.erl
 
