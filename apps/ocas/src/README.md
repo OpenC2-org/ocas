@@ -57,6 +57,7 @@ since the json header was sent
 7. is_body_json(true,...) decodes the JSON into erlang terms (and stores them in State) and then checks if action is in the JSON (it is) and tail recurses to has_action/3 with first parameter true
 8. has_action(true,...) gets some info to put in State and calls actions:spawn_action/3
 
+![image1](../../../images/Slide03c.png)
 
 ## actions.erl
 continuing the deny example above
