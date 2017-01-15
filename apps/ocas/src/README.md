@@ -163,23 +163,41 @@ in a given state.
 In this particular example, the state is configured with "deny all" (ie no ports or addresses are open in either direction).
 
 ## 2.1 Starting Simulator
-what?
+This instantiated servers for the firewall actuator, env, and the ipv4 target.
+
+how is this done? sys config file? openc2 command? api call to simulator instead of to openc2 (start api?)
+
+![image](../../../images/b_01init.png)
 
 ## 2.2 Cowboy
 
 
-![image](../../../images/b_01Cowboy.png)
-![image](../../../images/b_02init.png)
+
+![image](../../../images/b_02post.png)
+
 ![image](../../../images/b_03handler.png)
+
 ![image](../../../images/b_04env.png)
+
 ![image](../../../images/b_05action.png)
+
 ![image](../../../images/b_06target.png)
+
 ![image](../../../images/b_07actuator.png)
+
 ![image](../../../images/b_08modifier.png)
+
 ![image](../../../images/b_09check.png)
+
 ![image](../../../images/b_10check.png)
+
 ![image](../../../images/b_11save.png)
+
 ![image](../../../images/b_12save.png)
+
 ![image](../../../images/b_13send.png)
-b_14send.png)
-b_15end.png)
+
+![image](../../../images/b_14send.png)
+
+![image](../../../images/b_15end.png)
+
