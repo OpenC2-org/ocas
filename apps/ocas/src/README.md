@@ -16,6 +16,8 @@ then the following handlers are invoked:
 - ok        status_ok_handler.erl
 - openc2    openc2_handler.erl
 
+![01Cowboy](../../../images/01Cowboy.png)
+
 ## 1.2 status_ok_handler.erl
 status_ok_handler.erl is a simple routing that only excepts GET, 
 ignores any parameters,
@@ -49,7 +51,7 @@ For this example, it is assumed a POST to /openc2 was sent with valid JSON conta
 }
 ```
 
-![image1](../../../images/Slide03c.png)
+![02handler](../../../images/02handler.png)
 
 The flow is as follows:
 
@@ -63,10 +65,12 @@ since the json header was sent
 7. openc2_handler:is_body_json(true,...) decodes the JSON into erlang terms (and stores them in State) and then checks if action is in the JSON (it is) and tail recurses to has_action/3 with first parameter true
 8. openc2_handler:has_action(true,...) gets some info to put in State and calls actions:spawn_action/3
 
+![03env](../../../images/03env.png)
+
 ## 1.4 actions.erl
 continuing the deny example above
 
-![image1](../../../images/Slide04c.png)
+![04action](../../../images/04action.png)
 
 9. actions:spawn_action( <<"deny">>,  Req, State ) matches. 
 In this "language" example (ie checking format, not a pre-initialized simulation of a particular configuration), the deny_server was not already running 
@@ -82,22 +86,26 @@ In (link to fig), green shows the cowboy request process and blue shows the act_
 
 ## 1.5 targets.erl
 
-![image1](../../../images/Slide05c.png)
+![05target](../../../images/05target.png)
 
 1.6.13. targets:get_target
 1.6.14. more
 
 ## 1.6 actuators.erl
 
-![image1](../../../images/Slide06c.png)
+![06actuator](../../../images/06actuator.png)
 
 
 ## 1.7 modifiers.erl
 
-![image1](../../../images/Slide07.png)
+![07modifier](../../../images/07modifier.png)
 
 
 ## 1.8 check.erl
+
+![image](../../../images/08check.png)
+
+![image](../../../images/09check.png)
 
 ## 1.9 env.erl
 Contains environmental info about the simulator. 
@@ -127,15 +135,27 @@ for the actuator (network-firewall). It does this by first instantiating env ser
 and receiving a message back that command is ok.
 
 ## 1.10 chg_state.erl
+![image](../../../images/10state.png)
+
 Because
 
+![image](../../../images/11state.png)
+
 ## 1.11 send_resp.erl
+
+![image](../../../images/12send.png)
+
 and calls send_response
 11. send_response formats the http reply - which at this poit is just putting some State info in json
 
 
 above is all independent of cybox part at this point (ie cybox stuff is yet to be coded)
 
+![image](../../../images/13send.png)
+
+## 1.12 end state
+
+![image](../../../images/14end.png)
 
 # 2. Sunny Day Firewall Example
 In this example, the simulator was previously started and configured with the profile of a particular firewall 
@@ -146,3 +166,20 @@ In this particular example, the state is configured with "deny all" (ie no ports
 what?
 
 ## 2.2 Cowboy
+
+
+![image](../../../images/b_01Cowboy.png)
+![image](../../../images/b_02init.png)
+![image](../../../images/b_03handler.png)
+![image](../../../images/b_04env.png)
+![image](../../../images/b_05action.png)
+![image](../../../images/b_06target.png)
+![image](../../../images/b_07actuator.png)
+![image](../../../images/b_08modifier.png)
+![image](../../../images/b_09check.png)
+![image](../../../images/b_10check.png)
+![image](../../../images/b_11save.png)
+![image](../../../images/b_12save.png)
+![image](../../../images/b_13send.png)
+b_14send.png)
+b_15end.png)
