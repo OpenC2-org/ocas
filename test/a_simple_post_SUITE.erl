@@ -108,9 +108,9 @@ test_get_ok(_Config) ->
 
 
 test_get_status(_Config) ->
+    %% note this test counts on oc_env not being started (otherwide nontrivial status)
     MyPort = application:get_env(ocas, port, 8080),
     {ok, Conn} = shotgun:open("localhost", MyPort),
-    %%lager:info("connection = ~p", [Conn]),
     Headers = [ {<<"content-type">>, <<"application/text">>} ],
     Options = #{},
     ResponseToGet = shotgun:get(Conn, "/status", Headers, Options),
@@ -126,7 +126,7 @@ test_get_status(_Config) ->
     %%lager:info("headers = ~p", [RespHeaders]),
     %%lager:info("body = ~p", [RespBody]),
 
-    %% valididate response code is 200 (ok) (can get 201 also?)
+    %% valididate response code is 200 
     200 = RespStatus,
 
     %% test header contents are correct
@@ -142,13 +142,13 @@ test_get_status(_Config) ->
                                                            , 1
                                                            , RespHeaders
                                                            ),
-    { <<"content-length">>, <<"57">>} =  lists:keyfind( <<"content-length">>
+    { <<"content-length">>, <<"60">>} =  lists:keyfind( <<"content-length">>
                                                       , 1
                                                       , RespHeaders
                                                       ),
 
     %% valididate body content
-    <<"<html><body>Status Works - needs more later</body></html>">> = RespBody,
+    <<"<html><body>Environment Server not running :-(</body></html>">> = RespBody,
 
     ok.
 
