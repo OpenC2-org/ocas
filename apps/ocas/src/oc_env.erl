@@ -1,4 +1,4 @@
--module(tgt_hostname).
+-module(oc_env).
 %%%-------------------------------------------------------------------
 %%% @author Duncan Sparrell
 %%% @copyright (C) 2016, sFractal Consulting LLC
@@ -52,6 +52,7 @@
 -export([ start/1
         , stop/0
         , keepalive/0
+        , status/0
         ]).
 
 %% This is the api to the server
@@ -65,6 +66,9 @@ stop() ->
 keepalive() ->
     gen_server:call(?MODULE, keepalive).
 
+status() ->
+    gen_server:call(?MODULE, status).
+
 %% initialize server with state
 init( [State] ) ->
     lager:debug( "starting ~p with ~p", [?MODULE, State] ),
@@ -75,6 +79,12 @@ handle_call( keepalive, From, State ) ->
     lager:debug( "~p got keepalive from ~p", [?MODULE, From] ),
     %% reply to keepalive
     Response = {keepalive_received, tgt_hostname_server},
+    {reply, Response, State};
+
+handle_call( status, From, State ) ->
+    lager:debug( "~p status request from ~p", [?MODULE, From] ),
+    %% reply to status request with state
+    Response = State,
     {reply, Response, State};
 
 %% handle unknown call messages
