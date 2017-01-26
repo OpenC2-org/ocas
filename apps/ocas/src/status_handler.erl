@@ -52,5 +52,28 @@ allowed_methods(Req, State) ->
     {[<<"GET">>], Req, State}.
 
 to_html(Req, State) ->
-    Body = <<"<html><body>Status Works - needs more later</body></html>">>,
-    {Body, Req, State}.
+    %% different responses dependent on whether oc_env is already started
+    Started = whereis(oc_env),
+    %% tail recurse on based on whether running or not
+    env_status(Started, Req, State).
+
+env_status(undefined, Req, State) ->
+    %% env server not running so report it
+    Body = <<"<html><body>Environment Server not running :-(</body></html>">>,
+    {Body, Req, State};
+
+env_status(Started, Req, State) when is_pid(Started) ->
+    %% env server running so get info from it
+    Status = oc_env:status(),
+    lager:debug("Status = ~p", [Status]),
+
+    %% get fancier later, for now just print as text
+    StatusText = io_lib:format("<html><body>~p</body></html>", [Status] ),
+    ReplyBody = list_to_binary(StatusText),
+
+    Headers = [ {<<"content-type">>, <<"text/html">>} ],
+    {ok, Req2} = cowboy_req:reply(200, Headers, ReplyBody, Req),
+
+    %% stopping this requests process since finished in above
+    {halt, Req2, State}.
+
