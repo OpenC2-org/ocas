@@ -278,7 +278,12 @@ including a sunny day walk thru the modules/functions.
 Development status will attempt to be explained using test status.
 Tests that pass show functioning code.
 Work to be done is shown thru tests that are incomplete, non-existent, or failing.
-See [devstatus.md](./devstatus.md) for current status
+See [dev_test_status.md](./dev_test_status.md) for current status from test viewpoint.
+
+Another way to look at development status is 
+from the viewpoint of how much flesh is put on the architectural bones.
+See (put link here) for a sunny day walkthru of architecture 
+and (put link here) for status of what is done and what is still to do.
 
 ##7. Specification Coverage <a id="7"></a>
 Another way to consider status is how much of the specification is covered by what has so far been 
