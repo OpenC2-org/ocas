@@ -196,7 +196,8 @@ This is a future feature to allow those with administrative access
 to get status information about the simulator itself 
 (as opposed to about the network being simulated which would use openC2 commands). 
 At the current point this api takes no parameters 
-and returns the html for “Status Works - needs more later”.
+and returns the json for the state of the env server (if running).
+The env server is what maintains the high level state of the simulator.
 
 ###5.2 status_ok_handler <a id="5.2"></a>
 This api returns a simple “ok” in either text, html, or json. This is to serve as a keepalive if one is needed.
@@ -205,8 +206,9 @@ This api returns a simple “ok” in either text, html, or json. This is to ser
 This module is the heart of the simulator. 
 When the url path = /openc2 then the openc2_handler is used. 
 Right now, only the verbose version of json is accepted. 
-It may be that different url paths will be used for the 3 different versions (eg /openc2/verbose). 
-It contains the following for it’s API:
+It may be that different url paths will be used for the 3 different versions 
+(eg /openc2/verbose, /openc2/terse, /openc2/whatever). 
+openc2_handler contains the following for it’s API:
 - rest_init/2 - to tell cowboy this is a REST API
 - allowed_methods/2 – to tell cowboy to only allow the POST method
 - content_types_accepted/2 – to tell cowboy that only JSON is allowed, and to pass control to handle_json/2 when json is posted on this url 
