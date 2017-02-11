@@ -294,12 +294,3 @@ begin_state(language, RestartCount, SvrList) ->
              },
     State.
 
-
-stop_svrs( SvrMap ) ->
-    %% stop all the servers in the server map
-    %% complicated since need to chain down thru so can't do automatically
-    %% probably need to have oc_env do it.
-    Svrs = maps:keys(SvrMap),
-    lager:error("need to finish up stop_svrs of ~p", [Svrs] ),
-    ok.
-
