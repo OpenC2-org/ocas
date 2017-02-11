@@ -38,6 +38,7 @@
 all() ->
     [ test_no_init          %% test status prior to env being initialized
     , test_init_lang        %% test env being initialized for language
+    , test_status           %% test status after env initialized
     , test_init_again       %% test status again after env already running
                             %% add actuator and orchestrator later
     ].
@@ -128,59 +129,105 @@ test_init_lang(Config)  ->
     %% expect to get 200 status code
     ExpectedStatus = 200,
 
-    %% for now command to reply with json of State
     %% decode the json and check for key/values of interest
-    ExpectedJsonPairs = [ {<<"sim_type">>, <<"language">>}
-                        , {<<"restart">>, 0}
-                        ],
-    %% look for keys in json, but not values
-    ExpectedJsonKeys = [ ],
-
-    %% send request, test response
-    helper:send_recieve( post
-                , ReqHeaders       % to send
-                , Options          % to send
-                , ReqBody          % to send
-                , Url              % to send
-                , ExpectedStatus  % test get this received
-                , ExpectedJsonPairs
-                , ExpectedJsonKeys
-                ),
-
-    ok.
-
-test_init_again(Config)  ->
-    %% set up getting status via 'GET' (note env already running)
-
-    Url = "/status",
-    Headers = [ {<<"content-type">>, <<"application/text">>} ],
-    Options = #{},
-    ReqBody = "",
-
-    %% expect to get 200 status code
-    ExpectedStatus = 200,
-
-    %% for now command to reply with json of State
-    %% decode the json and check for key/values of interest
-    ExpectedJsonPairs = [ {<<"sim_type">>, <<"language">>}
-                        , {<<"restart">>, 0}
-                        , {<<"init_state">>, <<"none">>}
+    ExpectedJsonPairs = [ {<<"simulator_type">>, <<"language">>}
+                        , {<<"restart_count">>, 0}
+                        , {<<"init_state">>, #{} }
                         ],
     %% look for keys in json, but not values
     ExpectedJsonKeys = [ <<"this_machine">>
-                       , <<"svr_map">>
+                       , <<"svr_list">>
                        , <<"start_time">>
                        ],
 
     %% send request, test response
-    helper:send_recieve( get
-                , Headers       % to send
+    helper:send_receive( post
+                , Url              % to send
+                , ReqHeaders       % to send
                 , Options          % to send
                 , ReqBody          % to send
-                , Url              % to send
                 , ExpectedStatus  % test get this received
-                , ExpectedJsonPairs
-                , ExpectedJsonKeys
+                , ExpectedJsonKeys % see if these keys in received json
+                , ExpectedJsonPairs % check these pairs in received json
+                ),
+
+    ok.
+
+test_status(_Config)  ->
+    %% set up getting status via 'GET' (note env already running)
+
+    Url = "/status",
+    Headers = [ ],
+    Options = #{},
+
+    %% expect to get 200 status code
+    ExpectedStatus = 200,
+
+    %% decode the json and check for key/values of interest
+    ExpectedJsonPairs = [ {<<"simulator_type">>, <<"language">>}
+                        , {<<"restart_count">>, 0}
+                        , {<<"init_state">>, #{} }
+                        ],
+    %% look for keys in json, but not values
+    ExpectedJsonKeys = [ <<"this_machine">>
+                       , <<"svr_list">>
+                       , <<"start_time">>
+                       ],
+
+    %% send request, test response
+    helper:send_receive( get
+                       , Url              % to send
+                       , Headers       % to send
+                       , Options          % to send
+                       , ExpectedStatus  % test get this received
+                       , ExpectedJsonKeys
+                       , ExpectedJsonPairs
+                       ),
+
+    ok.
+
+test_init_again(_Config)  ->
+    % env already running and re-initialize to language
+
+    ReqHeaders = [ {<<"content-type">>
+                 , <<"application/json">>}
+                 ],
+
+    Url = "/init",
+
+    Options = #{},
+
+    Json = ?ENV01,    % json for init to language
+
+    %% validate the json
+    true = jsx:is_json(Json),
+
+    %% send the json in the body of the request
+    ReqBody = Json,
+
+    %% expect to get 200 status code
+    ExpectedStatus = 200,
+
+    %% decode the json and check for key/values of interest
+    ExpectedJsonPairs = [ {<<"simulator_type">>, <<"language">>}
+                        , {<<"restart_count">>, 1}
+                        , {<<"init_state">>, #{} }
+                        ],
+    %% look for keys in json, but not values
+    ExpectedJsonKeys = [ <<"this_machine">>
+                       , <<"svr_list">>
+                       , <<"start_time">>
+                       ],
+
+    %% send request, test response
+    helper:send_receive( post
+                , Url              % to send
+                , ReqHeaders       % to send
+                , Options          % to send
+                , ReqBody          % to send
+                , ExpectedStatus  % test get this received
+                , ExpectedJsonKeys % see if these keys in received json
+                , ExpectedJsonPairs % check these pairs in received json
                 ),
 
     ok.

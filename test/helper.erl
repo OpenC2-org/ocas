@@ -22,7 +22,7 @@
 
 -module(helper).
 -author("Duncan Sparrell").
--copyright("2016, sFractal Consulting, LLC").
+-copyright("2017, sFractal Consulting, LLC").
 -license(apache2).
 
 %% for test export all functions
@@ -33,74 +33,52 @@
 
 %%%%%%%%%%%%%%%%%%%% Utilities
 
-%% utility to save putting this in each test
-%%     note there are two versions (clean up later)
-%%     this is the /8 ie has get/post and ExpectedJsonKeys (this is new one)
-%%     this is new one, kept old one to avoid changing all the existing tests
-send_recieve( RequestType      % send get or post
+%% utilities to save putting this in each test
+
+%% sends http get and expects json response
+send_receive( get
+            , Url               % to send
+            , ReqHeaders        % to send
+            , Options           % to send
+            , ExpectedStatus    % test get this received
+            , ExpectedJsonKeys  % list of expected keys in json
+            , ExpectedJsonPairs % list of key/values in json
+            ) ->
+    Conn = make_conn(),
+    {ok, Response} = shotgun:get(Conn, Url, ReqHeaders, Options),
+    lager:info("response = ~p", [Response]),
+
+    check_status(Response, ExpectedStatus),
+
+    check_headers(Response),
+
+    check_json(Response, ExpectedJsonKeys, ExpectedJsonPairs),
+
+    ok.
+
+%% sends http post with json and expects json response
+send_receive( post
+            , Url              % to send
             , ReqHeaders       % to send
             , Options          % to send
             , ReqBody          % to send
-            , Url              % to send
-            , ExpectedStatus  % test get this received
-            , ExpectedJsonPairs   % list of key/values in json
-            , ExpectedJsonKeys   % expect key in Json, but don't test value
+            , ExpectedStatus   % test get this received
+            , ExpectedJsonKeys  % list of expected keys in json
+            , ExpectedJsonPairs % list of key/values in json
             ) ->
 
-    MyPort = application:get_env(ocas, port, 8080),
-
-    {ok, Conn} = shotgun:open("localhost", MyPort),
-
-    case RequestType of 
-        get ->
-             {ok, Response} = shotgun:get(Conn, Url, ReqHeaders, Options);
-        post ->
-             {ok, Response} = shotgun:post(Conn, Url, ReqHeaders, ReqBody, Options)
-        end,
+    Conn = make_conn(),
+    {ok, Response} = shotgun:post(Conn, Url, ReqHeaders, ReqBody, Options),
     lager:info("response = ~p", [Response]),
 
-    %% get status code of response
-    #{ status_code := RespStatus } = Response,
+    check_status(Response, ExpectedStatus),
 
-    %% test what received was what was expected
-    ExpectedStatus = RespStatus,
+    check_headers(Response),
 
-    %% get headers
-    #{ headers := RespHeaders } = Response,
-    %%lager:info("headers = ~p", [RespHeaders]),
+    check_json(Response, ExpectedJsonKeys, ExpectedJsonPairs),
 
-    %% verify headers
-    { <<"server">>, <<"Cowboy">>} =  lists:keyfind( <<"server">>
-                                                  , 1
-                                                  , RespHeaders
-                                                  ),
-    { <<"date">>, _Date } =  lists:keyfind(<<"date">>, 1, RespHeaders),
-
-    %% check if has body
-    #{ body := RespBody } = Response,
-
-    %% check body is json
-    true = jsx:is_json(RespBody),
-
-    %% decode json into erlang map
-    JsonMap = jsx:decode( RespBody, [return_maps] ),
-
-    lager:info("ExpectedJsonPairs: ~p", [ExpectedJsonPairs]),
-    lager:info("JsonMap: ~p", [JsonMap]),
-
-    %% check keys are as expected in Json
-    check_key(ExpectedJsonKeys, JsonMap),
-
-    %% check key/value pairs are as expected
-    check_map(ExpectedJsonPairs, JsonMap),
-
-    %% return
     ok.
 
-
-%% utility to save putting this in each test
-%%     note there are two versions (clean up later)
-%%     this is the /6 ie wo ExpectedJsonKeys
 send_recieve( ReqHeaders          % to send
             , Options          % to send
             , ReqBody          % to send
@@ -149,6 +127,65 @@ send_recieve( ReqHeaders          % to send
 
     %% return
     ok.
+
+
+make_conn() ->
+    MyPort = application:get_env(ocas, port, 8080),
+
+    {ok, Conn} = shotgun:open("localhost", MyPort),
+
+    Conn.
+
+check_status(Response, ExpectedStatus) ->
+    %% get status code of response
+    #{ status_code := RespStatus } = Response,
+
+    %% test what received was what was expected
+    ExpectedStatus = RespStatus,
+    ok.
+
+check_headers(Response) ->
+    %% get headers
+    #{ headers := RespHeaders } = Response,
+    %%lager:info("headers = ~p", [RespHeaders]),
+
+    %% verify headers
+    { <<"server">>, <<"Cowboy">>} =  lists:keyfind( <<"server">>
+                                                  , 1
+                                                  , RespHeaders
+                                                  ),
+    { <<"date">>, _Date } =  lists:keyfind(<<"date">>, 1, RespHeaders),
+    ok.
+
+check_json(Response, ExpectedJsonKeys, ExpectedJsonPairs) ->
+    %% check if has body
+    #{ body := RespBody } = Response,
+
+    %% check body is json
+    true = jsx:is_json(RespBody),
+
+    %% decode json into erlang map
+    JsonMap = jsx:decode( RespBody, [return_maps] ),
+
+    lager:info("ExpectedJsonPairs: ~p", [ExpectedJsonPairs]),
+    lager:info("JsonMap: ~p", [JsonMap]),
+
+    %% check keys are as expected
+    check_keys(ExpectedJsonKeys, JsonMap),
+
+    %% check key/value pairs are as expected
+    check_map(ExpectedJsonPairs, JsonMap),
+    ok.
+
+check_keys( [], _JsonMap ) ->
+    %% done since list is empty
+    ok;
+
+check_keys( [Key | RestOfKeys], JsonMap ) ->
+    %% check key is in JsonMap
+    lager:info("Testing Key: ~p", [Key]),
+    true = maps:is_key(Key, JsonMap),
+    check_keys(RestOfKeys, JsonMap).
 
 check_map( [], _JsonMap ) ->
     %% done since list is empty
