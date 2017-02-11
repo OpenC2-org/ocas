@@ -34,6 +34,73 @@
 %%%%%%%%%%%%%%%%%%%% Utilities
 
 %% utility to save putting this in each test
+%%     note there are two versions (clean up later)
+%%     this is the /8 ie has get/post and ExpectedJsonKeys (this is new one)
+%%     this is new one, kept old one to avoid changing all the existing tests
+send_recieve( RequestType      % send get or post
+            , ReqHeaders       % to send
+            , Options          % to send
+            , ReqBody          % to send
+            , Url              % to send
+            , ExpectedStatus  % test get this received
+            , ExpectedJsonPairs   % list of key/values in json
+            , ExpectedJsonKeys   % expect key in Json, but don't test value
+            ) ->
+
+    MyPort = application:get_env(ocas, port, 8080),
+
+    {ok, Conn} = shotgun:open("localhost", MyPort),
+
+    case RequestType of 
+        get ->
+             {ok, Response} = shotgun:get(Conn, Url, ReqHeaders, Options);
+        post ->
+             {ok, Response} = shotgun:post(Conn, Url, ReqHeaders, ReqBody, Options)
+        end,
+    lager:info("response = ~p", [Response]),
+
+    %% get status code of response
+    #{ status_code := RespStatus } = Response,
+
+    %% test what received was what was expected
+    ExpectedStatus = RespStatus,
+
+    %% get headers
+    #{ headers := RespHeaders } = Response,
+    %%lager:info("headers = ~p", [RespHeaders]),
+
+    %% verify headers
+    { <<"server">>, <<"Cowboy">>} =  lists:keyfind( <<"server">>
+                                                  , 1
+                                                  , RespHeaders
+                                                  ),
+    { <<"date">>, _Date } =  lists:keyfind(<<"date">>, 1, RespHeaders),
+
+    %% check if has body
+    #{ body := RespBody } = Response,
+
+    %% check body is json
+    true = jsx:is_json(RespBody),
+
+    %% decode json into erlang map
+    JsonMap = jsx:decode( RespBody, [return_maps] ),
+
+    lager:info("ExpectedJsonPairs: ~p", [ExpectedJsonPairs]),
+    lager:info("JsonMap: ~p", [JsonMap]),
+
+    %% check keys are as expected in Json
+    check_key(ExpectedJsonKeys, JsonMap),
+
+    %% check key/value pairs are as expected
+    check_map(ExpectedJsonPairs, JsonMap),
+
+    %% return
+    ok.
+
+
+%% utility to save putting this in each test
+%%     note there are two versions (clean up later)
+%%     this is the /6 ie wo ExpectedJsonKeys
 send_recieve( ReqHeaders          % to send
             , Options          % to send
             , ReqBody          % to send
@@ -120,3 +187,13 @@ check_map( [ {Key, ExpectedValue} | RestOfExpectedJsonPairs ], JsonMap ) ->
             %% force test fail with ErrorText as cause
             cause_failure = ErrorText
     end.
+
+check_key( [], _JsonMap ) ->
+    %% done since list is empty
+    ok;
+
+check_key( [ Key | RestOfExpectedKeys ], JsonMap ) ->
+    %% Grab  first item in list and verify
+    maps:is_key(Key, JsonMap),
+    %% recurse
+    check_key( RestOfExpectedKeys, JsonMap ).

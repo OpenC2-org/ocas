@@ -67,11 +67,9 @@ env_status(Started, Req, State) when is_pid(Started) ->
     Status = oc_env:status(),
     lager:debug("Status = ~p", [Status]),
 
-    %% get fancier later, for now just print as text
-    StatusText = io_lib:format("<html><body>~p</body></html>", [Status] ),
-    ReplyBody = list_to_binary(StatusText),
+    Headers = [ {<<"content-type">>, <<"application/json">>} ],
+    ReplyBody = jsx:encode(Status),
 
-    Headers = [ {<<"content-type">>, <<"text/html">>} ],
     {ok, Req2} = cowboy_req:reply(200, Headers, ReplyBody, Req),
 
     %% stopping this requests process since finished in above
