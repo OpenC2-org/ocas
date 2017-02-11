@@ -1,10 +1,10 @@
--module(status_handler).
+-module(oc_svr_stop).
 
 -author("Duncan Sparrell").
 -license("Apache 2.0").
 %%%-------------------------------------------------------------------
 %%% @author Duncan Sparrell
-%%% @copyright (C) 2016, sFractal Consulting LLC
+%%% @copyright (C) 2017, sFractal Consulting LLC
 %%%
 %%% All rights reserved.
 %%%
@@ -36,42 +36,16 @@
 %%% OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %%%-------------------------------------------------------------------
 
--export([init/3, rest_init/2, to_html/2, allowed_methods/2]).
+-export([ stop/1 ]).
 
-init( {tcp, http}, _Req, _Opts) ->
-    {upgrade, protocol, cowboy_rest}.
+stop( [] ) ->
+    %% empty list so done
+    ok;
 
-rest_init(Req, _Opts) ->
-    {Method, Req1} = cowboy_req:method(Req),
-    {URL, Req2} = cowboy_req:url(Req1),
-    lager:info("~s ~s", [Method, URL]),
-    {ok, Req2, #{}}.
-
-%% allow only GET
-allowed_methods(Req, State) ->
-    {[<<"GET">>], Req, State}.
-
-to_html(Req, State) ->
-    %% different responses dependent on whether oc_env is already started
-    Started = whereis(oc_env),
-    %% tail recurse on based on whether running or not
-    env_status(Started, Req, State).
-
-env_status(undefined, Req, State) ->
-    %% env server not running so report it
-    Body = <<"<html><body>Environment Server not running :-(</body></html>">>,
-    {Body, Req, State};
-
-env_status(Started, Req, State) when is_pid(Started) ->
-    %% env server running so get info from it
-    Status = oc_env:status(),
-    lager:debug("Status = ~p", [Status]),
-
-    ReplyBody = jsx:encode(Status),
-
-    Headers = [ {<<"content-type">>, <<"application/json">>} ],
-    {ok, Req2} = cowboy_req:reply(200, Headers, ReplyBody, Req),
-
-    %% stopping this requests process since finished in above
-    {halt, Req2, State}.
+stop( [ Svr |  NewSvrList ] ) ->
+    %% stop first server on list and recurse
+    Svr:stop(),
+    lager:error("lambda ok on svr stop? should it be softer and recursive"),
+    lager:error("or should this be supervison tree"),
+    stop(NewSvrList).
 

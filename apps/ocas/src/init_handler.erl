@@ -125,7 +125,7 @@ has_sim(true, JsonMap, Req, State ) ->
     %% json has simulator type so move on
     State2 = maps:put(has_sim, true, State),
 
-    %% get the simulator type 
+    %% get the simulator type
     %%   already know it's there from hitting this function head
     SimTypeBin = maps:get( <<"simulator_type">>, JsonMap ),
     lager:info("SimType bintext: ~p", [SimTypeBin] ),
@@ -136,7 +136,7 @@ has_sim(true, JsonMap, Req, State ) ->
 init_sim(<<"language">>, _JsonMap, Req, State) ->
     %% simulator type = language
     State2 = maps:put(has_valid_sim_type, true, State),
-    State3 = maps:put(sim_type, language, State2),
+    State3 = maps:put(simulator_type, language, State2),
 
     %% language simulator is stateless so simple init and move on
     %%    start env server as language simulator
@@ -144,71 +144,92 @@ init_sim(<<"language">>, _JsonMap, Req, State) ->
     Started = whereis(oc_env),
     case Started of
         undefined ->
+            lager:info("env not started prior"),
             %% not started yet, so start it
             %%     first prepare state for sim to preserve
-            StartState = begin_state(language),
-            {ok, Pid} = oc_env:start(StartState),
+            RestartCount = 0,       % since oc_env was not running
+            SvrList = [ oc_env ],      % since oc_env was not running
+            StartState = begin_state( language
+                                    , RestartCount
+                                    , SvrList
+                                    ),
+            {ok, _Pid} = oc_env:start(StartState),
 
-            ResponseBody = jsx:encode(StartState),
-            Headers = [ {<<"content-type">>, <<"application/json">>} ],
+            Headers = [ { <<"content-type">>
+                        , <<"application/json">>
+                        }
+                      ],
 
-            %% add oc_env pid to pidlist invoking oc_env api
-            lager:error("need to addin oc_env pid to list"),
+            Status = oc_env:status(),
+            lager:debug("Status ~p", [Status]),
+            Body = jsx:encode(Status),
 
             %% respond that env has been (re)initialized to language
             {ok, Req2} = cowboy_req:reply(200
                                          , Headers
-                                         , ResponseBody
+                                         , Body
                                          , Req
                                          ),
             %% finish
             {halt, Req2, State3};
 
         Started when is_pid(Started) ->
+            lager:info("env was started prior"),
             %% already started - so reinitialize it as language simulator
-            lager:error("need to finish oc_env when served already running"),
+            %% first need to get some of old state
+            OldStatus = oc_env:status(),
+            OldRestartCount = maps:get(restart_count, OldStatus),
+            NewRestartCount = OldRestartCount + 1,
 
-            %% get old state
-            OldState = oc_env:status(),
-            lager:debug("OldState: ~p ", [OldState] ),
-            lager:error("need to figure how to return old state and not confuse new state"),
+            %% stop all servers except env
+            %%    for now, this trusts env knows the servers
+            SvrList = maps:get(svr_list, OldStatus),
+            EnvSvrList = lists:delete(oc_env,SvrList),
 
-            %% stop all the servers
-            lager:error("need to stop all servers"),
-            SvrMap = maps:get(svr_map, OldState),
-            ok = stop_svrs( maps:get(svr_map, OldState) ),
+            %% stop all servers
+            oc_svr_stop:stop(EnvSvrList),
 
-            %% reinitialize
-            lager:error("need to reinitialize"),
 
-            %% Respond with both Old and New env state
-            %% don't have new env state yet (till code reinitialize) so
-            NewState = #{ error => <<"Have not done env reinitialize language">> },
-            OldNewState = #{ old_state => OldState
-                           , new_state => NewState
-                           },
+            lager:error("finish stopping servers"),
 
-            RespBody = jsx:encode( OldNewState ),
-            Headers = [ {<<"content-type">>, <<"application/json">>} ],
+            SvrList = [ oc_env ],   
+            NewState = begin_state( language
+                                    , NewRestartCount
+                                    , SvrList
+                                    ),
+            %% send message to env to restart as language
+            oc_env:restart(NewState),
 
+            lager:error("finish oc_env when env server already running"),
+
+            Headers = [ { <<"content-type">>
+                        , <<"application/json">>
+                        }
+                      ],
+
+            Status = oc_env:status(),
+            lager:debug("Status ~p", [Status]),
+            Body = jsx:encode(Status),
+
+            %% respond that env has been (re)initialized to language
             {ok, Req2} = cowboy_req:reply(200
                                          , Headers
-                                         , RespBody
+                                         , Body
                                          , Req
                                          ),
 
-            {halt, Req, State3}
+            {halt, Req2, State3}
         end;
 
 init_sim(<<"actuator">>, JsonMap, Req, State) ->
     %% simulator type = actuator,
     State2 = maps:put(has_valid_sim_type, true, State),
-    State3 = maps:put(sim_type, actuator, State2),
+    State3 = maps:put(simulator_type, actuator, State2),
 
     %% actuator simulator needs inital state (eg which actuator)
     Need1 = "need to do actuator init from jsonmap",
-    lager:error(Need1),
-    %lager:error("need to do actuator init from jsonmap"),
+    Need2 = io_lib:format("~p: ~p", [Need1, JsonMap] ),
+    lager:error(Need2),
 
     %% respond that env has been (re)initialized to actuator
     {ok, Req2} = cowboy_req:reply(200
@@ -223,11 +244,13 @@ init_sim(<<"actuator">>, JsonMap, Req, State) ->
 init_sim(<<"orchestrator">>, JsonMap, Req, State) ->
     %% simulator type = orchestrator,
     State2 = maps:put(has_valid_sim_type, true, State),
-    State3 = maps:put(sim_type, orchestrator, State2),
+    State3 = maps:put(simulator_type, orchestrator, State2),
 
 
-    %% orchestrator simulator needs inital state 
-    lager:error("need to do orchestrator init from jsonmap"),
+    %% orchestrator simulator needs inital state
+    Need1 = "need to do orchestrator init from jsonmap",
+    Need2 = io_lib:format("~p: ~p", [Need1, JsonMap] ),
+    lager:error(Need2),
     {ok, Req2} = cowboy_req:reply(200
                                  , []
                                  , <<"Simulator init - orchestrator (not done yet)">>
@@ -237,7 +260,7 @@ init_sim(<<"orchestrator">>, JsonMap, Req, State) ->
 
 
     %% finish
-    {halt, Req, State3};
+    {halt, Req2, State3};
 
 init_sim(SimTypeBin, _JsonMap, Req, State) ->
     %% Didn't match simulator type
@@ -247,38 +270,27 @@ init_sim(SimTypeBin, _JsonMap, Req, State) ->
     %% return (don't move on since request was bad)
     {halt, Req2, State2}.
 
-begin_state(language) ->
+begin_state(language, RestartCount, SvrList) ->
     %% initialize state of env server for simulator in language validation mode
     SimType = language,
     StartTime = erlang:timestamp(),
-    ReadableStartTime = calendar:now_to_datetime(StartTime),
-    {{Year, Month, Day}, {Hour, Minute, Second}} = ReadableStartTime,
-    StartTimeMap = #{ year   => Year
-                    , month  => Month
-                    , day    => Day
-                    , hour   => Hour
-                    , minute => Minute
-                    , second => Second
-                    },
+    StartTimeTuple = calendar:now_to_datetime(StartTime),
+    {{Year,Month,Day},{Hour,Minute,Second}} = StartTimeTuple,
+    ReadableStartTime = #{ year => Year
+                         , month => Month
+                         , day => Day
+                         , hour => Hour
+                         , minute => Minute
+                         , second => Second
+                         },
     ThisMachine = list_to_binary( net_adm:localhost() ),
-    InitState = none,
-    SvrMap = #{},
-    Restart = 0,
-    State = #{ sim_type => SimType
-             , start_time => StartTimeMap
+    InitState = #{},
+    State = #{ simulator_type => SimType
+             , restart_count => RestartCount
+             , start_time => ReadableStartTime
              , this_machine => ThisMachine
              , init_state => InitState
-             , svr_map => SvrMap
-             , restart => Restart  %% env wasn't already running
+             , svr_list => SvrList
              },
     State.
-
-
-stop_svrs( SvrMap ) ->
-    %% stop all the servers in the server map
-    %% complicated since need to chain down thru so can't do automatically
-    %% probably need to have oc_env do it.
-    Svrs = maps:keys(SvrMap),
-    lager:error("need to finish up stop_svrs of ~p", [Svrs] ),
-    ok.
 

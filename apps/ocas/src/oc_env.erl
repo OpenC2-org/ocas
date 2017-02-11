@@ -51,8 +51,10 @@
 %% interface calls
 -export([ start/1
         , stop/0
+        , terminate/0
         , keepalive/0
         , status/0
+        , restart/1
         ]).
 
 %% This is the api to the server
@@ -63,11 +65,19 @@ start(State) ->
 stop() ->
     gen_server:cast(?MODULE, shutdown).
 
+terminate() ->
+    %% call vs stop is cast
+    gen_server:call(?MODULE, terminate).
+
 keepalive() ->
     gen_server:call(?MODULE, keepalive).
 
 status() ->
     gen_server:call(?MODULE, status).
+
+restart(NewState) ->
+    gen_server:call(?MODULE, {restart, NewState}).
+
 
 %% initialize server with state
 init( [State] ) ->
@@ -86,6 +96,16 @@ handle_call( status, From, State ) ->
     %% reply to status request with state
     Response = State,
     {reply, Response, State};
+
+handle_call( {restart, NewState} , From, _State ) ->
+    lager:debug( "~p restart with ~p from ~p", [NewState, From] ),
+    %% set State to NewState and respond with that new state
+    Response = NewState,
+    {reply, Response, NewState};
+
+handle_call(terminate, _From, State) ->
+    lager:info( "~p got terminate", [?MODULE] ),
+    {stop, normal, ok, State};
 
 %% handle unknown call messages
 handle_call(Message, From, State) ->
