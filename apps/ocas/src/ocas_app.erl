@@ -57,8 +57,12 @@ start(_StartType, _StartArgs) ->
     AppEnv = application:get_all_env(),
     lager:info("env: ~p", [AppEnv]),
 
+    %% start env server
+    EnvSvrReturn = oc_env:first_start(),
+    lager:info("envserver return: ~p", [EnvSvrReturn]),
+
     %% return
-    {ok, WebServerReturn}.
+    {ok, self()}.
 
 -spec start() -> {'error', {atom(), _}} | {'ok', [atom()]}.
 start() ->
@@ -107,3 +111,4 @@ start_webserver() ->
 
   %% return
   self().
+

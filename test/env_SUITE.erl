@@ -36,9 +36,9 @@
 
 %% tests to run
 all() ->
-    [ test_no_init          %% test status prior to env being initialized
+    [ test_status0          %% test status prior to env being initialized
     , test_init_lang        %% test env being initialized for language
-    , test_status           %% test status after env initialized
+    , test_status1           %% test status after env initialized
     , test_init_again       %% test status again after env already running
                             %% add actuator and orchestrator later
     ].
@@ -61,50 +61,6 @@ init_per_suite(Config) ->
     {ok, _AppList3} = application:ensure_all_started(ocas),
 
     Config.
-
-test_no_init(Config) ->
-    lager:info("test_no_init Config ~p", [Config] ),
-    %% set up getting status via 'GET' (note env not initialized yet)
-    MyPort = application:get_env(ocas, port, 8080),
-    {ok, Conn} = shotgun:open("localhost", MyPort),
-    Headers = [ {<<"content-type">>, <<"application/text">>} ],
-    Options = #{},
-    ResponseToGet = shotgun:get(Conn, "/status", Headers, Options),
-    %%lager:info("response = ~p", [ResponseToGet]),
-    {ok, Response} = ResponseToGet,
-
-    %% validate correct get response for env not running
-    %% breakout the status, headers, body
-    #{ status_code := RespStatus
-     , headers := RespHeaders
-     , body := RespBody
-     } = Response,
-
-    %% valididate response code is 200 
-    200 = RespStatus,
-
-    %% test header contents are correct
-    { <<"server">>, <<"Cowboy">>} =  lists:keyfind( <<"server">>
-                                                  , 1
-                                                  , RespHeaders
-                                                  ),
-    { <<"date">>, _Date } =  lists:keyfind( <<"date">>
-                                          , 1
-                                          , RespHeaders
-                                          ),
-    { <<"content-type">>, <<"text/html">>} =  lists:keyfind( <<"content-type">>
-                                                           , 1
-                                                           , RespHeaders
-                                                           ),
-    { <<"content-length">>, <<"60">>} =  lists:keyfind( <<"content-length">>
-                                                      , 1
-                                                      , RespHeaders
-                                                      ),
-
-    %% valididate body content
-    <<"<html><body>Environment Server not running :-(</body></html>">> = RespBody,
-
-    ok.
 
 test_init_lang(Config)  ->
     lager:info("test_init_lang Config ~p", [Config] ),
@@ -131,7 +87,7 @@ test_init_lang(Config)  ->
 
     %% decode the json and check for key/values of interest
     ExpectedJsonPairs = [ {<<"simulator_type">>, <<"language">>}
-                        , {<<"restart_count">>, 0}
+                        , {<<"restart_count">>, 1}
                         , {<<"init_state">>, #{} }
                         ],
     %% look for keys in json, but not values
@@ -153,7 +109,15 @@ test_init_lang(Config)  ->
 
     ok.
 
-test_status(_Config)  ->
+test_status0(_Config)  ->
+    %% test http GET status from initial setup
+    test_status(0).
+
+test_status1(_Config)  ->
+    %% test http GET status after restart to language
+    test_status(1).
+
+test_status(RestartCount)  ->
     %% set up getting status via 'GET' (note env already running)
 
     Url = "/status",
@@ -165,7 +129,7 @@ test_status(_Config)  ->
 
     %% decode the json and check for key/values of interest
     ExpectedJsonPairs = [ {<<"simulator_type">>, <<"language">>}
-                        , {<<"restart_count">>, 0}
+                        , {<<"restart_count">>, RestartCount}
                         , {<<"init_state">>, #{} }
                         ],
     %% look for keys in json, but not values
@@ -210,7 +174,7 @@ test_init_again(_Config)  ->
 
     %% decode the json and check for key/values of interest
     ExpectedJsonPairs = [ {<<"simulator_type">>, <<"language">>}
-                        , {<<"restart_count">>, 1}
+                        , {<<"restart_count">>, 2}
                         , {<<"init_state">>, #{} }
                         ],
     %% look for keys in json, but not values

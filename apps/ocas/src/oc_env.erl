@@ -55,12 +55,40 @@
         , keepalive/0
         , status/0
         , restart/1
+        , first_start/0
         ]).
 
 %% This is the api to the server
 
 start(State) ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [State], []).
+
+first_start() ->
+    %% initialize state of env server for simulator in language validation mode
+    RestartCount = 0,
+    SvrList = [oc_env],
+    SimType = language,
+    StartTime = erlang:timestamp(),
+    StartTimeTuple = calendar:now_to_datetime(StartTime),
+    {{Year,Month,Day},{Hour,Minute,Second}} = StartTimeTuple,
+    ReadableStartTime = #{ year => Year
+                         , month => Month
+                         , day => Day
+                         , hour => Hour
+                         , minute => Minute
+                         , second => Second
+                         },
+    ThisMachine = list_to_binary( net_adm:localhost() ),
+    InitState = #{},
+    State = #{ simulator_type => SimType
+             , restart_count => RestartCount
+             , start_time => ReadableStartTime
+             , this_machine => ThisMachine
+             , init_state => InitState
+             , svr_list => SvrList
+             },
+    start(State).
+
 
 stop() ->
     gen_server:cast(?MODULE, shutdown).
