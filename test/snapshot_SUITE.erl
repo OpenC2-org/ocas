@@ -86,7 +86,7 @@ test_snapshot(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"snapshot">>}
-                        , {<<"action_server">>, <<"snapshot_server">>}
+                        , {<<"action_server">>, <<"act_snapshot">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_snapshot_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"snapshot">>}
-                        , {<<"action_server">>, <<"snapshot_server">>}
+                        , {<<"action_server">>, <<"act_snapshot">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

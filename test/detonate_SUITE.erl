@@ -86,7 +86,7 @@ test_detonate(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"detonate">>}
-                        , {<<"action_server">>, <<"detonate_server">>}
+                        , {<<"action_server">>, <<"act_detonate">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_detonate_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"detonate">>}
-                        , {<<"action_server">>, <<"detonate_server">>}
+                        , {<<"action_server">>, <<"act_detonate">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

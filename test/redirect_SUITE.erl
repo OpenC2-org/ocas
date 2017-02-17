@@ -86,7 +86,7 @@ test_redirect(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"redirect">>}
-                        , {<<"action_server">>, <<"redirect_server">>}
+                        , {<<"action_server">>, <<"act_redirect">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_redirect_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"redirect">>}
-                        , {<<"action_server">>, <<"redirect_server">>}
+                        , {<<"action_server">>, <<"act_redirect">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

@@ -86,7 +86,7 @@ test_deny(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"deny">>}
-                        , {<<"action_server">>, <<"deny_server">>}
+                        , {<<"action_server">>, <<"act_deny">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_deny_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"deny">>}
-                        , {<<"action_server">>, <<"deny_server">>}
+                        , {<<"action_server">>, <<"act_deny">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

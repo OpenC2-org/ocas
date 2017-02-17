@@ -86,7 +86,7 @@ test_restore(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"restore">>}
-                        , {<<"action_server">>, <<"restore_server">>}
+                        , {<<"action_server">>, <<"act_restore">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_restore_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"restore">>}
-                        , {<<"action_server">>, <<"restore_server">>}
+                        , {<<"action_server">>, <<"act_restore">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

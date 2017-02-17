@@ -86,7 +86,7 @@ test_augment(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"augment">>}
-                        , {<<"action_server">>, <<"augment_server">>}
+                        , {<<"action_server">>, <<"act_augment">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_augment_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"augment">>}
-                        , {<<"action_server">>, <<"augment_server">>}
+                        , {<<"action_server">>, <<"act_augment">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

@@ -86,7 +86,7 @@ test_allow(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"allow">>}
-                        , {<<"action_server">>, <<"allow_server">>}
+                        , {<<"action_server">>, <<"act_allow">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -132,7 +132,7 @@ test_allow_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"allow">>}
-                        , {<<"action_server">>, <<"allow_server">>}
+                        , {<<"action_server">>, <<"act_allow">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

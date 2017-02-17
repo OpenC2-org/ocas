@@ -86,7 +86,7 @@ test_investigate(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"investigate">>}
-                        , {<<"action_server">>, <<"investigate_server">>}
+                        , {<<"action_server">>, <<"act_investigate">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_investigate_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"investigate">>}
-                        , {<<"action_server">>, <<"investigate_server">>}
+                        , {<<"action_server">>, <<"act_investigate">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

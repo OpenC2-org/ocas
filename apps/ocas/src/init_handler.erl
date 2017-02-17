@@ -56,16 +56,16 @@ rest_init(Req, _Opts) ->
     {ok, Req2, State}.
 
 allowed_methods(Req, State) ->
-    lager:info("got to allowed methods"),
+    %%lager:info("got to allowed methods"),
     {[<<"POST">>], Req, State}.
 
 content_types_accepted(Req, State) ->
-    lager:info("got to content_types"),
+    %%lager:info("got to content_types"),
     %% header has content =application/json/whatever
     { [{ { <<"application">>, <<"json">>, '*'} , handle_json}], Req, State}.
 
 handle_json(Req, State) ->
-    lager:info("got to handle_json"),
+    %%lager:info("got to handle_json"),
 
     %% check for case of no body
     HasBody = cowboy_req:has_body(Req),
@@ -128,15 +128,19 @@ has_sim(true, JsonMap, Req, State ) ->
     %% get the simulator type
     %%   already know it's there from hitting this function head
     SimTypeBin = maps:get( <<"simulator_type">>, JsonMap ),
-    lager:info("SimType bintext: ~p", [SimTypeBin] ),
+    %%lager:info("SimType bintext: ~p", [SimTypeBin] ),
 
     %% react to which type of simulator
     init_sim(SimTypeBin, JsonMap, Req, State2).
 
-init_sim(<<"language">>, _JsonMap, Req, State) ->
+init_sim(<<"language">>, JsonMap, Req, State) ->
     %% simulator type = language
     State2 = maps:put(has_valid_sim_type, true, State),
     State3 = maps:put(simulator_type, language, State2),
+
+    %% get restart parameter if it was set (for use later)
+    Restart = maps:get(<<"restart">>, JsonMap, false),
+    lager:info("init_sim restart ~p", [Restart]),
 
     %% language simulator is stateless so simple init and move on
     %%    start env server as language simulator
@@ -144,14 +148,16 @@ init_sim(<<"language">>, _JsonMap, Req, State) ->
     Started = whereis(oc_env),
     case Started of
         undefined ->
+            %% note restart in input is ignored if env not started
+            %%      since will be setting to zero regardless
             lager:info("env not started prior"),
             %% not started yet, so start it
             %%     first prepare state for sim to preserve
             RestartCount = 0,       % since oc_env was not running
-            SvrList = [ oc_env ],      % since oc_env was not running
+            SvrMap = #{ oc_env => true },      % since oc_env was not running
             StartState = begin_state( language
                                     , RestartCount
-                                    , SvrList
+                                    , SvrMap
                                     ),
             {ok, _Pid} = oc_env:start(StartState),
 
@@ -176,31 +182,25 @@ init_sim(<<"language">>, _JsonMap, Req, State) ->
         Started when is_pid(Started) ->
             lager:info("env was started prior"),
             %% already started - so reinitialize it as language simulator
-            %% first need to get some of old state
-            OldStatus = oc_env:status(),
-            OldRestartCount = maps:get(restart_count, OldStatus),
-            NewRestartCount = OldRestartCount + 1,
+            %% if needed get old state with reset count
+            RestartCount = restart_count(Restart), 
 
             %% stop all servers except env
             %%    for now, this trusts env knows the servers
-            SvrList = maps:get(svr_list, OldStatus),
-            EnvSvrList = lists:delete(oc_env,SvrList),
+            SvrMap = maps:get(svr_map, oc_env:status() ),
+            EnvSvrMap = maps:remove(oc_env,SvrMap),
+            EnvSvrList = maps:keys(EnvSvrMap),
 
             %% stop all servers
             oc_svr_stop:stop(EnvSvrList),
 
-
-            lager:error("finish stopping servers"),
-
-            SvrList = [ oc_env ],   
+            NewSvrMap = #{ oc_env => true},   % start empty but env
             NewState = begin_state( language
-                                    , NewRestartCount
-                                    , SvrList
+                                    , RestartCount
+                                    , NewSvrMap
                                     ),
             %% send message to env to restart as language
             oc_env:restart(NewState),
-
-            lager:error("finish oc_env when env server already running"),
 
             Headers = [ { <<"content-type">>
                         , <<"application/json">>
@@ -270,7 +270,19 @@ init_sim(SimTypeBin, _JsonMap, Req, State) ->
     %% return (don't move on since request was bad)
     {halt, Req2, State2}.
 
-begin_state(language, RestartCount, SvrList) ->
+restart_count(<<"true">>) ->
+    %% Restart = true so set count to zero
+    0;
+
+restart_count(_Restart) ->
+    %% anything but true, don't reset count
+    %% get count from env
+    OldStatus = oc_env:status(),
+    OldRestartCount = maps:get(restart_count, OldStatus),
+    NewRestartCount = OldRestartCount + 1,
+    NewRestartCount.
+
+begin_state(language, RestartCount, SvrMap) ->
     %% initialize state of env server for simulator in language validation mode
     SimType = language,
     StartTime = erlang:timestamp(),
@@ -290,7 +302,7 @@ begin_state(language, RestartCount, SvrList) ->
              , start_time => ReadableStartTime
              , this_machine => ThisMachine
              , init_state => InitState
-             , svr_list => SvrList
+             , svr_map => SvrMap
              },
     State.
 

@@ -86,7 +86,7 @@ test_resume(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"resume">>}
-                        , {<<"action_server">>, <<"resume_server">>}
+                        , {<<"action_server">>, <<"act_resume">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_resume_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"resume">>}
-                        , {<<"action_server">>, <<"resume_server">>}
+                        , {<<"action_server">>, <<"act_resume">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

@@ -86,7 +86,7 @@ test_delay(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"delay">>}
-                        , {<<"action_server">>, <<"delay_server">>}
+                        , {<<"action_server">>, <<"act_delay">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_delay_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"delay">>}
-                        , {<<"action_server">>, <<"delay_server">>}
+                        , {<<"action_server">>, <<"act_delay">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

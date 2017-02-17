@@ -86,7 +86,7 @@ test_remediate(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"remediate">>}
-                        , {<<"action_server">>, <<"remediate_server">>}
+                        , {<<"action_server">>, <<"act_remediate">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_remediate_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"remediate">>}
-                        , {<<"action_server">>, <<"remediate_server">>}
+                        , {<<"action_server">>, <<"act_remediate">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

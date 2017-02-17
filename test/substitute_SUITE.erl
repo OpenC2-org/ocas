@@ -86,7 +86,7 @@ test_substitute(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"substitute">>}
-                        , {<<"action_server">>, <<"substitute_server">>}
+                        , {<<"action_server">>, <<"act_substitute">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_substitute_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"substitute">>}
-                        , {<<"action_server">>, <<"substitute_server">>}
+                        , {<<"action_server">>, <<"act_substitute">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

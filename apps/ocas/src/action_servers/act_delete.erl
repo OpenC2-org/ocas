@@ -74,7 +74,7 @@ init( [State] ) ->
 handle_call( keepalive, From, State ) ->
     lager:debug( "~p got keepalive from ~p", [?MODULE, From] ),
     %% reply to keepalive
-    Response = {keepalive_received, delete_server},
+    Response = {keepalive_received, act_delete},
     {reply, Response, State};
 
 %% handle unknown call messages

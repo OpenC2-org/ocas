@@ -86,7 +86,7 @@ test_query(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"query">>}
-                        , {<<"action_server">>, <<"query_server">>}
+                        , {<<"action_server">>, <<"act_query">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_query_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"query">>}
-                        , {<<"action_server">>, <<"query_server">>}
+                        , {<<"action_server">>, <<"act_query">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

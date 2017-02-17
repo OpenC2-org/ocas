@@ -86,7 +86,7 @@ test_restart(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"restart">>}
-                        , {<<"action_server">>, <<"restart_server">>}
+                        , {<<"action_server">>, <<"act_restart">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_restart_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"restart">>}
-                        , {<<"action_server">>, <<"restart_server">>}
+                        , {<<"action_server">>, <<"act_restart">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

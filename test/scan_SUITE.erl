@@ -86,7 +86,7 @@ test_scan(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"scan">>}
-                        , {<<"action_server">>, <<"scan_server">>}
+                        , {<<"action_server">>, <<"act_scan">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_scan_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"scan">>}
-                        , {<<"action_server">>, <<"scan_server">>}
+                        , {<<"action_server">>, <<"act_scan">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

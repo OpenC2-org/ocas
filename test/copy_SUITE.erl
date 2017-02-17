@@ -86,7 +86,7 @@ test_copy(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"copy">>}
-                        , {<<"action_server">>, <<"copy_server">>}
+                        , {<<"action_server">>, <<"act_copy">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_copy_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"copy">>}
-                        , {<<"action_server">>, <<"copy_server">>}
+                        , {<<"action_server">>, <<"act_copy">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
