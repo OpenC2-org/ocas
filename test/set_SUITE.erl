@@ -86,7 +86,7 @@ test_set(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"set">>}
-                        , {<<"action_server">>, <<"set_server">>}
+                        , {<<"action_server">>, <<"act_set">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_set_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"set">>}
-                        , {<<"action_server">>, <<"set_server">>}
+                        , {<<"action_server">>, <<"act_set">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

@@ -86,7 +86,7 @@ test_report(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"report">>}
-                        , {<<"action_server">>, <<"report_server">>}
+                        , {<<"action_server">>, <<"act_report">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_report_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"report">>}
-                        , {<<"action_server">>, <<"report_server">>}
+                        , {<<"action_server">>, <<"act_report">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

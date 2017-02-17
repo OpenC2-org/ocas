@@ -33,6 +33,7 @@
 
 %% includes of common test json data
 -include_lib("./include/env01.hrl").
+-include_lib("./include/env02.hrl").
 
 %% tests to run
 all() ->
@@ -62,10 +63,33 @@ init_per_suite(Config) ->
 
     Config.
 
+test_status0(_Config)  ->
+    %% test http GET status from initial setup
+    %% first totally restart the env server
+    send_init(?ENV01, 0),
+
+    %% check status 
+    test_status(0).
+
 test_init_lang(Config)  ->
     lager:info("test_init_lang Config ~p", [Config] ),
     %% initialize simulator to language
+    send_init(?ENV02, 1),
+    ok.
 
+test_status1(_Config)  ->
+    %% test http GET status after restart to language
+    test_status(1).
+
+test_init_again(_Config)  ->
+    % env already running and re-initialize to language
+    send_init(?ENV02, 2),
+    ok.
+
+%% helper functions
+
+send_init(Json, RestartCount)  ->
+    lager:info("send_init, ~p, ~p", [Json, RestartCount]),
     ReqHeaders = [ {<<"content-type">>
                  , <<"application/json">>}
                  ],
@@ -73,8 +97,6 @@ test_init_lang(Config)  ->
     Url = "/init",
 
     Options = #{},
-
-    Json = ?ENV01,    % json for init to language
 
     %% validate the json
     true = jsx:is_json(Json),
@@ -87,12 +109,12 @@ test_init_lang(Config)  ->
 
     %% decode the json and check for key/values of interest
     ExpectedJsonPairs = [ {<<"simulator_type">>, <<"language">>}
-                        , {<<"restart_count">>, 1}
+                        , {<<"restart_count">>, RestartCount}
                         , {<<"init_state">>, #{} }
                         ],
     %% look for keys in json, but not values
     ExpectedJsonKeys = [ <<"this_machine">>
-                       , <<"svr_list">>
+                       , <<"svr_map">>
                        , <<"start_time">>
                        ],
 
@@ -108,14 +130,6 @@ test_init_lang(Config)  ->
                 ),
 
     ok.
-
-test_status0(_Config)  ->
-    %% test http GET status from initial setup
-    test_status(0).
-
-test_status1(_Config)  ->
-    %% test http GET status after restart to language
-    test_status(1).
 
 test_status(RestartCount)  ->
     %% set up getting status via 'GET' (note env already running)
@@ -134,7 +148,7 @@ test_status(RestartCount)  ->
                         ],
     %% look for keys in json, but not values
     ExpectedJsonKeys = [ <<"this_machine">>
-                       , <<"svr_list">>
+                       , <<"svr_map">>
                        , <<"start_time">>
                        ],
 
@@ -150,48 +164,3 @@ test_status(RestartCount)  ->
 
     ok.
 
-test_init_again(_Config)  ->
-    % env already running and re-initialize to language
-
-    ReqHeaders = [ {<<"content-type">>
-                 , <<"application/json">>}
-                 ],
-
-    Url = "/init",
-
-    Options = #{},
-
-    Json = ?ENV01,    % json for init to language
-
-    %% validate the json
-    true = jsx:is_json(Json),
-
-    %% send the json in the body of the request
-    ReqBody = Json,
-
-    %% expect to get 200 status code
-    ExpectedStatus = 200,
-
-    %% decode the json and check for key/values of interest
-    ExpectedJsonPairs = [ {<<"simulator_type">>, <<"language">>}
-                        , {<<"restart_count">>, 2}
-                        , {<<"init_state">>, #{} }
-                        ],
-    %% look for keys in json, but not values
-    ExpectedJsonKeys = [ <<"this_machine">>
-                       , <<"svr_list">>
-                       , <<"start_time">>
-                       ],
-
-    %% send request, test response
-    helper:send_receive( post
-                , Url              % to send
-                , ReqHeaders       % to send
-                , Options          % to send
-                , ReqBody          % to send
-                , ExpectedStatus  % test get this received
-                , ExpectedJsonKeys % see if these keys in received json
-                , ExpectedJsonPairs % check these pairs in received json
-                ),
-
-    ok.

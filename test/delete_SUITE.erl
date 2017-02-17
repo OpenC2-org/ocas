@@ -86,7 +86,7 @@ test_delete(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"delete">>}
-                        , {<<"action_server">>, <<"delete_server">>}
+                        , {<<"action_server">>, <<"act_delete">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_delete_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"delete">>}
-                        , {<<"action_server">>, <<"delete_server">>}
+                        , {<<"action_server">>, <<"act_delete">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

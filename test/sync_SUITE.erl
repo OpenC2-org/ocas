@@ -86,7 +86,7 @@ test_sync(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"sync">>}
-                        , {<<"action_server">>, <<"sync_server">>}
+                        , {<<"action_server">>, <<"act_sync">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_sync_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"sync">>}
-                        , {<<"action_server">>, <<"sync_server">>}
+                        , {<<"action_server">>, <<"act_sync">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
