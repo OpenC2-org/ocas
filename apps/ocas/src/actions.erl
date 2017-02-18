@@ -51,10 +51,10 @@ spawn_action( <<"allow">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_allow:start(State);
+            {ok, _Pid} = act_allow:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -62,7 +62,7 @@ spawn_action( <<"allow">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(allow, Pid, ActionKeepAlive, Req, State);
+    action_valid(allow, ActionKeepAlive, Req, State);
 
 spawn_action( <<"augment">>,  Req, State ) ->
     %% see if server already started
@@ -71,10 +71,10 @@ spawn_action( <<"augment">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_augment:start(State);
+            {ok, _Pid} = act_augment:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -82,7 +82,7 @@ spawn_action( <<"augment">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(augment, Pid, ActionKeepAlive, Req, State);
+    action_valid(augment, ActionKeepAlive, Req, State);
 
 spawn_action( <<"cancel">>,  Req, State ) ->
     %% see if server already started
@@ -91,17 +91,17 @@ spawn_action( <<"cancel">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_cancel:start(State);
+            {ok, _Pid} = act_cancel:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
     %% check with keep alive
     ActionKeepAlive = act_cancel:keepalive(),
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(cancel, Pid, ActionKeepAlive, Req, State);
+    action_valid(cancel, ActionKeepAlive, Req, State);
 
 spawn_action( <<"contain">>,  Req, State ) ->
 
@@ -111,10 +111,10 @@ spawn_action( <<"contain">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_contain:start(State);
+            {ok, _Pid} = act_contain:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -122,7 +122,7 @@ spawn_action( <<"contain">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(contain, Pid, ActionKeepAlive, Req, State);
+    action_valid(contain, ActionKeepAlive, Req, State);
 
 spawn_action( <<"copy">>,  Req, State ) ->
 
@@ -132,10 +132,10 @@ spawn_action( <<"copy">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_copy:start(State);
+            {ok, _Pid} = act_copy:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -143,7 +143,7 @@ spawn_action( <<"copy">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(copy, Pid, ActionKeepAlive, Req, State);
+    action_valid(copy, ActionKeepAlive, Req, State);
 
 spawn_action( <<"delay">>,  Req, State ) ->
 
@@ -153,10 +153,10 @@ spawn_action( <<"delay">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_delay:start(State);
+            {ok, _Pid} = act_delay:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -164,7 +164,7 @@ spawn_action( <<"delay">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(delay, Pid, ActionKeepAlive, Req, State);
+    action_valid(delay, ActionKeepAlive, Req, State);
 
 spawn_action( <<"delete">>,  Req, State ) ->
     %% see if server already started
@@ -173,10 +173,10 @@ spawn_action( <<"delete">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_delete:start(State);
+            {ok, _Pid} = act_delete:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -184,7 +184,7 @@ spawn_action( <<"delete">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(delete, Pid, ActionKeepAlive, Req, State);
+    action_valid(delete, ActionKeepAlive, Req, State);
 
 spawn_action( <<"deny">>,  Req, State ) ->
     %% see if server already started
@@ -193,10 +193,10 @@ spawn_action( <<"deny">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_deny:start(State);
+            {ok, _Pid} = act_deny:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -204,7 +204,7 @@ spawn_action( <<"deny">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(deny, Pid, ActionKeepAlive, Req, State);
+    action_valid(deny, ActionKeepAlive, Req, State);
 
 spawn_action( <<"detonate">>,  Req, State ) ->
 
@@ -214,10 +214,10 @@ spawn_action( <<"detonate">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_detonate:start(State);
+            {ok, _Pid} = act_detonate:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -225,7 +225,7 @@ spawn_action( <<"detonate">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(detonate, Pid, ActionKeepAlive, Req, State);
+    action_valid(detonate, ActionKeepAlive, Req, State);
 
 spawn_action( <<"distill">>,  Req, State ) ->
 
@@ -235,10 +235,10 @@ spawn_action( <<"distill">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_distill:start(State);
+            {ok, _Pid} = act_distill:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -246,7 +246,7 @@ spawn_action( <<"distill">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(distill, Pid, ActionKeepAlive, Req, State);
+    action_valid(distill, ActionKeepAlive, Req, State);
 
 spawn_action( <<"get">>,  Req, State ) ->
 
@@ -256,10 +256,10 @@ spawn_action( <<"get">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_get:start(State);
+            {ok, _Pid} = act_get:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -267,7 +267,7 @@ spawn_action( <<"get">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(get, Pid, ActionKeepAlive, Req, State);
+    action_valid(get, ActionKeepAlive, Req, State);
 
 spawn_action( <<"investigate">>,  Req, State ) ->
 
@@ -277,10 +277,10 @@ spawn_action( <<"investigate">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_investigate:start(State);
+            {ok, _Pid} = act_investigate:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -288,7 +288,7 @@ spawn_action( <<"investigate">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(investigate, Pid, ActionKeepAlive, Req, State);
+    action_valid(investigate, ActionKeepAlive, Req, State);
 
 spawn_action( <<"locate">>,  Req, State ) ->
 
@@ -298,10 +298,10 @@ spawn_action( <<"locate">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_locate:start(State);
+            {ok, _Pid} = act_locate:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -309,7 +309,7 @@ spawn_action( <<"locate">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(locate, Pid, ActionKeepAlive, Req, State);
+    action_valid(locate, ActionKeepAlive, Req, State);
 
 spawn_action( <<"mitigate">>,  Req, State ) ->
     %% see if server already started
@@ -318,10 +318,10 @@ spawn_action( <<"mitigate">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_mitigate:start(State);
+            {ok, _Pid} = act_mitigate:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -329,7 +329,7 @@ spawn_action( <<"mitigate">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(mitigate, Pid, ActionKeepAlive, Req, State);
+    action_valid(mitigate, ActionKeepAlive, Req, State);
 
 spawn_action( <<"modify">>,  Req, State ) ->
 
@@ -339,10 +339,10 @@ spawn_action( <<"modify">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_modify:start(State);
+            {ok, _Pid} = act_modify:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -350,7 +350,7 @@ spawn_action( <<"modify">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(modify, Pid, ActionKeepAlive, Req, State);
+    action_valid(modify, ActionKeepAlive, Req, State);
 
 spawn_action( <<"move">>,  Req, State ) ->
 
@@ -360,10 +360,10 @@ spawn_action( <<"move">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_move:start(State);
+            {ok, _Pid} = act_move:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -371,7 +371,7 @@ spawn_action( <<"move">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(move, Pid, ActionKeepAlive, Req, State);
+    action_valid(move, ActionKeepAlive, Req, State);
 
 spawn_action( <<"notify">>,  Req, State ) ->
 
@@ -381,10 +381,10 @@ spawn_action( <<"notify">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_notify:start(State);
+            {ok, _Pid} = act_notify:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -392,7 +392,7 @@ spawn_action( <<"notify">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(notify, Pid, ActionKeepAlive, Req, State);
+    action_valid(notify, ActionKeepAlive, Req, State);
 
 spawn_action( <<"pause">>,  Req, State ) ->
 
@@ -402,10 +402,10 @@ spawn_action( <<"pause">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_pause:start(State);
+            {ok, _Pid} = act_pause:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -413,7 +413,7 @@ spawn_action( <<"pause">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(pause, Pid, ActionKeepAlive, Req, State);
+    action_valid(pause, ActionKeepAlive, Req, State);
 
 spawn_action( <<"query">>,  Req, State ) ->
 
@@ -423,10 +423,10 @@ spawn_action( <<"query">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_query:start(State);
+            {ok, _Pid} = act_query:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -434,7 +434,7 @@ spawn_action( <<"query">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(query, Pid, ActionKeepAlive, Req, State);
+    action_valid(query, ActionKeepAlive, Req, State);
 
 spawn_action( <<"redirect">>,  Req, State ) ->
 
@@ -444,10 +444,10 @@ spawn_action( <<"redirect">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_redirect:start(State);
+            {ok, _Pid} = act_redirect:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -455,7 +455,7 @@ spawn_action( <<"redirect">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(redirect, Pid, ActionKeepAlive, Req, State);
+    action_valid(redirect, ActionKeepAlive, Req, State);
 
 spawn_action( <<"remediate">>,  Req, State ) ->
 
@@ -465,10 +465,10 @@ spawn_action( <<"remediate">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_remediate:start(State);
+            {ok, _Pid} = act_remediate:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -476,7 +476,7 @@ spawn_action( <<"remediate">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(remediate, Pid, ActionKeepAlive, Req, State);
+    action_valid(remediate, ActionKeepAlive, Req, State);
 
 spawn_action( <<"report">>,  Req, State ) ->
 
@@ -486,10 +486,10 @@ spawn_action( <<"report">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_report:start(State);
+            {ok, _Pid} = act_report:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -497,7 +497,7 @@ spawn_action( <<"report">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(report, Pid, ActionKeepAlive, Req, State);
+    action_valid(report, ActionKeepAlive, Req, State);
 
 spawn_action( <<"restart">>,  Req, State ) ->
 
@@ -507,10 +507,10 @@ spawn_action( <<"restart">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_restart:start(State);
+            {ok, _Pid} = act_restart:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -518,7 +518,7 @@ spawn_action( <<"restart">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(restart, Pid, ActionKeepAlive, Req, State);
+    action_valid(restart, ActionKeepAlive, Req, State);
 
 spawn_action( <<"restore">>,  Req, State ) ->
 
@@ -528,10 +528,10 @@ spawn_action( <<"restore">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_restore:start(State);
+            {ok, _Pid} = act_restore:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -539,7 +539,7 @@ spawn_action( <<"restore">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(restore, Pid, ActionKeepAlive, Req, State);
+    action_valid(restore, ActionKeepAlive, Req, State);
 
 spawn_action( <<"resume">>,  Req, State ) ->
 
@@ -549,10 +549,10 @@ spawn_action( <<"resume">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_resume:start(State);
+            {ok, _Pid} = act_resume:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -560,7 +560,7 @@ spawn_action( <<"resume">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(resume, Pid, ActionKeepAlive, Req, State);
+    action_valid(resume, ActionKeepAlive, Req, State);
 
 spawn_action( <<"save">>,  Req, State ) ->
 
@@ -570,10 +570,10 @@ spawn_action( <<"save">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_save:start(State);
+            {ok, _Pid} = act_save:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -581,7 +581,7 @@ spawn_action( <<"save">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(save, Pid, ActionKeepAlive, Req, State);
+    action_valid(save, ActionKeepAlive, Req, State);
 
 spawn_action( <<"scan">>,  Req, State ) ->
 
@@ -591,10 +591,10 @@ spawn_action( <<"scan">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_scan:start(State);
+            {ok, _Pid} = act_scan:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -602,7 +602,7 @@ spawn_action( <<"scan">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(scan, Pid, ActionKeepAlive, Req, State);
+    action_valid(scan, ActionKeepAlive, Req, State);
 
 spawn_action( <<"set">>,  Req, State ) ->
 
@@ -612,10 +612,10 @@ spawn_action( <<"set">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_set:start(State);
+            {ok, _Pid} = act_set:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -623,7 +623,7 @@ spawn_action( <<"set">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(set, Pid, ActionKeepAlive, Req, State);
+    action_valid(set, ActionKeepAlive, Req, State);
 
 spawn_action( <<"snapshot">>,  Req, State ) ->
 
@@ -633,10 +633,10 @@ spawn_action( <<"snapshot">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_snapshot:start(State);
+            {ok, _Pid} = act_snapshot:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -644,7 +644,7 @@ spawn_action( <<"snapshot">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(snapshot, Pid, ActionKeepAlive, Req, State);
+    action_valid(snapshot, ActionKeepAlive, Req, State);
 
 spawn_action( <<"start">>,  Req, State ) ->
 
@@ -654,10 +654,10 @@ spawn_action( <<"start">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_start:start(State);
+            {ok, _Pid} = act_start:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -665,7 +665,7 @@ spawn_action( <<"start">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(start, Pid, ActionKeepAlive, Req, State);
+    action_valid(start, ActionKeepAlive, Req, State);
 
 spawn_action( <<"stop">>,  Req, State ) ->
 
@@ -675,10 +675,10 @@ spawn_action( <<"stop">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_stop:start(State);
+            {ok, _Pid} = act_stop:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -686,7 +686,7 @@ spawn_action( <<"stop">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(stop, Pid, ActionKeepAlive, Req, State);
+    action_valid(stop, ActionKeepAlive, Req, State);
 
 spawn_action( <<"substitute">>,  Req, State ) ->
 
@@ -696,10 +696,10 @@ spawn_action( <<"substitute">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_substitute:start(State);
+            {ok, _Pid} = act_substitute:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -707,7 +707,7 @@ spawn_action( <<"substitute">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(substitute, Pid, ActionKeepAlive, Req, State);
+    action_valid(substitute, ActionKeepAlive, Req, State);
 
 spawn_action( <<"sync">>,  Req, State ) ->
 
@@ -717,10 +717,10 @@ spawn_action( <<"sync">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_sync:start(State);
+            {ok, _Pid} = act_sync:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -728,7 +728,7 @@ spawn_action( <<"sync">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(sync, Pid, ActionKeepAlive, Req, State);
+    action_valid(sync, ActionKeepAlive, Req, State);
 
 spawn_action( <<"throttle">>,  Req, State ) ->
 
@@ -738,10 +738,10 @@ spawn_action( <<"throttle">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_throttle:start(State);
+            {ok, _Pid} = act_throttle:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -749,7 +749,7 @@ spawn_action( <<"throttle">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(throttle, Pid, ActionKeepAlive, Req, State);
+    action_valid(throttle, ActionKeepAlive, Req, State);
 
 spawn_action( <<"update">>,  Req, State ) ->
     %% see if server already started
@@ -758,10 +758,10 @@ spawn_action( <<"update">>,  Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            {ok, Pid} = act_update:start(State);
+            {ok, _Pid} = act_update:start(State);
         Started when is_pid(Started) ->
             %% already started
-            Pid = Started
+            ok
     end,
 
     %% check with keep alive
@@ -769,7 +769,7 @@ spawn_action( <<"update">>,  Req, State ) ->
     lager:debug("ActionKeepAlive: ~p ", [ActionKeepAlive]),
 
     %% tail end recurse
-    action_valid(update, Pid, ActionKeepAlive, Req, State);
+    action_valid(update, ActionKeepAlive, Req, State);
 
 spawn_action( _ActionSvr,  Req, State ) ->
     %% no function for this action so reply accordingly
@@ -780,14 +780,13 @@ spawn_action( _ActionSvr,  Req, State ) ->
                                  ),
     {ok, Req2, State}.
 
-action_valid(Action, Pid, ActionKeepAlive, Req, State) ->
+action_valid(Action, ActionKeepAlive, Req, State) ->
     %% action was valid so update State
     State2 = maps:put(action_valid, true, State),
     State3 = maps:put(action, Action, State2),
-    State4 = tools:add_pid(Action, Pid, State3),
 
     %% tail end recurse to verifying keepalive
-    verify_keepalive( ActionKeepAlive, Req, State4).
+    verify_keepalive( ActionKeepAlive, Req, State3).
 
 verify_keepalive( {keepalive_received, Server}
                 , Req
@@ -796,6 +795,9 @@ verify_keepalive( {keepalive_received, Server}
     %% keepalive worked as expected
     State2 = maps:put(action_keepalive, true, State),
     State3 = maps:put(action_server, Server, State2),
+
+    %% tell oc_env server that allow is now running
+    ok = oc_env:server_up(Server),
 
     %% recall whether has target and tail recurse
     HasTarget = maps:get(has_target, State3),

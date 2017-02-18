@@ -4,7 +4,6 @@
 %%% 
 %%%-------------------------------------------------------------------
 
--define(ENV01, <<"{
-\"simulator_type\": \"language\",
-\"restart\": \"true\"
+-define(ENV02, <<"{
+\"simulator_type\": \"language\"
 }">>).

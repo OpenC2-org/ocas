@@ -86,7 +86,7 @@ test_locate(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"locate">>}
-                        , {<<"action_server">>, <<"locate_server">>}
+                        , {<<"action_server">>, <<"act_locate">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_locate_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"locate">>}
-                        , {<<"action_server">>, <<"locate_server">>}
+                        , {<<"action_server">>, <<"act_locate">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

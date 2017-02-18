@@ -86,7 +86,7 @@ test_move(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"move">>}
-                        , {<<"action_server">>, <<"move_server">>}
+                        , {<<"action_server">>, <<"act_move">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_move_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"move">>}
-                        , {<<"action_server">>, <<"move_server">>}
+                        , {<<"action_server">>, <<"act_move">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

@@ -86,7 +86,7 @@ test_mitigate(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"mitigate">>}
-                        , {<<"action_server">>, <<"mitigate_server">>}
+                        , {<<"action_server">>, <<"act_mitigate">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, false}
                         , {<<"has_modifiers">>, false}
@@ -133,7 +133,7 @@ test_mitigate_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"mitigate">>}
-                        , {<<"action_server">>, <<"mitigate_server">>}
+                        , {<<"action_server">>, <<"act_mitigate">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, false}
                         , {<<"has_modifiers">>, false}

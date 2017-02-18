@@ -86,7 +86,7 @@ test_cancel(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"cancel">>}
-                        , {<<"action_server">>, <<"cancel_server">>}
+                        , {<<"action_server">>, <<"act_cancel">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -134,7 +134,7 @@ test_cancel_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"cancel">>}
-                        , {<<"action_server">>, <<"cancel_server">>}
+                        , {<<"action_server">>, <<"act_cancel">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

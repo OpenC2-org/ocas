@@ -1,7 +1,7 @@
 -module(oc_env).
 %%%-------------------------------------------------------------------
 %%% @author Duncan Sparrell
-%%% @copyright (C) 2016, sFractal Consulting LLC
+%%% @copyright (C) 2017, sFractal Consulting LLC
 %%%
 %%% All rights reserved.
 %%% Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,6 +56,7 @@
         , status/0
         , restart/1
         , first_start/0
+        , server_up/1
         ]).
 
 %% This is the api to the server
@@ -66,7 +67,7 @@ start(State) ->
 first_start() ->
     %% initialize state of env server for simulator in language validation mode
     RestartCount = 0,
-    SvrList = [oc_env],
+    SvrMap = #{ oc_env => true },  
     SimType = language,
     StartTime = erlang:timestamp(),
     StartTimeTuple = calendar:now_to_datetime(StartTime),
@@ -85,7 +86,7 @@ first_start() ->
              , start_time => ReadableStartTime
              , this_machine => ThisMachine
              , init_state => InitState
-             , svr_list => SvrList
+             , svr_map => SvrMap
              },
     start(State).
 
@@ -106,6 +107,8 @@ status() ->
 restart(NewState) ->
     gen_server:call(?MODULE, {restart, NewState}).
 
+server_up(Svr) ->
+    gen_server:call(?MODULE, {server_up, Svr}).
 
 %% initialize server with state
 init( [State] ) ->
@@ -126,7 +129,7 @@ handle_call( status, From, State ) ->
     {reply, Response, State};
 
 handle_call( {restart, NewState} , From, _State ) ->
-    lager:debug( "~p restart with ~p from ~p", [NewState, From] ),
+    lager:debug( "~p restart with ~p from ~p", [?MODULE, NewState, From] ),
     %% set State to NewState and respond with that new state
     Response = NewState,
     {reply, Response, NewState};
@@ -134,6 +137,18 @@ handle_call( {restart, NewState} , From, _State ) ->
 handle_call(terminate, _From, State) ->
     lager:info( "~p got terminate", [?MODULE] ),
     {stop, normal, ok, State};
+
+handle_call( {server_up, Svr} , _From, State ) ->
+    lager:info( "~p got server_up ~p", [?MODULE, Svr] ),
+    %% get existing server map
+    SvrMapIn = maps:get(svr_map, State),
+    %% add Svr to server map
+    NewSvrMap = maps:put(Svr, true, SvrMapIn),
+    %% take old svr map out of state and put new on in
+    State2 = maps:remove(svr_map, State),
+    NewState = maps:put(svr_map, NewSvrMap, State2),
+    %% reply with ok and new state
+    {reply, ok, NewState};
 
 %% handle unknown call messages
 handle_call(Message, From, State) ->

@@ -86,7 +86,7 @@ test_contain(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"contain">>}
-                        , {<<"action_server">>, <<"contain_server">>}
+                        , {<<"action_server">>, <<"act_contain">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -132,7 +132,7 @@ test_contain_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"contain">>}
-                        , {<<"action_server">>, <<"contain_server">>}
+                        , {<<"action_server">>, <<"act_contain">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

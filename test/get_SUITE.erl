@@ -86,7 +86,7 @@ test_get(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"get">>}
-                        , {<<"action_server">>, <<"get_server">>}
+                        , {<<"action_server">>, <<"act_get">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_get_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"get">>}
-                        , {<<"action_server">>, <<"get_server">>}
+                        , {<<"action_server">>, <<"act_get">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

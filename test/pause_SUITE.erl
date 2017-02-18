@@ -86,7 +86,7 @@ test_pause(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"pause">>}
-                        , {<<"action_server">>, <<"pause_server">>}
+                        , {<<"action_server">>, <<"act_pause">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}
@@ -133,7 +133,7 @@ test_pause_again(_Config) ->
                         , {<<"good_json">>, true}
                         , {<<"has_action">>, true}
                         , {<<"action">>, <<"pause">>}
-                        , {<<"action_server">>, <<"pause_server">>}
+                        , {<<"action_server">>, <<"act_pause">>}
                         , {<<"action_valid">>, true}
                         , {<<"has_actuator">>, true}
                         , {<<"has_modifiers">>, true}

@@ -47,6 +47,7 @@ transform_state( OldMap ) ->
     unpid( Keys, OldMap, NewMap).
 
 add_pid(PidName, Pid, State) ->
+    lager:error("add_pid reached - fix this"),
     %% add PidName=>Pid to State in map at pids key
     OldPidMap = maps:get(pids, State),
     NewPidMap = maps:put(PidName, Pid, OldPidMap),
