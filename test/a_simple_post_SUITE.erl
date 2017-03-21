@@ -71,6 +71,9 @@ init_per_suite(Config) ->
 
     Config.
 
+end_per_suite(Config) ->
+    Config.
+
 test_get_ok(_Config) ->
 
     %% send request, get response, and deciper text response

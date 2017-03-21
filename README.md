@@ -19,11 +19,12 @@ ocas
       + [4.3 Playbook Simulator](#4.3)
       + [4.4 Implementation Template](#4.4)
    * [5. Organization of this software](#5)
-      + [5.1 status_handler](#5.1)
-      + [5.2 status_ok_handler](#5.2)
-      + [5.3 openc2_handler](#5.3)
-      + [5.4 Actions](#5.4)
-      + [5.5 More on software design](#5.5)
+      + [5.1 ok_handler](#5.1)
+      + [5.2 init_handler](#5.2)
+      + [5.3 status_handler](#5.3)
+      + [5.4 openc2_handler](#5.4)
+      + [5.5 Actions](#5.5)
+      + [5.6 More on software design](#5.6)
    * [6. Development Status](#6)
    * [7. Specification Coverage](#7)
    * [8. Examples](#8)
@@ -191,16 +192,22 @@ which map url’s to the handler callbacks to run:
 - /openc2 will run openc2_handler callbacks
    * receives the openc2 json, validates it, and executes what is in the openc2 command in the simulator
 
-###5.1 status_handler  <a id="5.1"></a>
-This is a future feature to allow those with administrative access
+###5.1 ok_handler <a id="5.1"></a>
+This is a command to simulator (not an openc2 command) to allow those with administrative access to validate simulator is running.
+This api returns a simple “ok” in either text, html, or json. This is to serve as a keepalive if one is needed.
+
+###5.2 init_handler <a id="5.2"></a>
+This is a command to simulator (not an openc2 command) to allow those with administrative access to initialize (or re-initialize) the simulator.
+For more information on initialization, please see 
+- (add link here).
+
+###5.3 status_handler  <a id="5.3"></a>
+This is a command to simulator (not an openc2 command) to allow those with administrative access
 to get status information about the simulator itself 
 (as opposed to about the network being simulated which would use openC2 commands). 
 At the current point this api takes no parameters 
 and returns the json for the state of the env server (if running).
 The env server is what maintains the high level state of the simulator.
-
-###5.2 status_ok_handler <a id="5.2"></a>
-This api returns a simple “ok” in either text, html, or json. This is to serve as a keepalive if one is needed.
 
 ###5.3 openc2_handler <a id="5.3"></a>
 This module is the heart of the simulator. 

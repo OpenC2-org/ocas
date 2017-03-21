@@ -63,6 +63,9 @@ init_per_suite(Config) ->
 
     Config.
 
+end_per_suite(Config) ->
+    Config.
+
 test_status0(_Config)  ->
     %% test http GET status from initial setup
     %% first totally restart the env server
