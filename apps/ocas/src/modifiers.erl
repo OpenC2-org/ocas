@@ -74,19 +74,7 @@ handle_modifiers( [NextKey | RestOfKeys ], ModifiersJson, Req, State ) ->
     State2 = process_modifier( NextKey, Value, Req, State),
 
     % recurse to next modifier
-    handle_modifiers( RestOfKeys, ModifiersJson, Req, State2 );
-
-handle_modifiers( _Keys, _ModifiersJson, Req, State ) ->
-    %% didn't match? handle error
-    lager:info("bad match on modifiers"),
-    {ok, Req2} = cowboy_req:reply( 400
-                                 , []
-                                 , <<"Problem with modifiers">>
-                                 , Req
-                                 ),
-
-    %% don't continue on, return because of unexpected response
-    {ok, Req2, State}.
+    handle_modifiers( RestOfKeys, ModifiersJson, Req, State2 ).
 
 process_modifier( <<"response">>, _Value, _Req, State) ->
     %% see if server already started

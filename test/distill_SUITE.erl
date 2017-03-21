@@ -59,6 +59,9 @@ init_per_suite(Config) ->
 
     Config.
 
+end_per_suite(Config) ->
+    Config.
+
 test_distill(_Config) ->
 
     ReqHeaders = [ {<<"content-type">>

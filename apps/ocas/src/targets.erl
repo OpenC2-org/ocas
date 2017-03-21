@@ -318,18 +318,7 @@ spawn_target( {network_scanner, NetworkScanner}, Req, State ) ->
                 , TargetKeepAlive
                 , Req
                 , State4
-                );
-
-spawn_target( {TargetType, Value},  Req, State ) ->
-    lager:info("spawn_target - no function head for ~p; Value=~p",
-               [TargetType, Value]),
-    %% no function for this target so reply accordingly
-    {ok, Req2} = cowboy_req:reply( 400
-                                 , []
-                                 , <<"Missing target function">>
-                                 , Req
-                                 ),
-    {ok, Req2, State}.
+                ).
 
 target_valid(_Target, TargetKeepAlive, Req, State) ->
     %% tail end recurse to verifying keepalive

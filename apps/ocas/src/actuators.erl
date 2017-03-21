@@ -222,18 +222,7 @@ spawn_actuator( {network_scanner, NetworkScanner}, Req, State ) ->
                 , ActuatorKeepAlive
                 , Req
                 , State4
-                );
-
-spawn_actuator( {ActuatorType, Value},  Req, State ) ->
-    lager:info("spawn_actuator - no function head for ~p; Value=~p",
-               [ActuatorType, Value]),
-    %% no function for this actuator so reply accordingly
-    {ok, Req2} = cowboy_req:reply( 400
-                                 , []
-                                 , <<"Missing actuator function">>
-                                 , Req
-                                 ),
-    {ok, Req2, State}.
+                ).
 
 actuator_valid(_Actuator, ActuatorKeepAlive, Req, State) ->
     %% actuator was valid so update State
