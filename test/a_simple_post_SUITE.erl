@@ -35,6 +35,7 @@
 -include_lib("./include/mitigate01.hrl").
 -include_lib("./include/nonsense_action.hrl").
 -include_lib("./include/bad_json.hrl").
+-include_lib("./include/missing_action.hrl").
 -include_lib("./include/mitigate_wo_target.hrl").
 
 %% tests to run
@@ -46,6 +47,7 @@ all() ->
     , test_unsupported_media_type
     , test_bad_json
     , test_bad_action
+    , test_missing_action
     , test_missing_target
     ].
 
@@ -336,12 +338,59 @@ test_bad_action(_Config) ->
     %% test proper reponse to bad input (unrecognized action)
 
     MyPort = application:get_env(ocas, port, 8080),
-    %%lager:info("test_post:port= ~p", [MyPort]),
     {ok, Conn} = shotgun:open("localhost", MyPort),
     Headers = [ {<<"content-type">>, <<"application/json">>} ],
 
     %% give an invalid action
     SomeJson = ?NONSENSE,
+
+    %% validate Json
+    true = jsx:is_json(SomeJson),
+
+    Body = SomeJson,
+
+    Options = #{},
+
+    %% send json command to openc2
+    {ok, Response} = shotgun:post(Conn, "/openc2", Headers, Body, Options),
+
+    %% verify got 400 (bad request) for status code
+    #{ status_code := 400 } = Response,
+
+    #{ headers := RespHeaders} = Response,
+    #{ body := RespBody } = Response,
+
+    %% test header contents are correct
+    { <<"server">>, <<"Cowboy">>} =  lists:keyfind( <<"server">>
+                                                  , 1
+                                                  , RespHeaders
+                                                  ),
+    { <<"date">>, _Date } =  lists:keyfind(<<"date">>, 1, RespHeaders),
+    %% note content length is for error mesg "Missing action function"
+    { <<"content-length">>, <<"23">>} =  lists:keyfind( <<"content-length">>
+                                                      , 1
+                                                      , RespHeaders
+                                                      ),
+    %% not sure why error response is in html?
+    { <<"content-type">>, <<"text/html">>} =  lists:keyfind( <<"content-type">>
+                                                           , 1
+                                                           , RespHeaders
+                                                           ),
+
+    %% test body is what was expected
+    RespBody = <<"Missing action function">>,
+
+    ok.
+
+test_missing_action(_Config) ->
+    %% test proper reponse to bad input (missing action)
+
+    MyPort = application:get_env(ocas, port, 8080),
+    {ok, Conn} = shotgun:open("localhost", MyPort),
+    Headers = [ {<<"content-type">>, <<"application/json">>} ],
+
+    %% give an invalid action
+    SomeJson = ?MISSINGACTION,
 
     %% validate Json
     true = jsx:is_json(SomeJson),
@@ -371,7 +420,7 @@ test_bad_action(_Config) ->
                                                   ),
     { <<"date">>, _Date } =  lists:keyfind(<<"date">>, 1, RespHeaders),
     %% note content length is for error mesg "Missing action function"
-    { <<"content-length">>, <<"23">>} =  lists:keyfind( <<"content-length">>
+    { <<"content-length">>, <<"14">>} =  lists:keyfind( <<"content-length">>
                                                       , 1
                                                       , RespHeaders
                                                       ),
@@ -382,7 +431,7 @@ test_bad_action(_Config) ->
                                                            ),
 
     %% test body is what was expected
-    RespBody = <<"Missing action function">>,
+    RespBody = <<"Missing action">>,
 
     ok.
 
@@ -390,7 +439,6 @@ test_missing_target(_Config) ->
     %% test proper reponse to bad input (missing target)
 
     MyPort = application:get_env(ocas, port, 8080),
-    %%lager:info("test_post:port= ~p", [MyPort]),
     {ok, Conn} = shotgun:open("localhost", MyPort),
     Headers = [ {<<"content-type">>, <<"application/json">>} ],
 
