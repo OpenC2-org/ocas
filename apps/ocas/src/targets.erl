@@ -163,7 +163,7 @@ handle_device( <<"network_firewall">>, Req, State) ->
             %% spawn process since not started yet
             spawn_target( {network_firewall, nonspecific} , Req, State );
         Started when is_pid(Started) ->
-            %% already started 
+            %% already started
             %% check with keep alive
             TargetKeepAlive = tgt_network_firewall:keepalive(),
             lager:debug("TargetKeepAlive: ~p ", [TargetKeepAlive]),
@@ -173,7 +173,8 @@ handle_device( <<"network_firewall">>, Req, State) ->
                         , Req
                         , State
                         )
-            %% need to handle actual fw instances (now just subbing with nonspecific)
+            %% need to handle actual fw instances
+               %% (now just subbing with nonspecific)
             %% need to handle multiple different firewall instances
     end;
 
@@ -207,7 +208,7 @@ handle_address(<<"ipv4-addr">>, Specifiers, Req, State ) ->
             State3 = maps:put(target_address_value, Ipv4Address, State2),
             spawn_target( {ipv4_address, Ipv4Address}, Req, State3 );
         Started when is_pid(Started) ->
-            %% already started 
+            %% already started
             %% check with keep alive
             TargetKeepAlive = tgt_ipv4_address:keepalive(),
             lager:debug("TargetKeepAlive: ~p ", [TargetKeepAlive]),

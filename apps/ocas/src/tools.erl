@@ -53,7 +53,7 @@ add_pid(PidName, Pid, State) ->
     NewPidMap = maps:put(PidName, Pid, OldPidMap),
     NewState = maps:put(pids, NewPidMap, State),
     NewState.
-    
+
 
 %% Private functions
 

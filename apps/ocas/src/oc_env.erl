@@ -67,11 +67,11 @@ start(State) ->
 first_start() ->
     %% initialize state of env server for simulator in language validation mode
     RestartCount = 0,
-    SvrMap = #{ oc_env => true },  
+    SvrMap = #{ oc_env => true },
     SimType = language,
     StartTime = erlang:timestamp(),
     StartTimeTuple = calendar:now_to_datetime(StartTime),
-    {{Year,Month,Day},{Hour,Minute,Second}} = StartTimeTuple,
+    {{Year, Month, Day}, {Hour, Minute, Second}} = StartTimeTuple,
     ReadableStartTime = #{ year => Year
                          , month => Month
                          , day => Day

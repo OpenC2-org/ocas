@@ -49,7 +49,7 @@ start_link() ->
 %%====================================================================
 
 %% Child :: {Id,StartFunc,Restart,Shutdown,Type,Modules}
--spec init([]) -> {'ok',{{'one_for_all',0,1},[]}}.
+-spec init([]) -> {'ok', {{'one_for_all', 0, 1}, []}}.
 init([]) ->
     {ok, { {one_for_all, 0, 1}, []} }.
 
