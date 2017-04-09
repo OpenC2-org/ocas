@@ -183,12 +183,12 @@ init_sim(<<"language">>, JsonMap, Req, State) ->
             lager:info("env was started prior"),
             %% already started - so reinitialize it as language simulator
             %% if needed get old state with reset count
-            RestartCount = restart_count(Restart), 
+            RestartCount = restart_count(Restart),
 
             %% stop all servers except env
             %%    for now, this trusts env knows the servers
             SvrMap = maps:get(svr_map, oc_env:status() ),
-            EnvSvrMap = maps:remove(oc_env,SvrMap),
+            EnvSvrMap = maps:remove(oc_env, SvrMap),
             EnvSvrList = maps:keys(EnvSvrMap),
 
             %% stop all servers
@@ -232,9 +232,10 @@ init_sim(<<"actuator">>, JsonMap, Req, State) ->
     lager:error(Need2),
 
     %% respond that env has been (re)initialized to actuator
+    ToDo01 = <<"Simulator init - actuator (not done yet)">>,
     {ok, Req2} = cowboy_req:reply(200
                                  , []
-                                 , <<"Simulator init - actuator (not done yet)">>
+                                 , ToDo01
                                  , Req
                                  ),
 
@@ -251,9 +252,10 @@ init_sim(<<"orchestrator">>, JsonMap, Req, State) ->
     Need1 = "need to do orchestrator init from jsonmap",
     Need2 = io_lib:format("~p: ~p", [Need1, JsonMap] ),
     lager:error(Need2),
+    ToDo02 = <<"Simulator init - orchestrator (not done yet)">>,
     {ok, Req2} = cowboy_req:reply(200
                                  , []
-                                 , <<"Simulator init - orchestrator (not done yet)">>
+                                 , ToDo02
                                  , Req
                                  ),
 
@@ -287,7 +289,7 @@ begin_state(language, RestartCount, SvrMap) ->
     SimType = language,
     StartTime = erlang:timestamp(),
     StartTimeTuple = calendar:now_to_datetime(StartTime),
-    {{Year,Month,Day},{Hour,Minute,Second}} = StartTimeTuple,
+    {{Year, Month, Day}, {Hour, Minute, Second}} = StartTimeTuple,
     ReadableStartTime = #{ year => Year
                          , month => Month
                          , day => Day
