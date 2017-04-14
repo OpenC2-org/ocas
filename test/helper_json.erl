@@ -59,7 +59,7 @@ read_file(Filename) ->
 post_oc2(JsonFileName, ResultsFileName, Config) ->
     %% read and validate json to send
     JsonTxt = read_json_file(JsonFileName, Config),
-    
+
     %% read and validate expected results
     ExpectedResultsTxt = read_json_file(ResultsFileName, Config),
 
@@ -130,7 +130,7 @@ check_headers(Response) ->
 check_keys(JsonMap, ExpectedResults) ->
     %% get expected keys
     ExpectedKeys = maps:get(<<"ExpectedJsonKeys">>, ExpectedResults),
-    
+
     %% get response keys
     ResponseKeys = maps:keys(JsonMap),
     lager:info("ResponseKeys: ~p", [ResponseKeys]),
@@ -159,7 +159,7 @@ check_json_values(JsonMap, ExpectedResults) ->
     %% get expected key/value map
     ExpectedJsonPairMap = maps:get(<<"ExpectedJsonPairs">>, ExpectedResults),
     ExpectedJsonPairs = maps:to_list(ExpectedJsonPairMap),
-    
+
     %% recurse thru {key,value} in ExpectedJsonPairs looking for match
     check_json_pair( ExpectedJsonPairs, JsonMap).
 

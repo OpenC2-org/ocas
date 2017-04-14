@@ -1,7 +1,8 @@
+%% @author Duncan Sparrell
+%% @copyright (C) 2016, sFractal Consulting LLC
 -module(act_allow).
+
 %%%-------------------------------------------------------------------
-%%% @author Duncan Sparrell
-%%% @copyright (C) 2016, sFractal Consulting LLC
 %%%
 %%% All rights reserved.
 %%% Licensed under the Apache License, Version 2.0 (the "License");
