@@ -1,5 +1,31 @@
 {
     "ExpectedStatus" : 200,
+    "ExpectedJsonKeys" : [ "has_http_body"
+                         , "good_json"
+                         , "has_action"
+                         , "action"
+                         , "action_server"
+                         , "action_valid"
+                         , "has_actuator"
+                         , "has_modifiers"
+                         , "has_target"
+                         , "action_keepalive"
+                         , "actuator_keepalive"
+                         , "actuator_server"
+                         , "actuator_type"
+                         , "actuator_valid"
+                         , "http_body"
+                         , "ipv4_address"
+                         , "json_map"
+                         , "network_firewall"
+                         , "pids"
+                         , "target"
+                         , "target_address_type"
+                         , "target_address_value"
+                         , "target_keepalive"
+                         , "target_server"
+                         , "target_type"
+                         ],
     "ExpectedJsonPairs" : { "has_http_body": true
                           , "good_json":     true
                           , "has_action":    true

@@ -54,6 +54,15 @@ init_per_suite(Config) ->
     application:set_env(ocas, port, 8080),
     application:set_env(ocas, listener_count, 5),
 
+    %% set up logging
+    application:set_env(lager
+                       , handlers
+                       , [ {lager_console_backend, debug}
+                         , {lager_common_test_backend, debug}
+                         ]
+                       ),
+    lager:set_loglevel(lager_console_backend, debug),
+
     %% start application
     {ok, _AppList3} = application:ensure_all_started(ocas),
 
@@ -64,114 +73,20 @@ end_per_suite(Config) ->
 
 test_allow(Config) ->
 
-    %% retrieve the json filename
-    JsonFile = filename:join( ?config( data_dir, Config ), "allow01.json" ),
-    lager:debug("testdata: ~p", [JsonFile]),
-
-    %% retrieve the text in json file
-    {ok, Json} = file:read_file(JsonFile),
-
-    %% validate the json
-    true = jsx:is_json(Json),
-
-    %% retrieve the expected results (in json)
-    JsonExpFile = filename:join( ?config( data_dir, Config )
-                               , "allow01.results.json" ),
-
-    %% retrieve the text in json file
-    {ok, JsonResultsTxt} = file:read_file(JsonExpFile),
-
-    true = jsx:is_json(JsonResultsTxt),
-
-    %% convert to erlang terms
-    JsonResults = jsx:decode(JsonResultsTxt, [return_maps]),
-
-%%%%%%%%%%%%%%%%
-
-    ReqHeaders = [ {<<"content-type">>
-                 , <<"application/json">>}
-                 ],
-
-    Url = "/openc2",
-
-    Options = #{},
-
-    %% send the json in the body of the request
-    ReqBody = Json,
-
-    %% expect to get the ExpectedStatus status code
-    ExpectedStatus = maps:get(<<"ExpectedStatus">>, JsonResults),
-
-    %% for now command to reply with dummy response (json of State)
-    %% decode the json and check for key/values of interest
-    ExpectedJsonPairs = [ {<<"has_http_body">>, true}
-                        , {<<"good_json">>, true}
-                        , {<<"has_action">>, true}
-                        , {<<"action">>, <<"allow">>}
-                        , {<<"action_server">>, <<"act_allow">>}
-                        , {<<"action_valid">>, true}
-                        , {<<"has_actuator">>, true}
-                        , {<<"has_modifiers">>, true}
-                        , {<<"has_target">>, true}
-                        , {<<"action_keepalive">>, true}
-                        ],
-%
-    ExpectedJsonPairs = maps:get(<<"ExpectedJsonPairs">>, JsonResults),
-
-    %% send request, test response
-    helper:send_recieve( ReqHeaders       % to send
-                , Options          % to send
-                , ReqBody          % to send
-                , Url              % to send
-                , ExpectedStatus  % test get this received
-                , ExpectedJsonPairs
-                ),
-
+    %% send allow01.json and get allow01.results.json
+    helper_json:post_oc2("allow01.json"
+                        , "allow01.results.json"
+                        , Config
+                        ),
     ok.
 
-test_allow_again(_Config) ->
+test_allow_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    helper_json:post_oc2("allow01.json"
+                        , "allow01.results.json"
+                        , Config
+                        ),
 
-    ReqHeaders = [ {<<"content-type">>
-                 , <<"application/json">>}
-                 ],
-
-    Url = "/openc2",
-
-    Options = #{},
-
-    Json = ?ALLOW01,
-
-    %% validate the json
-    true = jsx:is_json(Json),
-
-    %% send the json in the body of the request
-    ReqBody = Json,
-
-    %% expect to get 200 status code
-    ExpectedStatus = 200,
-
-    %% for now command to reply with dummy response (json of State)
-    %% decode the json and check for key/values of interest
-    ExpectedJsonPairs = [ {<<"has_http_body">>, true}
-                        , {<<"good_json">>, true}
-                        , {<<"has_action">>, true}
-                        , {<<"action">>, <<"allow">>}
-                        , {<<"action_server">>, <<"act_allow">>}
-                        , {<<"action_valid">>, true}
-                        , {<<"has_actuator">>, true}
-                        , {<<"has_modifiers">>, true}
-                        , {<<"has_target">>, true}
-                        , {<<"action_keepalive">>, true}
-                        ],
-
-    %% send request, test response
-    helper:send_recieve( ReqHeaders       % to send
-                , Options          % to send
-                , ReqBody          % to send
-                , Url              % to send
-                , ExpectedStatus  % test get this received
-                , ExpectedJsonPairs
-                ),
 
     ok.
 
