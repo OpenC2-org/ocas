@@ -1,5 +1,5 @@
 %% @author Duncan Sparrell
-%% @copyright (C) 2016, sFractal Consulting LLC
+%% @copyright (C) 2017, sFractal Consulting LLC
 -module(act_allow).
 
 %%%-------------------------------------------------------------------
