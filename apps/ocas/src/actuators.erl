@@ -141,7 +141,7 @@ spawn_actuator( {demense, all}, Req, State ) ->
 
     case Started of
         undefined ->
-            State2 = maps:put(actuator, demense, State),
+            State2 = maps:put(actuator_type, demense, State),
             %% spawn process since not started yet
             {ok, Pid} = acu_demense:start(State),
             State3 = tools:add_pid(acu_demense_pid, Pid, State2);
@@ -162,19 +162,19 @@ spawn_actuator( {demense, all}, Req, State ) ->
                 );
 
 spawn_actuator( {network_firewall, NetworkFirewall}, Req, State ) ->
+    State2 = maps:put(actuator_type, network_firewall, State),
+    State3 = maps:put(network_firewall, NetworkFirewall, State2),
     %% see if server already started
     Started = whereis(acu_network_firewall),
 
     case Started of
         undefined ->
-            State2 = maps:put(actuator, network_firewall, State),
-            State3 = maps:put(network_firewall, NetworkFirewall, State2),
             %% spawn process since not started yet
             {ok, Pid} = acu_network_firewall:start(State),
             State4 = tools:add_pid(acu_nfw_pid, Pid, State3);
         Started when is_pid(Started) ->
             %% to normalize State
-            State4 = State
+            State4 = tools:add_pid(acu_nfw_pid, Started, State3)
     end,
 
     %% check with keep alive
@@ -189,7 +189,7 @@ spawn_actuator( {network_firewall, NetworkFirewall}, Req, State ) ->
                 );
 
 spawn_actuator( {network_router, NetworkRouter}, Req, State ) ->
-    State2 = maps:put(actuator, network_router, State),
+    State2 = maps:put(actuator_type, network_router, State),
     State3 = maps:put(network_router, NetworkRouter, State2),
     %% start gen_server for that actuator
     {ok, Pid} = acu_network_router:start(State),
@@ -207,7 +207,7 @@ spawn_actuator( {network_router, NetworkRouter}, Req, State ) ->
                 );
 
 spawn_actuator( {network_scanner, NetworkScanner}, Req, State ) ->
-    State2 = maps:put(actuator, network_scanner, State),
+    State2 = maps:put(actuator_type, network_scanner, State),
     State3 = maps:put(network_scanner, NetworkScanner, State2),
     %% start gen_server for that actuator
     {ok, Pid} = acu_network_scanner:start(State),

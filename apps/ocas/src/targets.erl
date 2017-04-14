@@ -197,6 +197,10 @@ handle_device( UnknownDevice, Req, State) ->
 handle_address(<<"ipv4-addr">>, Specifiers, Req, State ) ->
     Ipv4Address = maps:get(<<"address-value">>, Specifiers, address_undefined),
     lager:debug("ipv4 ~p", [Ipv4Address] ),
+    State2 = maps:put(target, ipv4_address, State),
+    State3 = maps:put(target_address_type, ipv4, State2),
+    State4 = maps:put(target_address_value, Ipv4Address, State3),
+    State5 = maps:put(ipv4_address, Ipv4Address, State4),
 
     %% see if server already started
     Started = whereis(tgt_ipv4_address),
@@ -204,9 +208,7 @@ handle_address(<<"ipv4-addr">>, Specifiers, Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            State2 = maps:put(target_address_type, ipv4, State),
-            State3 = maps:put(target_address_value, Ipv4Address, State2),
-            spawn_target( {ipv4_address, Ipv4Address}, Req, State3 );
+            spawn_target( {ipv4_address, Ipv4Address}, Req, State5 );
         Started when is_pid(Started) ->
             %% already started
             %% check with keep alive
@@ -216,7 +218,7 @@ handle_address(<<"ipv4-addr">>, Specifiers, Req, State ) ->
             target_valid( {ipv4_address, Ipv4Address}
                         , TargetKeepAlive
                         , Req
-                        , State
+                        , State5
                         )
             %% need to handle multiple different ip instances
     end;
@@ -258,18 +260,16 @@ spawn_target( {hostname, HostName}, Req, State ) ->
     target_valid({hostname, HostName}, TargetKeepAlive, Req, State4);
 
 spawn_target( {ipv4_address, Ipv4Address}, Req, State ) ->
-    State2 = maps:put(target, ipv4_address, State),
-    State3 = maps:put(ipv4_address, Ipv4Address, State2),
     %% start gen_server for that target
     {ok, Pid} = tgt_ipv4_address:start(State),
-    State4 = tools:add_pid(tgt_ipv4_pid, Pid, State3),
+    State2 = tools:add_pid(tgt_ipv4_pid, Pid, State),
 
     %% check with keep alive
     TargetKeepAlive = tgt_ipv4_address:keepalive(),
     lager:debug("TargetKeepAlive: ~p ", [TargetKeepAlive]),
 
     %% tail end recurse
-    target_valid({ipv4_address, Ipv4Address}, TargetKeepAlive, Req, State4);
+    target_valid({ipv4_address, Ipv4Address}, TargetKeepAlive, Req, State2);
 
 spawn_target( {ipv6_address, Ipv6Address}, Req, State ) ->
     State2 = maps:put(target, ipv6_address, State),
