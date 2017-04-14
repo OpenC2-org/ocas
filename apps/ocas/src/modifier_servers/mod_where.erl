@@ -1,8 +1,8 @@
--module(mod_where).
-%%%-------------------------------------------------------------------
 %%% @author Duncan Sparrell
 %%% @copyright (C) 2016, sFractal Consulting LLC
 %%%
+-module(mod_where).
+%%%-------------------------------------------------------------------
 %%% All rights reserved.
 %%% Licensed under the Apache License, Version 2.0 (the "License");
 %%%
