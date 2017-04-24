@@ -146,10 +146,7 @@ check_key(_ResultKeys, [] ) ->
 check_key(ResultKeys, [Key | RestOfKeys] ) ->
     %% check key is in Results
     lager:info("check_key: ~p", [Key]),
-%    true = lists:member(Key, ResultKeys),
-    FixLater = lists:member(Key, ResultKeys),
-    lager:info("FixLater: ~p", [FixLater]),
-    true = FixLater,
+    true = lists:member(Key, ResultKeys),
 
     %% recurse thru rest of list
     check_key(ResultKeys, RestOfKeys).
@@ -159,6 +156,7 @@ check_json_values(JsonMap, ExpectedResults) ->
     %% get expected key/value map
     ExpectedJsonPairMap = maps:get(<<"ExpectedJsonPairs">>, ExpectedResults),
     ExpectedJsonPairs = maps:to_list(ExpectedJsonPairMap),
+    lager:info("ResponseMap: ~p", [JsonMap]),
 
     %% recurse thru {key,value} in ExpectedJsonPairs looking for match
     check_json_pair( ExpectedJsonPairs, JsonMap).

@@ -1,0 +1,7 @@
+{
+"action": "mitigate",
+"target": {
+    "domain_name": {"value":"cdn.badco.org"}
+    }
+}
+

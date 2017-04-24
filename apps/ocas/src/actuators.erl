@@ -138,16 +138,16 @@ handle_actuator_type(ActuatorType, _ActuatorJson, Req, State ) ->
 spawn_actuator( {demense, all}, Req, State ) ->
     %% see if server already started
     Started = whereis(acu_demense),
+    State2 = maps:put(actuator_type, demense, State),
 
     case Started of
         undefined ->
-            State2 = maps:put(actuator_type, demense, State),
             %% spawn process since not started yet
-            {ok, Pid} = acu_demense:start(State),
+            {ok, Pid} = acu_demense:start(State2),
             State3 = tools:add_pid(acu_demense_pid, Pid, State2);
         Started when is_pid(Started) ->
             %% to normalize State
-            State3 = State
+            State3 = tools:add_pid(acu_demense_pid, Started, State2)
     end,
 
     %% check with keep alive
@@ -191,9 +191,19 @@ spawn_actuator( {network_firewall, NetworkFirewall}, Req, State ) ->
 spawn_actuator( {network_router, NetworkRouter}, Req, State ) ->
     State2 = maps:put(actuator_type, network_router, State),
     State3 = maps:put(network_router, NetworkRouter, State2),
-    %% start gen_server for that actuator
-    {ok, Pid} = acu_network_router:start(State),
-    State4 = tools:add_pid(acu_rtr_pid, Pid, State3),
+
+    %% see if server already started
+    Started = whereis(acu_network_router),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = acu_network_router:start(State3),
+            State4 = tools:add_pid(acu_rtr_pid, Pid, State3);
+        Started when is_pid(Started) ->
+            %% to normalize State
+            State4 = tools:add_pid(acu_rtr_pid, Started, State3)
+    end,
 
     %% check with keep alive
     ActuatorKeepAlive = acu_network_router:keepalive(),

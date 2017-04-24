@@ -38,6 +38,8 @@
 all() ->
     [ test_allow
     , test_allow_again
+    , test_mitigate
+    , test_mitigate_again
     ].
 
 %% timeout if no reply in a minute
@@ -88,5 +90,24 @@ test_allow_again(Config) ->
                         ),
 
 
+    ok.
+
+test_mitigate(Config) ->
+
+    %% send command and compare expected results
+    helper_json:post_oc2("mitigate01.json"
+                        , "mitigate01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_mitigate_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+
+    %% send command and compare expected results
+    helper_json:post_oc2("mitigate01.json"
+                        , "mitigate01.results.json"
+                        , Config
+                        ),
     ok.
 
