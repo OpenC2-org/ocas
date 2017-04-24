@@ -1,8 +1,8 @@
--module(mod_delay).
-%%%-------------------------------------------------------------------
 %%% @author Duncan Sparrell
 %%% @copyright (C) 2016, sFractal Consulting LLC
 %%%
+-module(mod_delay).
+%%%-------------------------------------------------------------------
 %%% All rights reserved.
 %%% Licensed under the Apache License, Version 2.0 (the "License");
 %%%

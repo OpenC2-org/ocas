@@ -1,0 +1,15 @@
+{
+"action": "scan",
+"target": { 
+    "type": "cybox:Device",
+    "specifiers": "NetworkScanner"
+    },
+"actuator": {
+    "type": "network-scanner",
+    "specifiers": "scanner01"
+    },
+"modifiers": {
+    "response": "ack",
+    "where": "perimeter"
+    }
+}

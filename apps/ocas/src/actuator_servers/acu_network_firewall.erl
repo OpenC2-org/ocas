@@ -1,7 +1,8 @@
--module(acu_network_firewall).
-%%%-------------------------------------------------------------------
 %%% @author Duncan Sparrell
 %%% @copyright (C) 2016, sFractal Consulting LLC
+
+-module(acu_network_firewall).
+%%%-------------------------------------------------------------------
 %%%
 %%% All rights reserved.
 %%% Licensed under the Apache License, Version 2.0 (the "License");

@@ -1,11 +1,11 @@
+%%% @author Duncan Sparrell
+%%% @copyright (C) 2017, sFractal Consulting LLC
+%%%
 -module(tools).
 
 -author("Duncan Sparrell").
 -license("Apache 2.0").
 %%%-------------------------------------------------------------------
-%%% @author Duncan Sparrell
-%%% @copyright (C) 2016, sFractal Consulting LLC
-%%%
 %%% All rights reserved.
 %%%
 %%% Redistribution and use in source and binary forms, with or without
@@ -47,13 +47,12 @@ transform_state( OldMap ) ->
     unpid( Keys, OldMap, NewMap).
 
 add_pid(PidName, Pid, State) ->
-    lager:error("add_pid reached - fix this"),
     %% add PidName=>Pid to State in map at pids key
     OldPidMap = maps:get(pids, State),
     NewPidMap = maps:put(PidName, Pid, OldPidMap),
     NewState = maps:put(pids, NewPidMap, State),
     NewState.
-    
+
 
 %% Private functions
 

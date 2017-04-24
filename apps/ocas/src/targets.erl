@@ -1,10 +1,10 @@
+%%% @author Duncan Sparrell
+%%% @copyright (C) 2017, sFractal Consulting LLC
+%%%
 -module(targets).
 -author("Duncan Sparrell").
 -license("Apache 2.0").
 %%%-------------------------------------------------------------------
-%%% @author Duncan Sparrell
-%%% @copyright (C) 2016, sFractal Consulting LLC
-%%%
 %%% All rights reserved.
 %%%
 %%% Redistribution and use in source and binary forms, with or without
@@ -51,12 +51,12 @@ get_target(false, Req, State ) ->
     {ok, Req2, State};
 
 get_target(true, Req, State ) ->
-    %% HasTarget=true so get process it
+    %% HasTarget=true so process it
 
     %% get target info
     JsonMap = maps:get(json_map, State),
 
-    TargetJson = maps:get(<<"target">>, JsonMap, target_undefined),
+    TargetJson = maps:get(<<"target">>, JsonMap, target_type_undefined),
     lager:info("target json: ~p", [TargetJson]),
 
     %% get type of target
@@ -80,7 +80,7 @@ handle_target_type(target_type_undefined, _TargetJson, Req, State ) ->
 
 handle_target_type(<<"cybox:hostname">>, TargetJson, Req, State ) ->
     %% target is a hostname
-    State2 = maps:put(target_type, hostname, State),
+    State2 = maps:put(target, hostname, State),
 
     %% later on put this in hostname module to be more generic
 
@@ -91,6 +91,7 @@ handle_target_type(<<"cybox:hostname">>, TargetJson, Req, State ) ->
     %% hostname type should have specifier of hostname_value
     HostName = maps:get(<<"hostname_value">>, Specifiers, hostname_undefined),
     lager:info("hostname: ~p", [HostName] ),
+    State3 = maps:put(hostname, HostName, State2),
 
     %% see if server already started
     Started = whereis(tgt_hostname),
@@ -98,14 +99,15 @@ handle_target_type(<<"cybox:hostname">>, TargetJson, Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet, and tail end recurse
-            spawn_target( {hostname, HostName}, Req, State2 );
+            spawn_target( {hostname, HostName}, Req, State3 );
         Started when is_pid(Started) ->
             %% already started
+            State4 = tools:add_pid(tgt_hostname_pid, Started, State3),
             %% check with keep alive
             TargetKeepAlive = tgt_hostname:keepalive(),
             lager:debug("TargetKeepAlive: ~p ", [TargetKeepAlive]),
             %% tail end recurse
-            target_valid({hostname, HostName}, TargetKeepAlive, Req, State2)
+            target_valid({hostname, HostName}, TargetKeepAlive, Req, State4)
     end;
 
 handle_target_type(<<"cybox:address">>, TargetJson, Req, State ) ->
@@ -163,7 +165,7 @@ handle_device( <<"network_firewall">>, Req, State) ->
             %% spawn process since not started yet
             spawn_target( {network_firewall, nonspecific} , Req, State );
         Started when is_pid(Started) ->
-            %% already started 
+            %% already started
             %% check with keep alive
             TargetKeepAlive = tgt_network_firewall:keepalive(),
             lager:debug("TargetKeepAlive: ~p ", [TargetKeepAlive]),
@@ -173,7 +175,8 @@ handle_device( <<"network_firewall">>, Req, State) ->
                         , Req
                         , State
                         )
-            %% need to handle actual fw instances (now just subbing with nonspecific)
+            %% need to handle actual fw instances
+               %% (now just subbing with nonspecific)
             %% need to handle multiple different firewall instances
     end;
 
@@ -196,6 +199,10 @@ handle_device( UnknownDevice, Req, State) ->
 handle_address(<<"ipv4-addr">>, Specifiers, Req, State ) ->
     Ipv4Address = maps:get(<<"address-value">>, Specifiers, address_undefined),
     lager:debug("ipv4 ~p", [Ipv4Address] ),
+    State2 = maps:put(target, ipv4_address, State),
+    State3 = maps:put(target_address_type, ipv4, State2),
+    State4 = maps:put(target_address_value, Ipv4Address, State3),
+    State5 = maps:put(ipv4_address, Ipv4Address, State4),
 
     %% see if server already started
     Started = whereis(tgt_ipv4_address),
@@ -203,11 +210,9 @@ handle_address(<<"ipv4-addr">>, Specifiers, Req, State ) ->
     case Started of
         undefined ->
             %% spawn process since not started yet
-            State2 = maps:put(target_address_type, ipv4, State),
-            State3 = maps:put(target_address_value, Ipv4Address, State2),
-            spawn_target( {ipv4_address, Ipv4Address}, Req, State3 );
+            spawn_target( {ipv4_address, Ipv4Address}, Req, State5 );
         Started when is_pid(Started) ->
-            %% already started 
+            %% already started
             %% check with keep alive
             TargetKeepAlive = tgt_ipv4_address:keepalive(),
             lager:debug("TargetKeepAlive: ~p ", [TargetKeepAlive]),
@@ -215,7 +220,7 @@ handle_address(<<"ipv4-addr">>, Specifiers, Req, State ) ->
             target_valid( {ipv4_address, Ipv4Address}
                         , TargetKeepAlive
                         , Req
-                        , State
+                        , State5
                         )
             %% need to handle multiple different ip instances
     end;
@@ -243,32 +248,28 @@ handle_address(AddressType, _Specifiers, Req, State ) ->
 
 %% spawn target servers
 spawn_target( {hostname, HostName}, Req, State ) ->
-    State2 = maps:put(target, hostname, State),
-    State3 = maps:put(hostname, HostName, State2),
     %% start gen_server for that target
     {ok, Pid} = tgt_hostname:start(State),
-    State4 = tools:add_pid(tgt_hostname_pid, Pid, State3),
+    State2 = tools:add_pid(tgt_hostname_pid, Pid, State),
 
     %% check with keep alive
     TargetKeepAlive = tgt_hostname:keepalive(),
     lager:debug("TargetKeepAlive: ~p ", [TargetKeepAlive]),
 
     %% tail end recurse
-    target_valid({hostname, HostName}, TargetKeepAlive, Req, State4);
+    target_valid({hostname, HostName}, TargetKeepAlive, Req, State2);
 
 spawn_target( {ipv4_address, Ipv4Address}, Req, State ) ->
-    State2 = maps:put(target, ipv4_address, State),
-    State3 = maps:put(ipv4_address, Ipv4Address, State2),
     %% start gen_server for that target
     {ok, Pid} = tgt_ipv4_address:start(State),
-    State4 = tools:add_pid(tgt_ipv4_pid, Pid, State3),
+    State2 = tools:add_pid(tgt_ipv4_pid, Pid, State),
 
     %% check with keep alive
     TargetKeepAlive = tgt_ipv4_address:keepalive(),
     lager:debug("TargetKeepAlive: ~p ", [TargetKeepAlive]),
 
     %% tail end recurse
-    target_valid({ipv4_address, Ipv4Address}, TargetKeepAlive, Req, State4);
+    target_valid({ipv4_address, Ipv4Address}, TargetKeepAlive, Req, State2);
 
 spawn_target( {ipv6_address, Ipv6Address}, Req, State ) ->
     State2 = maps:put(target, ipv6_address, State),

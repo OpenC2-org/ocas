@@ -1,10 +1,10 @@
+%%% @author Duncan Sparrell
+%%% @copyright (C) 2017, sFractal Consulting LLC
+%%%
 -module(actuators).
 -author("Duncan Sparrell").
 -license("Apache 2.0").
 %%%-------------------------------------------------------------------
-%%% @author Duncan Sparrell
-%%% @copyright (C) 2016, sFractal Consulting LLC
-%%%
 %%% All rights reserved.
 %%%
 %%% Redistribution and use in source and binary forms, with or without
@@ -138,16 +138,16 @@ handle_actuator_type(ActuatorType, _ActuatorJson, Req, State ) ->
 spawn_actuator( {demense, all}, Req, State ) ->
     %% see if server already started
     Started = whereis(acu_demense),
+    State2 = maps:put(actuator_type, demense, State),
 
     case Started of
         undefined ->
-            State2 = maps:put(actuator, demense, State),
             %% spawn process since not started yet
-            {ok, Pid} = acu_demense:start(State),
+            {ok, Pid} = acu_demense:start(State2),
             State3 = tools:add_pid(acu_demense_pid, Pid, State2);
         Started when is_pid(Started) ->
             %% to normalize State
-            State3 = State
+            State3 = tools:add_pid(acu_demense_pid, Started, State2)
     end,
 
     %% check with keep alive
@@ -162,19 +162,19 @@ spawn_actuator( {demense, all}, Req, State ) ->
                 );
 
 spawn_actuator( {network_firewall, NetworkFirewall}, Req, State ) ->
+    State2 = maps:put(actuator_type, network_firewall, State),
+    State3 = maps:put(network_firewall, NetworkFirewall, State2),
     %% see if server already started
     Started = whereis(acu_network_firewall),
 
     case Started of
         undefined ->
-            State2 = maps:put(actuator, network_firewall, State),
-            State3 = maps:put(network_firewall, NetworkFirewall, State2),
             %% spawn process since not started yet
             {ok, Pid} = acu_network_firewall:start(State),
             State4 = tools:add_pid(acu_nfw_pid, Pid, State3);
         Started when is_pid(Started) ->
             %% to normalize State
-            State4 = State
+            State4 = tools:add_pid(acu_nfw_pid, Started, State3)
     end,
 
     %% check with keep alive
@@ -189,11 +189,21 @@ spawn_actuator( {network_firewall, NetworkFirewall}, Req, State ) ->
                 );
 
 spawn_actuator( {network_router, NetworkRouter}, Req, State ) ->
-    State2 = maps:put(actuator, network_router, State),
+    State2 = maps:put(actuator_type, network_router, State),
     State3 = maps:put(network_router, NetworkRouter, State2),
-    %% start gen_server for that actuator
-    {ok, Pid} = acu_network_router:start(State),
-    State4 = tools:add_pid(acu_rtr_pid, Pid, State3),
+
+    %% see if server already started
+    Started = whereis(acu_network_router),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = acu_network_router:start(State3),
+            State4 = tools:add_pid(acu_rtr_pid, Pid, State3);
+        Started when is_pid(Started) ->
+            %% to normalize State
+            State4 = tools:add_pid(acu_rtr_pid, Started, State3)
+    end,
 
     %% check with keep alive
     ActuatorKeepAlive = acu_network_router:keepalive(),
@@ -207,7 +217,7 @@ spawn_actuator( {network_router, NetworkRouter}, Req, State ) ->
                 );
 
 spawn_actuator( {network_scanner, NetworkScanner}, Req, State ) ->
-    State2 = maps:put(actuator, network_scanner, State),
+    State2 = maps:put(actuator_type, network_scanner, State),
     State3 = maps:put(network_scanner, NetworkScanner, State2),
     %% start gen_server for that actuator
     {ok, Pid} = acu_network_scanner:start(State),

@@ -1,5 +1,5 @@
 %%%-------------------------------------------------------------------
-%%% Copyright (c) 2016, sFractal Consulting, LLC
+%%% Copyright (c) 2017, sFractal Consulting, LLC
 
 %%% Licensed under the Apache License, Version 2.0 (the "License");
 %%% you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ start_webserver() ->
           {"/status", status_handler, []}
         , {"/ok", status_ok_handler, []}  % returns ok if service working
         , {"/openc2", openc2_handler, []}    % handles the meat of openc2
-        , {"/init", init_handler, []}    % handles starting/restarting the simulator
+        , {"/init", init_handler, []}    % handles starting/restarting the sim
         ]
       }
     ],
