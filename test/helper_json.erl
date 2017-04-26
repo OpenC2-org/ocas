@@ -167,6 +167,7 @@ check_json_pair( [], _JsonMap) ->
 
 check_json_pair( [ {Key, Value} | RestOfExepectedPairs ], JsonMap) ->
     %% check in key/value in json map
+    lager:info("key/value: ~p/~p", [Key, Value]),
     Value = maps:get(Key, JsonMap),
 
     %% recurse on to next pair

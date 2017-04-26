@@ -28,8 +28,8 @@
     "ExpectedJsonPairs" : { "has_http_body": true
                           , "good_json":     true
                           , "has_action":    true
-                          , "action":        "allow"
-                          , "action_server": "act_allow"
+                          , "action":        "deny"
+                          , "action_server": "act_deny"
                           , "action_valid":  true
                           , "has_actuator":  true
                           , "has_modifiers": true

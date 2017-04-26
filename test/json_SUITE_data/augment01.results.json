@@ -1,39 +1,40 @@
 {
     "ExpectedStatus" : 200,
-    "ExpectedJsonKeys" : [ "has_http_body"
-                         , "good_json"
-                         , "has_action"
-                         , "action"
+    "ExpectedJsonKeys" : [ "action"
                          , "action_server"
                          , "action_valid"
-                         , "has_actuator"
-                         , "has_modifiers"
-                         , "has_target"
                          , "action_keepalive"
                          , "actuator_keepalive"
                          , "actuator_server"
                          , "actuator_type"
                          , "actuator_valid"
-                         , "http_body"
-                         , "ipv4_address"
+                         , "good_json"
+                         , "has_action"
+                         , "has_actuator"
+                         , "has_http_body"
+                         , "has_modifiers"
+                         , "has_target"
                          , "json_map"
                          , "network_firewall"
                          , "pids"
                          , "target"
-                         , "target_address_type"
-                         , "target_address_value"
                          , "target_keepalive"
                          , "target_server"
                          ],
-    "ExpectedJsonPairs" : { "has_http_body": true
+    "ExpectedJsonPairs" : { "action":        "augment"
+                          , "action_keepalive": true
+                          , "action_server": "act_augment"
+                          , "action_valid":  true
+                          , "actuator_keepalive": true
+                          , "actuator_server" :"acu_network_firewall_server"
+                          , "actuator_type" : "network_firewall"
+                          , "actuator_valid":  true
                           , "good_json":     true
                           , "has_action":    true
-                          , "action":        "allow"
-                          , "action_server": "act_allow"
-                          , "action_valid":  true
                           , "has_actuator":  true
+                          , "has_http_body": true
                           , "has_modifiers": true
                           , "has_target":    true
-                          , "action_keepalive": true
+                          , "target_keepalive" : true
                           } 
 }

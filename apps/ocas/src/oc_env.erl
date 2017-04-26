@@ -92,10 +92,11 @@ first_start() ->
 
 
 stop() ->
+    %% cast (in contrat to terminate which uses call)
     gen_server:cast(?MODULE, shutdown).
 
 terminate() ->
-    %% call vs stop is cast
+    %% call (in contrat to stop which uses cast)
     gen_server:call(?MODULE, terminate).
 
 keepalive() ->

@@ -219,9 +219,19 @@ spawn_actuator( {network_router, NetworkRouter}, Req, State ) ->
 spawn_actuator( {network_scanner, NetworkScanner}, Req, State ) ->
     State2 = maps:put(actuator_type, network_scanner, State),
     State3 = maps:put(network_scanner, NetworkScanner, State2),
-    %% start gen_server for that actuator
-    {ok, Pid} = acu_network_scanner:start(State),
-    State4 = tools:add_pid(acu_scanner_pid, Pid, State3),
+
+    %% see if server already started
+    Started = whereis(acu_network_scanner),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            {ok, Pid} = acu_network_scanner:start(State3),
+            State4 = tools:add_pid(acu_scr_pid, Pid, State3);
+        Started when is_pid(Started) ->
+            %% to normalize State
+            State4 = tools:add_pid(acu_scr_pid, Started, State3)
+    end,
 
     %% check with keep alive
     ActuatorKeepAlive = acu_network_scanner:keepalive(),
