@@ -1,12 +1,12 @@
 {
-"action": "scan",
+"action": "query",
 "target": { 
     "type": "cybox:device",
-    "specifiers": "network_scanner"
+    "specifiers": "network_firewall"
     },
 "actuator": {
-    "type": "network-scanner",
-    "specifiers": "scanner01"
+    "type": "network-firewall",
+    "specifiers": "fw01"
     },
 "modifiers": {
     "response": "ack",

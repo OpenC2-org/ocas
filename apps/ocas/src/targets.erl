@@ -112,7 +112,7 @@ handle_target_type(<<"cybox:hostname">>, TargetJson, Req, State ) ->
 
 handle_target_type(<<"cybox:address">>, TargetJson, Req, State ) ->
     %% target is a address
-    State2 = maps:put(target_type, address, State),
+    State2 = maps:put(target, address, State),
 
     %% later on put this in address module to be more generic
 
@@ -130,7 +130,7 @@ handle_target_type(<<"cybox:address">>, TargetJson, Req, State ) ->
 
 handle_target_type(<<"cybox:device">>, TargetJson, Req, State ) ->
     %% target is a device
-    State2 = maps:put(target_type, device, State),
+    State2 = maps:put(target, device, State),
 
     %% get specifiers
     Specifiers = maps:get(<<"specifiers">>, TargetJson),
@@ -181,8 +181,29 @@ handle_device( <<"network_firewall">>, Req, State) ->
     end;
 
 handle_device( <<"network_scanner">>, Req, State) ->
-    %%   when get beyond one command, need to check first if already exists
-    spawn_target( {network_scanner, nonspecific} , Req, State );
+    State2 = maps:put(target, network_scanner, State),
+    %% check if already running and if not, then start
+    Started = whereis(tgt_network_scanner),
+
+    case Started of
+        undefined ->
+            %% spawn process since not started yet
+            spawn_target( {network_scanner, nonspecific} , Req, State2 );
+        Started when is_pid(Started) ->
+            %% already started
+            %% check with keep alive
+            TargetKeepAlive = tgt_network_scanner:keepalive(),
+            lager:debug("TargetKeepAlive: ~p ", [TargetKeepAlive]),
+            %% tail recurse on
+            target_valid( {network_scanner, nonspecific}
+                        , TargetKeepAlive
+                        , Req
+                        , State2
+                        )
+            %% need to handle actual fw instances
+               %% (now just subbing with nonspecific)
+            %% need to handle multiple different firewall instances
+    end;
 
 handle_device( UnknownDevice, Req, State) ->
     %% ? dont know that Device
