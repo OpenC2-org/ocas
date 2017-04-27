@@ -1,5 +1,5 @@
 {
-"action": "update",
+"action": "cancel",
 "target": { 
     "type": "cybox:device",
     "specifiers": "network_firewall"
