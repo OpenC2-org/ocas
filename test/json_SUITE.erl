@@ -31,15 +31,14 @@
 %% required for common_test to work
 -include_lib("common_test/include/ct.hrl").
 
-%% remove this once working
--include_lib("./include/allow01.hrl").
-
 %% tests to run
 all() ->
     [ test_allow
     , test_allow_again
     , test_augment
     , test_augment_again
+    , test_cancel
+    , test_cancel_again
     , test_deny
     , test_deny_again
     , test_mitigate
@@ -50,6 +49,8 @@ all() ->
     , test_remediate_again
     , test_scan
     , test_scan_again
+    , test_update
+    , test_update_again
     ].
 
 %% timeout if no reply in a minute
@@ -138,6 +139,22 @@ test_augment_again(Config) ->
                         ),
     ok.
 
+test_cancel(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2("cancel01.json"
+                        , "cancel01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_cancel_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2("cancel01.json"
+                        , "cancel01.results.json"
+                        , Config
+                        ),
+    ok.
 test_deny(Config) ->
     %% send command and compare expected results
     helper_json:post_oc2("deny01.json"
@@ -202,6 +219,23 @@ test_scan_again(Config) ->
     %% send command and compare expected results
     helper_json:post_oc2("scan01.json"
                         , "scan01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_update(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2("update01.json"
+                        , "update01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_update_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2("update01.json"
+                        , "update01.results.json"
                         , Config
                         ),
     ok.
