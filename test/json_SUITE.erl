@@ -39,8 +39,18 @@ all() ->
     , test_augment_again
     , test_cancel
     , test_cancel_again
+    , test_contain
+    , test_contain_again
+    , test_copy
+    , test_copy_again
+    , test_delay
+    , test_delay_again
+    , test_delete
+    , test_delete_again
     , test_deny
     , test_deny_again
+    , test_detonate
+    , test_detonate_again
     , test_mitigate
     , test_mitigate_again
     , test_query
@@ -49,6 +59,8 @@ all() ->
     , test_remediate_again
     , test_scan
     , test_scan_again
+    , test_throttle
+    , test_throttle_again
     , test_update
     , test_update_again
     ].
@@ -155,9 +167,78 @@ test_cancel_again(Config) ->
                         , Config
                         ),
     ok.
+
+test_contain(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2("contain01.json"
+                        , "contain01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_contain_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2("contain01.json"
+                        , "contain01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_copy(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2("copy01.json"
+                        , "copy01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_copy_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "copy01.json"
+                        , "copy01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_delay(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "delay01.json"
+                        , "delay01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_delay_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "delay01.json"
+                        , "delay01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_delete(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "delete01.json"
+                        , "delete01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_delete_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "delete01.json"
+                        , "delete01.results.json"
+                        , Config
+                        ),
+    ok.
+
 test_deny(Config) ->
     %% send command and compare expected results
-    helper_json:post_oc2("deny01.json"
+    helper_json:post_oc2( "deny01.json"
                         , "deny01.results.json"
                         , Config
                         ),
@@ -166,8 +247,25 @@ test_deny(Config) ->
 test_deny_again(Config) ->
     %% run again to exercise different legs of code when servers already running
     %% send command and compare expected results
-    helper_json:post_oc2("deny01.json"
+    helper_json:post_oc2( "deny01.json"
                         , "deny01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_detonate(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "detonate01.json"
+                        , "detonate01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_detonate_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "detonate01.json"
+                        , "detonate01.results.json"
                         , Config
                         ),
     ok.
@@ -219,6 +317,23 @@ test_scan_again(Config) ->
     %% send command and compare expected results
     helper_json:post_oc2("scan01.json"
                         , "scan01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_throttle(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2("throttle01.json"
+                        , "throttle01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_throttle_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2("throttle01.json"
+                        , "throttle01.results.json"
                         , Config
                         ),
     ok.
