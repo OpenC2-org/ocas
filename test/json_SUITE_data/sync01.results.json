@@ -1,0 +1,42 @@
+{
+    "ExpectedStatus" : 200,
+    "ExpectedJsonKeys" : [ "action"
+                         , "action_keepalive"
+                         , "action_server"
+                         , "action_valid"
+                         , "actuator_keepalive"
+                         , "actuator_server"
+                         , "actuator_type"
+                         , "actuator_valid"
+                         , "good_json"
+                         , "has_action"
+                         , "has_actuator"
+                         , "has_http_body"
+                         , "has_modifiers"
+                         , "has_target"
+                         , "http_body"
+                         , "json_map"
+                         , "pids"
+                         , "target"
+                         , "target_keepalive"
+                         , "target_server"
+                         ],
+    "ExpectedJsonPairs" : { "action"          : "sync"
+                          , "action_keepalive": true
+                          , "action_server"   : "act_sync"
+                          , "action_valid"    : true
+                          , "actuator_keepalive": true
+                          , "actuator_server" : "acu_network_firewall_server"
+                          , "actuator_type"   : "network_firewall"
+                          , "actuator_valid"  : true
+                          , "good_json"       : true
+                          , "has_action"      : true
+                          , "has_actuator"    : true
+                          , "has_http_body"   : true
+                          , "has_modifiers"   : true
+                          , "has_target"      : true
+                          , "target"          : "device"
+                          , "target_keepalive": true
+                          , "target_server"   : "tgt_network_firewall_server"
+                          } 
+}
