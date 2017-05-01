@@ -59,16 +59,40 @@ all() ->
     , test_get_again
     , test_investigate
     , test_investigate_again
-    , test_mitigate
-    , test_mitigate_again
     , test_locate
     , test_locate_again
+    , test_mitigate
+    , test_mitigate_again
+    , test_modify
+    , test_modify_again
+    , test_move
+    , test_move_again
+    , test_notify
+    , test_notify_again
+    , test_pause
+    , test_pause_again
     , test_query
     , test_query_again
     , test_remediate
     , test_remediate_again
+    , test_redirect
+    , test_redirect_again
+    , test_report
+    , test_report_again
+    , test_restart
+    , test_restart_again
+    , test_restore
+    , test_restore_again
+    , test_resume
+    , test_resume_again
+    , test_save
+    , test_save_again
     , test_scan
     , test_scan_again
+    , test_set
+    , test_set_again
+    , test_snapshot
+    , test_snapshot_again
     , test_start
     , test_start_again
     , test_stop
@@ -322,40 +346,6 @@ test_get_again(Config) ->
                         ),
     ok.
 
-test_locate(Config) ->
-    %% send command and compare expected results
-    helper_json:post_oc2( "locate01.json"
-                        , "locate01.results.json"
-                        , Config
-                        ),
-    ok.
-
-test_locate_again(Config) ->
-    %% run again to exercise different legs of code when servers already running
-    %% send command and compare expected results
-    helper_json:post_oc2( "locate01.json"
-                        , "locate01.results.json"
-                        , Config
-                        ),
-    ok.
-
-test_query(Config) ->
-    %% send command and compare expected results
-    helper_json:post_oc2( "query01.json"
-                        , "query01.results.json"
-                        , Config
-                        ),
-    ok.
-
-test_query_again(Config) ->
-    %% run again to exercise different legs of code when servers already running
-    %% send command and compare expected results
-    helper_json:post_oc2( "query01.json"
-                        , "query01.results.json"
-                        , Config
-                        ),
-    ok.
-
 test_investigate(Config) ->
     %% send command and compare expected results
     helper_json:post_oc2( "investigate01.json"
@@ -369,6 +359,23 @@ test_investigate_again(Config) ->
     %% send command and compare expected results
     helper_json:post_oc2( "investigate01.json"
                         , "investigate01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_locate(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "locate01.json"
+                        , "locate01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_locate_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "locate01.json"
+                        , "locate01.results.json"
                         , Config
                         ),
     ok.
@@ -391,6 +398,92 @@ test_mitigate_again(Config) ->
                         ),
     ok.
 
+test_modify(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "modify01.json"
+                        , "modify01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_modify_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "modify01.json"
+                        , "modify01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_move(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "move01.json"
+                        , "move01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_move_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "move01.json"
+                        , "move01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_notify(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "notify01.json"
+                        , "notify01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_notify_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "notify01.json"
+                        , "notify01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_pause(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "pause01.json"
+                        , "pause01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_pause_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "pause01.json"
+                        , "pause01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_query(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "query01.json"
+                        , "query01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_query_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "query01.json"
+                        , "query01.results.json"
+                        , Config
+                        ),
+    ok.
+
+
 test_remediate(Config) ->
     %% send command and compare expected results
     helper_json:post_oc2( "remediate01.json"
@@ -408,6 +501,108 @@ test_remediate_again(Config) ->
                         ),
     ok.
 
+test_redirect(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "redirect01.json"
+                        , "redirect01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_redirect_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "redirect01.json"
+                        , "redirect01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_report(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "report01.json"
+                        , "report01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_report_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "report01.json"
+                        , "report01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_restart(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "restart01.json"
+                        , "restart01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_restart_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "restart01.json"
+                        , "restart01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_restore(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "restore01.json"
+                        , "restore01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_restore_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "restore01.json"
+                        , "restore01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_resume(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "resume01.json"
+                        , "resume01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_resume_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "resume01.json"
+                        , "resume01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_save(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "save01.json"
+                        , "save01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_save_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "save01.json"
+                        , "save01.results.json"
+                        , Config
+                        ),
+    ok.
+
 test_scan(Config) ->
     %% send command and compare expected results
     helper_json:post_oc2( "scan01.json"
@@ -421,6 +616,40 @@ test_scan_again(Config) ->
     %% send command and compare expected results
     helper_json:post_oc2( "scan01.json"
                         , "scan01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_set(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "set01.json"
+                        , "set01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_set_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "set01.json"
+                        , "set01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_snapshot(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "snapshot01.json"
+                        , "snapshot01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_snapshot_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "snapshot01.json"
+                        , "snapshot01.results.json"
                         , Config
                         ),
     ok.
