@@ -71,7 +71,7 @@ test_status0(_Config)  ->
     %% first totally restart the env server
     send_init(?ENV01, 0),
 
-    %% check status 
+    %% check status
     test_status(0).
 
 test_init_lang(Config)  ->
