@@ -42,10 +42,163 @@ stop( [] ) ->
     %% empty list so done
     ok;
 
+%% stop first server on list and recurse
+stop( [ act_augment |  NewSvrList ] ) ->
+    act_augment:stop(),
+    stop(NewSvrList);
+
+stop( [ act_cancel |  NewSvrList ] ) ->
+    act_cancel:stop(),
+    stop(NewSvrList);
+
+stop( [ act_contain |  NewSvrList ] ) ->
+    act_contain:stop(),
+    stop(NewSvrList);
+
+stop( [ act_copy |  NewSvrList ] ) ->
+    act_copy:stop(),
+    stop(NewSvrList);
+
+stop( [ act_delay |  NewSvrList ] ) ->
+    act_delay:stop(),
+    stop(NewSvrList);
+
+stop( [ act_deny |  NewSvrList ] ) ->
+    act_deny:stop(),
+    stop(NewSvrList);
+
+stop( [ act_delete |  NewSvrList ] ) ->
+    act_delete:stop(),
+    stop(NewSvrList);
+
+stop( [ act_detonate |  NewSvrList ] ) ->
+    act_detonate:stop(),
+    stop(NewSvrList);
+
+stop( [ act_distill |  NewSvrList ] ) ->
+    act_distill:stop(),
+    stop(NewSvrList);
+
+stop( [ act_get |  NewSvrList ] ) ->
+    act_get:stop(),
+    stop(NewSvrList);
+
+stop( [ act_investigate |  NewSvrList ] ) ->
+    act_investigate:stop(),
+    stop(NewSvrList);
+
+stop( [ act_locate |  NewSvrList ] ) ->
+    act_locate:stop(),
+    stop(NewSvrList);
+
+stop( [ act_mitigate |  NewSvrList ] ) ->
+    act_mitigate:stop(),
+    stop(NewSvrList);
+
+stop( [ act_modify |  NewSvrList ] ) ->
+    act_modify:stop(),
+    stop(NewSvrList);
+
+stop( [ act_move |  NewSvrList ] ) ->
+    act_move:stop(),
+    stop(NewSvrList);
+
+stop( [ act_notify |  NewSvrList ] ) ->
+    act_notify:stop(),
+    stop(NewSvrList);
+
+stop( [ act_pause |  NewSvrList ] ) ->
+    act_pause:stop(),
+    stop(NewSvrList);
+
+stop( [ act_query |  NewSvrList ] ) ->
+    act_query:stop(),
+    stop(NewSvrList);
+
+stop( [ act_redirect |  NewSvrList ] ) ->
+    act_redirect:stop(),
+    stop(NewSvrList);
+
+stop( [ act_remediate |  NewSvrList ] ) ->
+    act_remediate:stop(),
+    stop(NewSvrList);
+
+stop( [ act_report |  NewSvrList ] ) ->
+    act_report:stop(),
+    stop(NewSvrList);
+
+stop( [ act_restart |  NewSvrList ] ) ->
+    act_restart:stop(),
+    stop(NewSvrList);
+
+stop( [ act_restore |  NewSvrList ] ) ->
+    act_restore:stop(),
+    stop(NewSvrList);
+
+stop( [ act_resume |  NewSvrList ] ) ->
+    act_resume:stop(),
+    stop(NewSvrList);
+
+stop( [ act_save | NewSvrList ] ) ->
+    act_save:stop(),
+    stop(NewSvrList);
+
+stop( [ act_scan |  NewSvrList ] ) ->
+    act_scan:stop(),
+    stop(NewSvrList);
+
+stop( [ act_set |  NewSvrList ] ) ->
+    act_set:stop(),
+    stop(NewSvrList);
+
+stop( [ act_snapshot |  NewSvrList ] ) ->
+    act_snapshot:stop(),
+    stop(NewSvrList);
+
+stop( [ act_start |  NewSvrList ] ) ->
+    act_start:stop(),
+    stop(NewSvrList);
+
+stop( [ act_stop |  NewSvrList ] ) ->
+    act_stop:stop(),
+    stop(NewSvrList);
+
+stop( [ act_substitute |  NewSvrList ] ) ->
+    act_substitute:stop(),
+    stop(NewSvrList);
+
+stop( [ act_sync |  NewSvrList ] ) ->
+    act_sync:stop(),
+    stop(NewSvrList);
+
+stop( [ act_throttle |  NewSvrList ] ) ->
+    act_throttle:stop(),
+    stop(NewSvrList);
+
+stop( [ act_update |  NewSvrList ] ) ->
+    act_update:stop(),
+    stop(NewSvrList);
+
+stop( [ acu_demense |  NewSvrList ] ) ->
+    acu_demense:stop(),
+    stop(NewSvrList);
+
+stop( [ acu_network_firewall |  NewSvrList ] ) ->
+    acu_network_firewall:stop(),
+    stop(NewSvrList);
+
+stop( [ acu_network_router |  NewSvrList ] ) ->
+    acu_network_router:stop(),
+    stop(NewSvrList);
+
+stop( [ acu_network_scanner |  NewSvrList ] ) ->
+    acu_network_scanner:stop(),
+    stop(NewSvrList);
+
 stop( [ Svr |  NewSvrList ] ) ->
     %% stop first server on list and recurse
-    Svr:stop(),
     lager:error("lambda ok on svr stop? should it be softer and recursive"),
     lager:error("or should this be supervison tree"),
+    die = Svr,
     stop(NewSvrList).
 

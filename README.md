@@ -1,5 +1,7 @@
 # ocas
 
+[![CircleCI](https://circleci.com/gh/sparrell/ocas/tree/master.svg?style=shield&circle-token=1ca56ff416f48513a5630d7282711b2bbee133dd)](https://circleci.com/gh/sparrell/ocas/tree/master)
+
 ## Table of Contents
 
 * [1. Intro](#1-intro)
