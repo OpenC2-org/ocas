@@ -51,6 +51,12 @@ all() ->
     , test_deny_again
     , test_detonate
     , test_detonate_again
+    , test_distill
+    , test_distill_again
+    , test_get
+    , test_get_again
+    , test_investigate
+    , test_investigate_again
     , test_mitigate
     , test_mitigate_again
     , test_query
@@ -270,6 +276,40 @@ test_detonate_again(Config) ->
                         ),
     ok.
 
+test_distill(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2("distill01.json"
+                        , "distill01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_distill_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2("distill01.json"
+                        , "distill01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_get(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2("get01.json"
+                        , "get01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_get_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2("get01.json"
+                        , "get01.results.json"
+                        , Config
+                        ),
+    ok.
+
 test_query(Config) ->
     %% send command and compare expected results
     helper_json:post_oc2("query01.json"
@@ -283,6 +323,23 @@ test_query_again(Config) ->
     %% send command and compare expected results
     helper_json:post_oc2("query01.json"
                         , "query01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_investigate(Config) ->
+    %% send command and compare expected results
+    helper_json:post_oc2( "investigate01.json"
+                        , "investigate01.results.json"
+                        , Config
+                        ),
+    ok.
+
+test_investigate_again(Config) ->
+    %% run again to exercise different legs of code when servers already running
+    %% send command and compare expected results
+    helper_json:post_oc2( "investigate01.json"
+                        , "investigate01.results.json"
                         , Config
                         ),
     ok.
