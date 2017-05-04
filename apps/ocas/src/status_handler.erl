@@ -38,6 +38,11 @@
 
 -export([init/3, rest_init/2, to_html/2, allowed_methods/2]).
 
+-ignore_xref({init,3}).
+-ignore_xref({rest_init,2}).
+-ignore_xref({allowed_methods,2}).
+-ignore_xref({to_html,2}).
+
 init( {tcp, http}, _Req, _Opts) ->
     {upgrade, protocol, cowboy_rest}.
 

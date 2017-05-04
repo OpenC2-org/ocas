@@ -45,6 +45,14 @@
         , content_types_provided/2
         ]).
 
+-ignore_xref({init,3}).
+-ignore_xref({rest_init,2}).
+-ignore_xref({allowed_methods,2}).
+-ignore_xref({ok_to_json,2}).
+-ignore_xref({ok_to_text,2}).
+-ignore_xref({ok_to_html,2}).
+-ignore_xref({content_types_provided,2}).
+
 init( {tcp, http}, _Req, _Opts) ->
     {upgrade, protocol, cowboy_rest}.
 

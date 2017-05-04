@@ -43,6 +43,12 @@
         , handle_json/2
         ]).
 
+-ignore_xref({init,3}).
+-ignore_xref({rest_init,2}).
+-ignore_xref({allowed_methods,2}).
+-ignore_xref({content_types_accepted,2}).
+-ignore_xref({handle_json,2}).
+
 init( {tcp, http}, _Req, _Opts) ->
     {upgrade, protocol, cowboy_rest}.
 
