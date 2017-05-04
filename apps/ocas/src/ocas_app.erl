@@ -30,7 +30,7 @@
 %% Application callbacks
 -export([start/0, start/2, stop/1]).
 
--ignore_xref({start,0}).
+-ignore_xref({start, 0}).
 
 %%====================================================================
 %% API
