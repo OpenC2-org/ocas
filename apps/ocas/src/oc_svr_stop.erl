@@ -36,13 +36,35 @@
 %%% OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %%%-------------------------------------------------------------------
 
--export([ stop/1 ]).
+-export([ stop/1
+        , todo/0
+        ]
+       ).
+
+%% delete this function - it's a placeholder on work in progress
+%%     to keep xref happy
+-ignore_xref({todo, 0}).
+todo() ->
+    A = act_svr_map:action_map(),
+    B = act_svr_map:is_server_running( junk ),
+    C = act_svr_map:text_to_server( <<"junk">> ),
+    D = oc_env:keepalive(),
+    E = oc_env:stop(),
+    F = oc_env:terminate(),
+    G = tgt_net_con:keepalive(),
+    H = tgt_net_con:start( #{} ),
+
+    {A, B, C, D, E, F, G, H}.
 
 stop( [] ) ->
     %% empty list so done
     ok;
 
 %% stop first server on list and recurse
+stop( [ act_allow |  NewSvrList ] ) ->
+    act_allow:stop(),
+    stop(NewSvrList);
+
 stop( [ act_augment |  NewSvrList ] ) ->
     act_augment:stop(),
     stop(NewSvrList);
@@ -193,6 +215,54 @@ stop( [ acu_network_router |  NewSvrList ] ) ->
 
 stop( [ acu_network_scanner |  NewSvrList ] ) ->
     acu_network_scanner:stop(),
+    stop(NewSvrList);
+
+stop( [ mod_ack |  NewSvrList ] ) ->
+    mod_ack:stop(),
+    stop(NewSvrList);
+
+stop( [ mod_date_time |  NewSvrList ] ) ->
+    mod_date_time:stop(),
+    stop(NewSvrList);
+
+stop( [ mod_delay |  NewSvrList ] ) ->
+    mod_delay:stop(),
+    stop(NewSvrList);
+
+stop( [ mod_duration |  NewSvrList ] ) ->
+    mod_duration:stop(),
+    stop(NewSvrList);
+
+stop( [ mod_id |  NewSvrList ] ) ->
+    mod_id:stop(),
+    stop(NewSvrList);
+
+stop( [ mod_where |  NewSvrList ] ) ->
+    mod_where:stop(),
+    stop(NewSvrList);
+
+stop( [ tgt_hostname |  NewSvrList ] ) ->
+    tgt_hostname:stop(),
+    stop(NewSvrList);
+
+stop( [ tgt_ipv4_address |  NewSvrList ] ) ->
+    tgt_ipv4_address:stop(),
+    stop(NewSvrList);
+
+stop( [ tgt_ipv6_address |  NewSvrList ] ) ->
+    tgt_ipv6_address:stop(),
+    stop(NewSvrList);
+
+stop( [ tgt_net_con |  NewSvrList ] ) ->
+    tgt_net_con:stop(),
+    stop(NewSvrList);
+
+stop( [ tgt_network_firewall |  NewSvrList ] ) ->
+    tgt_network_firewall:stop(),
+    stop(NewSvrList);
+
+stop( [ tgt_network_scanner |  NewSvrList ] ) ->
+    tgt_network_scanner:stop(),
     stop(NewSvrList);
 
 stop( [ Svr |  NewSvrList ] ) ->
