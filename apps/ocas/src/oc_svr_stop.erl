@@ -36,7 +36,25 @@
 %%% OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %%%-------------------------------------------------------------------
 
--export([ stop/1 ]).
+-export([ stop/1
+        , todo/0
+        ]
+       ).
+
+%% delete this function - it's a placeholder on work in progress
+%%     to keep xref happy
+-ignore_xref({todo, 0}).
+todo() ->
+    A = act_svr_map:action_map(),
+    B = act_svr_map:is_server_running( junk ),
+    C = act_svr_map:text_to_server( <<"junk">> ),
+    D = oc_env:keepalive(),
+    E = oc_env:stop(),
+    F = oc_env:terminate(),
+    G = tgt_net_con:keepalive(),
+    H = tgt_net_con:start( #{} ),
+
+    {A, B, C, D, E, F, G, H}.
 
 stop( [] ) ->
     %% empty list so done
