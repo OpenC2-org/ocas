@@ -47,7 +47,7 @@
 %%  |> action_running           ie see if up already, if not then start
 %%  |> action_valid             ie send keepalive
 %%  |> verify_keepalive         ie validate server up
-%%  |> targets:get_target       ie tail recurse on 
+%%  |> targets:get_target       ie tail recurse on
 
 get_action( BinAction,  Req, State ) ->
     lager:info("get_action ~p", [BinAction]),
@@ -92,7 +92,7 @@ action_running( undefined, Action,  Req, State ) ->
     ok = oc_env:start_server(Action, State),
     lager:info("todo:action:action_running update state"),
 NewState = State,  %fix this
-     
+
     %% tail recurse on
     action_valid(Action, Req, NewState);
 
@@ -106,7 +106,7 @@ lager:debug("do we need to tell env about this command"),
 
     %% tail recurse on
     action_valid(Action, Req, State);
-    
+
 
 action_running( _ActionPid, Action,  Req, State ) ->
     %% got wonky answer so abort
