@@ -1,7 +1,7 @@
 %%% @author Duncan Sparrell
 %%% @copyright (C) 2017, sFractal Consulting LLC
 %%%
--module(action_abstract).
+-module(action).
 -author("Duncan Sparrell").
 -license("Apache 2.0").
 
@@ -81,7 +81,7 @@ check_action( Action,  Req, State ) ->
     %%        undefined if not running,
     %%        is_pid() if running
     ActionPid = act_svr_map:is_server_running(Action),
-    lager:info("action_abstract:check_action:ActionPid ~p", [ActionPid]),
+    lager:info("action:check_action:ActionPid ~p", [ActionPid]),
 
     %% tail recurse on
     action_running( ActionPid, Action,  Req, State ).
@@ -90,7 +90,7 @@ action_running( undefined, Action,  Req, State ) ->
     %% not started yet so start
     lager:info("action_running, not started, Action=~p", [Action]),
     ok = oc_env:start_server(Action, State),
-    lager:info("todo:action_abstract:action_running update state"),
+    lager:info("todo:action:action_running update state"),
 NewState = State,  %fix this
      
     %% tail recurse on

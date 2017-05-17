@@ -149,4 +149,4 @@ has_action(true, Req, State ) ->
     lager:info("action bintext: ~p", [ActionBin] ),
 
 %   actions:spawn_action(ActionBin, Req, State5).
-    action_abstract:get_action( ActionBin,  Req, State5 ).
+    action:get_action( ActionBin,  Req, State5 ).
