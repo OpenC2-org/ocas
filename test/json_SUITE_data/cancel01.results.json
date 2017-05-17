@@ -21,7 +21,7 @@
                          , "target_keepalive"
                          , "target_server"
                          ],
-    "ExpectedJsonPairs" : { "action"          : "cancel"
+    "ExpectedJsonPairs" : { "action"          : "act_cancel"
                           , "action_keepalive": true
                           , "action_server"   : "act_cancel"
                           , "action_valid"    : true

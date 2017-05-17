@@ -43,13 +43,13 @@
 %% tests to run
 all() ->
     [ test_get_ok
-    , test_post
     , test_bad_method
     , test_post_missing_body
     , test_unsupported_media_type
     , test_bad_json
-    , test_bad_action
     , test_missing_action
+    , test_post
+    , test_bad_action
     , test_missing_target
     ].
 
@@ -369,7 +369,7 @@ test_bad_action(_Config) ->
                                                   ),
     { <<"date">>, _Date } =  lists:keyfind(<<"date">>, 1, RespHeaders),
     %% note content length is for error mesg "Missing action function"
-    { <<"content-length">>, <<"23">>} =  lists:keyfind( <<"content-length">>
+    { <<"content-length">>, <<"10">>} =  lists:keyfind( <<"content-length">>
                                                       , 1
                                                       , RespHeaders
                                                       ),
@@ -380,7 +380,7 @@ test_bad_action(_Config) ->
                                                            ),
 
     %% test body is what was expected
-    RespBody = <<"Missing action function">>,
+    RespBody = <<"bad action">>,
 
     ok.
 

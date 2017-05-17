@@ -21,7 +21,7 @@
                          , "target_keepalive"
                          , "target_server"
                          ],
-    "ExpectedJsonPairs" : { "action"          : "investigate"
+    "ExpectedJsonPairs" : { "action"          : "act_investigate"
                           , "action_keepalive": true
                           , "action_server"   : "act_investigate"
                           , "action_valid"    : true

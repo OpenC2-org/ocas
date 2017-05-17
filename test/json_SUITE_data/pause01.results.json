@@ -21,7 +21,7 @@
                          , "target_keepalive"
                          , "target_server"
                          ],
-    "ExpectedJsonPairs" : { "action"          : "pause"
+    "ExpectedJsonPairs" : { "action"          : "act_pause"
                           , "action_keepalive": true
                           , "action_server"   : "act_pause"
                           , "action_valid"    : true

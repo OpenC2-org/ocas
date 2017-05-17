@@ -28,7 +28,7 @@
     "ExpectedJsonPairs" : { "has_http_body": true
                           , "good_json":     true
                           , "has_action":    true
-                          , "action":        "deny"
+                          , "action":        "act_deny"
                           , "action_server": "act_deny"
                           , "action_valid":  true
                           , "has_actuator":  true

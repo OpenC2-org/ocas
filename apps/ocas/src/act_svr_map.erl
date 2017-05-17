@@ -86,9 +86,12 @@ action_map() ->
 
 -spec text_to_server( bitstring() ) -> atom().
 text_to_server( Word ) ->
+    lager:info("text_to_server ~p", [Word]),
     ActionMap = action_map(),
     %% return value for key=Word
-    maps:get(Word, ActionMap).
+    Svr = maps:get(Word, ActionMap, bad_action),
+    lager:info("text_to_server:Svr ~p", [Svr]),
+    Svr.
 
 %% return true if server already running
 -spec is_server_running(atom()) -> 'undefined' | pid() | port().
