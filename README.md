@@ -39,7 +39,7 @@ or maybe it's an acronym OCAS - OpenC2 API Simulator.
 
 Ocas is an OTP application written in Erlang to:
 
-* prove out the OpenC2 spec (see <http://openc2.org/> and <https://github.com/OpenC2*org/>)
+* prove out the OpenC2 spec (see <http://openc2.org/> and <https://github.com/OpenC2-org/>)
 * be a viable simulator for testing OpenC2 code and scenarios
 * be a template for developing actual OpenC2 applications (i.e. replace the simulator code with code to actually perform the real function)
 
