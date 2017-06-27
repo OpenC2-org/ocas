@@ -46,7 +46,6 @@
 -spec action_map( ) -> map().
 action_map() ->
     ActionMap = #{ <<"allow">> => act_allow
-                 , <<"allow">> => act_allow
                  , <<"augment">> => act_augment
                  , <<"cancel">> => act_cancel
                  , <<"contain">> => act_contain

@@ -28,7 +28,21 @@
 -license(apache2).
 
 %% for test export all functions
--compile(export_all).
+-export( [ all/0
+         , suite/0
+         , init_per_suite/1
+         , end_per_suite/1
+         , test_get_ok/1
+         , test_post/1
+         , test_bad_method/1
+         , test_post_missing_body/1
+         , test_unsupported_media_type/1
+         , test_bad_json/1
+         , test_bad_action/1
+         , test_missing_action/1
+         , test_missing_target/1
+         , send_recieve/5
+         ]).
 
 %% required for common_test to work
 -include_lib("common_test/include/ct.hrl").
