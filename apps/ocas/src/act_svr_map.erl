@@ -58,7 +58,6 @@ action_map() ->
                  , <<"investigate">> => act_investigate
                  , <<"locate">> => act_locate
                  , <<"mitigate">> => act_mitigate
-                 , <<"modify">> => act_modify
                  , <<"move">> => act_move
                  , <<"notify">> => act_notify
                  , <<"pause">> => act_pause

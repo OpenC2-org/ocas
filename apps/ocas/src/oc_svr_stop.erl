@@ -113,10 +113,6 @@ stop( [ act_mitigate |  NewSvrList ] ) ->
     act_mitigate:stop(),
     stop(NewSvrList);
 
-stop( [ act_modify |  NewSvrList ] ) ->
-    act_modify:stop(),
-    stop(NewSvrList);
-
 stop( [ act_move |  NewSvrList ] ) ->
     act_move:stop(),
     stop(NewSvrList);
