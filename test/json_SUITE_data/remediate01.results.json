@@ -21,7 +21,7 @@
                          , "target_keepalive"
                          , "target_server"
                          ],
-    "ExpectedJsonPairs" : { "action"          : "remediate"
+    "ExpectedJsonPairs" : { "action"          : "act_remediate"
                           , "action_keepalive": true
                           , "action_server"   : "act_remediate"
                           , "action_valid"    : true

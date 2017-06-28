@@ -28,7 +28,21 @@
 -license(apache2).
 
 %% for test export all functions
--compile(export_all).
+-export( [ all/0
+         , suite/0
+         , init_per_suite/1
+         , end_per_suite/1
+         , test_get_ok/1
+         , test_post/1
+         , test_bad_method/1
+         , test_post_missing_body/1
+         , test_unsupported_media_type/1
+         , test_bad_json/1
+         , test_bad_action/1
+         , test_missing_action/1
+         , test_missing_target/1
+         , send_recieve/5
+         ]).
 
 %% required for common_test to work
 -include_lib("common_test/include/ct.hrl").
@@ -43,13 +57,13 @@
 %% tests to run
 all() ->
     [ test_get_ok
-    , test_post
     , test_bad_method
     , test_post_missing_body
     , test_unsupported_media_type
     , test_bad_json
-    , test_bad_action
     , test_missing_action
+    , test_post
+    , test_bad_action
     , test_missing_target
     ].
 
@@ -369,7 +383,7 @@ test_bad_action(_Config) ->
                                                   ),
     { <<"date">>, _Date } =  lists:keyfind(<<"date">>, 1, RespHeaders),
     %% note content length is for error mesg "Missing action function"
-    { <<"content-length">>, <<"23">>} =  lists:keyfind( <<"content-length">>
+    { <<"content-length">>, <<"10">>} =  lists:keyfind( <<"content-length">>
                                                       , 1
                                                       , RespHeaders
                                                       ),
@@ -380,7 +394,7 @@ test_bad_action(_Config) ->
                                                            ),
 
     %% test body is what was expected
-    RespBody = <<"Missing action function">>,
+    RespBody = <<"bad action">>,
 
     ok.
 

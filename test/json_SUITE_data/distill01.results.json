@@ -21,7 +21,7 @@
                          , "target_keepalive"
                          , "target_server"
                          ],
-    "ExpectedJsonPairs" : { "action"          : "distill"
+    "ExpectedJsonPairs" : { "action"          : "act_distill"
                           , "action_keepalive": true
                           , "action_server"   : "act_distill"
                           , "action_valid"    : true

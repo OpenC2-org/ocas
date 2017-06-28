@@ -57,6 +57,8 @@
         , restart/1
         , first_start/0
         , server_up/1
+        , start_server/2
+        , update_server/2
         ]).
 
 %% This is the api to the server
@@ -111,6 +113,13 @@ restart(NewState) ->
 server_up(Svr) ->
     gen_server:call(?MODULE, {server_up, Svr}).
 
+start_server(Svr, State) ->
+    lager:info("oc_env:start_server, Svr=~p, State=~p", [Svr, State]),
+    gen_server:call(?MODULE, {start_server, {Svr, State} }).
+
+update_server(Svr, State) ->
+    gen_server:call(?MODULE, {update_server, {Svr, State} }).
+
 %% initialize server with state
 init( [State] ) ->
     lager:debug( "starting ~p with ~p", [?MODULE, State] ),
@@ -151,6 +160,19 @@ handle_call( {server_up, Svr} , _From, State ) ->
     %% reply with ok and new state
     {reply, ok, NewState};
 
+handle_call( {start_server, {Svr, IncomingState}}, _From, State ) ->
+    %% start server if not already started
+    {ok, SvrPid} = Svr:start(IncomingState),
+    %% add server to svr map if not already there
+    NewState = add_to_svr_map(Svr, SvrPid, State),
+    {reply, ok, NewState};
+
+handle_call( {update_server, {Svr, IncomingState} }, _From, State ) ->
+    %% need to add code to put server in NewState
+    lager:info("fix oc_env:handle_call:update_server ~p", [IncomingState]),
+    NewState = maps:put(something, Svr, State),
+    {reply, ok, NewState};
+
 %% handle unknown call messages
 handle_call(Message, From, State) ->
     lager:info( "~p got unknown ~p from ~p", [?MODULE, Message, From] ),
@@ -180,3 +202,20 @@ code_change(_OldVsn, State, _Extra) ->
     %% No change planned. The function is there for behaviour sanity,
     %% but will not be used. Only a version on the next
     {ok, State}.
+
+%% routine to update svr map in state when another svr added
+add_to_svr_map(Svr, SvrPid, State) ->
+    lager:info( "~p:add_to_svr_map got Svr= ~p", [?MODULE, Svr] ),
+    lager:info( "add_to_svr_map got State= ~p", [State] ),
+    %% get existing server map
+    SvrMapIn = maps:get(svr_map, State),
+    lager:info( "add_to_svr_map SvrMapIn= ~p", [SvrMapIn] ),
+    %% add Svr to server map
+    NewSvrMap = maps:put(Svr, SvrPid, SvrMapIn),
+    lager:info( "NewSvrMap= ~p", [NewSvrMap] ),
+    %% replace svr_map with NewSvrMap
+    NewState = maps:update(svr_map, NewSvrMap, State),
+    lager:info( "NewState= ~p", [NewState] ),
+    %% reply with ok and new state
+    % return new state
+    NewState.

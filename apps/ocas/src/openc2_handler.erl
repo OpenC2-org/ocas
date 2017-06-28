@@ -148,4 +148,5 @@ has_action(true, Req, State ) ->
     ActionBin = maps:get( <<"action">>, JsonMap ),
     lager:info("action bintext: ~p", [ActionBin] ),
 
-    actions:spawn_action(ActionBin, Req, State5).
+%   actions:spawn_action(ActionBin, Req, State5).
+    action:get_action( ActionBin,  Req, State5 ).

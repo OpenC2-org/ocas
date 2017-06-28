@@ -26,7 +26,14 @@
 -license(apache2).
 
 %% for test export all functions
--compile(export_all).
+-export( [ post_oc2/3
+         , create_openc2_atoms/0
+         , command_atoms/0
+         , action_atoms/0
+         , actuator_atoms/0
+         , target_atoms/0
+         , modifier_atom/0
+         ] ).
 
 %% required for common_test to work
 -include_lib("common_test/include/ct.hrl").

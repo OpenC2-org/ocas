@@ -21,7 +21,7 @@
                          , "target_keepalive"
                          , "target_server"
                          ],
-    "ExpectedJsonPairs" : { "action"          : "update"
+    "ExpectedJsonPairs" : { "action"          : "act_update"
                           , "action_keepalive": true
                           , "action_server"   : "act_update"
                           , "action_valid"    : true
