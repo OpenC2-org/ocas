@@ -55,7 +55,6 @@ action_map() ->
                  , <<"deny">> => act_deny
                  , <<"detonate">> => act_detonate
                  , <<"distill">> => act_distill
-                 , <<"get">> => act_get
                  , <<"investigate">> => act_investigate
                  , <<"locate">> => act_locate
                  , <<"mitigate">> => act_mitigate

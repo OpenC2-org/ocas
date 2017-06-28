@@ -42,7 +42,6 @@
          , test_deny/1
          , test_detonate/1
          , test_distill/1
-         , test_get/1
          , test_investigate/1
          , test_locate/1
          , test_mitigate/1
@@ -96,8 +95,6 @@ all() ->
     , test_detonate
     , test_distill
     , test_distill
-    , test_get
-    , test_get
     , test_investigate
     , test_investigate
     , test_locate
@@ -266,14 +263,6 @@ test_distill(Config) ->
     %% send command and compare expected results
     helper_json:post_oc2( "distill01.json"
                         , "distill01.results.json"
-                        , Config
-                        ),
-    ok.
-
-test_get(Config) ->
-    %% send command and compare expected results
-    helper_json:post_oc2( "get01.json"
-                        , "get01.results.json"
                         , Config
                         ),
     ok.
