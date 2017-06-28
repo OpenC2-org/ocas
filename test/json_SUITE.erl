@@ -45,7 +45,6 @@
          , test_investigate/1
          , test_locate/1
          , test_mitigate/1
-         , test_modify/1
          , test_move/1
          , test_notify/1
          , test_pause/1
@@ -101,8 +100,6 @@ all() ->
     , test_locate
     , test_mitigate
     , test_mitigate
-    , test_modify
-    , test_modify
     , test_move
     , test_move
     , test_notify
@@ -291,14 +288,6 @@ test_mitigate(Config) ->
                         ),
     ok.
 
-
-test_modify(Config) ->
-    %% send command and compare expected results
-    helper_json:post_oc2( "modify01.json"
-                        , "modify01.results.json"
-                        , Config
-                        ),
-    ok.
 
 test_move(Config) ->
     %% send command and compare expected results
