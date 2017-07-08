@@ -25,8 +25,11 @@
 -copyright("2017, sFractal Consulting, LLC").
 -license(apache2).
 
-%% for test export all functions
--compile(export_all).
+%% for test export all needed functions
+-export( [ send_receive/6
+         , send_receive/7
+         , send_receive/8
+         ] ).
 
 %% required for common_test to work
 -include_lib("common_test/include/ct.hrl").
@@ -79,7 +82,7 @@ send_receive( post
 
     ok.
 
-send_recieve( ReqHeaders          % to send
+send_receive( ReqHeaders          % to send
             , Options          % to send
             , ReqBody          % to send
             , Url              % to send
@@ -225,12 +228,12 @@ check_map( [ {Key, ExpectedValue} | RestOfExpectedJsonPairs ], JsonMap ) ->
             cause_failure = ErrorText
     end.
 
-check_key( [], _JsonMap ) ->
-    %% done since list is empty
-    ok;
-
-check_key( [ Key | RestOfExpectedKeys ], JsonMap ) ->
-    %% Grab  first item in list and verify
-    maps:is_key(Key, JsonMap),
-    %% recurse
-    check_key( RestOfExpectedKeys, JsonMap ).
+%check_key( [], _JsonMap ) ->
+%    %% done since list is empty
+%    ok;
+%
+%check_key( [ Key | RestOfExpectedKeys ], JsonMap ) ->
+%    %% Grab  first item in list and verify
+%    maps:is_key(Key, JsonMap),
+%    %% recurse
+%    check_key( RestOfExpectedKeys, JsonMap ).

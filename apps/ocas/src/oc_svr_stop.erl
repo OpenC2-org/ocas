@@ -101,10 +101,6 @@ stop( [ act_distill |  NewSvrList ] ) ->
     act_distill:stop(),
     stop(NewSvrList);
 
-stop( [ act_get |  NewSvrList ] ) ->
-    act_get:stop(),
-    stop(NewSvrList);
-
 stop( [ act_investigate |  NewSvrList ] ) ->
     act_investigate:stop(),
     stop(NewSvrList);
@@ -115,10 +111,6 @@ stop( [ act_locate |  NewSvrList ] ) ->
 
 stop( [ act_mitigate |  NewSvrList ] ) ->
     act_mitigate:stop(),
-    stop(NewSvrList);
-
-stop( [ act_modify |  NewSvrList ] ) ->
-    act_modify:stop(),
     stop(NewSvrList);
 
 stop( [ act_move |  NewSvrList ] ) ->
