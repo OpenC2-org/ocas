@@ -61,6 +61,8 @@
         , update_server/2
         ]).
 
+-ignore_xref({update_server, 2}). % to keep xref happy
+
 %% This is the api to the server
 
 start(State) ->

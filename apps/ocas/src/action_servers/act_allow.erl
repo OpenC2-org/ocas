@@ -55,6 +55,9 @@
         , keepalive/0
         ]).
 
+-ignore_xref({start, 1}). % to keep xref happy
+-ignore_xref({keepalive, 0}). % to keep xref happy
+
 %% This routine API handles all the actions that can be taken
 
 start(State) ->
