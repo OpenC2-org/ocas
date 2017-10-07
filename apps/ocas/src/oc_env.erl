@@ -61,6 +61,8 @@
         , update_server/2
         ]).
 
+-callback start(term()) -> {ok, pid()}.  % for handle_call  start_server
+
 -ignore_xref({update_server, 2}). % to keep xref happy
 
 %% This is the api to the server
