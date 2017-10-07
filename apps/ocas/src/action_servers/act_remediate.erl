@@ -35,6 +35,7 @@
 %%%-------------------------------------------------------------------
 
 -behaviour(gen_server).
+-behaviour(oc_env).    % for calling start modules
 
 -author("Duncan Sparrell").
 -license("Apache 2.0").
