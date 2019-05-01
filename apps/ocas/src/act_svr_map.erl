@@ -76,7 +76,6 @@ action_map() ->
                  , <<"stop">> => act_stop
                  , <<"substitute">> => act_substitute
                  , <<"sync">> => act_sync
-                 , <<"throttle">> => act_throttle
                  , <<"update">> => act_update
                  },
     ActionMap.
@@ -94,4 +93,3 @@ text_to_server( Word ) ->
 -spec is_server_running(atom()) -> 'undefined' | pid() | port().
 is_server_running(Svr) ->
     whereis(Svr).
-

@@ -38,7 +38,6 @@
         , test_stop/1
         , test_substitute/1
         , test_sync/1
-        , test_throttle/1
         , test_update/1
         ]).
 
@@ -63,8 +62,6 @@ all() ->
     , test_substitute
     , test_sync
     , test_sync
-    , test_throttle
-    , test_throttle
     , test_update
     , test_update
     ].
@@ -164,14 +161,6 @@ test_sync(Config) ->
                         ),
     ok.
 
-test_throttle(Config) ->
-    %% send command and compare expected results
-    helper_json:post_oc2( "throttle01.json"
-                        , "throttle01.results.json"
-                        , Config
-                        ),
-    ok.
-
 test_update(Config) ->
     %% send command and compare expected results
     helper_json:post_oc2( "update01.json"
@@ -179,4 +168,3 @@ test_update(Config) ->
                         , Config
                         ),
     ok.
-
